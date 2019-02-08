@@ -1,2 +1,2 @@
 # LRender
-A web based Lindenmayer system renderer
+A C++ Lindenmayer system renderer
