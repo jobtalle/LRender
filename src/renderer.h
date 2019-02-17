@@ -1,6 +1,8 @@
 #pragma once
 
 #include "scene/scene.h"
+#include "math/vector.h"
+#include "math/matrix.h"
 
 #include <memory>
 #include <mutex>
