@@ -8,9 +8,11 @@ namespace LRender {
 		Vector();
 		Vector(const float n);
 		Vector(const float x, const float y, const float z);
+		Vector(const Vector &other);
 		float length() const;
 		float dot(const Vector &other) const;
 		Vector copy() const;
+		Vector cross(const Vector &other) const;
 		Vector &normalize();
 		Vector operator-() const;
 		Vector &operator*(const float scalar);
