@@ -11,6 +11,7 @@ namespace LRender {
 		Matrix(const Matrix &other);
 		Matrix copy() const;
 		Matrix &identity();
+		Matrix &invert();
 		Matrix &translate(const Vector &translation);
 		Matrix &scale(const Vector &scale);
 		Matrix &rotateX(const float angle);
