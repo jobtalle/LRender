@@ -11,13 +11,21 @@ namespace LRender {
 		Matrix(const Matrix &other);
 		Matrix copy() const;
 		Matrix &identity();
+		Matrix &translate(const Vector &translation);
+		Matrix &scale(const Vector &scale);
+		Matrix &rotateX(const float angle);
+		Matrix &rotateY(const float angle);
+		Matrix &rotateZ(const float angle);
+		Vector operator*(const Vector &other) const;
 		Matrix &operator*(const Matrix &other);
 		Matrix &operator=(const Matrix &other);
 		float get(const size_t x, const size_t y) const;
 
-		static Matrix translation(const Vector &translation);
-		static Matrix scale(const Vector &scale);
-		static Matrix scale(const float scale);
+		static Matrix makeTranslate(const Vector &translation);
+		static Matrix makeScale(const Vector &scale);
+		static Matrix makeRotateX(const float angle);
+		static Matrix makeRotateY(const float angle);
+		static Matrix makeRotateZ(const float angle);
 
 	private:
 		float m[4][4] = { 0 };
