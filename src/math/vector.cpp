@@ -48,14 +48,14 @@ Vector Vector::cross(const Vector &other) const {
 Vector &Vector::normalize() {
 	const float f = 1.0 / length();
 
-	return *this * f;
+	return *this *= f;
 }
 
 Vector Vector::operator-() const {
 	return Vector(-x, -y, -z);
 }
 
-Vector &Vector::operator*(const float scalar) {
+Vector &Vector::operator*=(const float scalar) {
 	x *= scalar;
 	y *= scalar;
 	z *= scalar;
@@ -63,7 +63,7 @@ Vector &Vector::operator*(const float scalar) {
 	return *this;
 }
 
-Vector &Vector::operator*(const Vector &other) {
+Vector &Vector::operator*=(const Vector &other) {
 	x *= other.x;
 	y *= other.y;
 	z *= other.z;
@@ -71,7 +71,7 @@ Vector &Vector::operator*(const Vector &other) {
 	return *this;
 }
 
-Vector &Vector::operator+(const Vector &other) {
+Vector &Vector::operator+=(const Vector &other) {
 	x += other.x;
 	y += other.y;
 	z += other.z;
@@ -79,7 +79,7 @@ Vector &Vector::operator+(const Vector &other) {
 	return *this;
 }
 
-Vector &Vector::operator-(const Vector &other) {
+Vector &Vector::operator-=(const Vector &other) {
 	x -= other.x;
 	y -= other.y;
 	z -= other.z;
@@ -101,6 +101,18 @@ bool Vector::operator==(const Vector &other) const {
 
 bool Vector::operator!=(const Vector &other) const {
 	return !(*this == other);
+}
+
+Vector LRender::operator+(Vector lhs, const Vector &rhs) {
+	return lhs += rhs;
+}
+
+Vector LRender::operator-(Vector lhs, const Vector &rhs) {
+	return lhs -= rhs;
+}
+
+Vector LRender::operator*(Vector lhs, const Vector &rhs) {
+	return lhs *= rhs;
 }
 
 std::ostream &operator<<(std::ostream &stream, const Vector &vector) {
