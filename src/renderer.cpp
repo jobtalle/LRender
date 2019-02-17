@@ -18,7 +18,7 @@ void Renderer::setScene(std::shared_ptr<Scene> scene) {
 	nextScene = scene;
 }
 
-void Renderer::render() {
+void Renderer::update() {
 	std::lock_guard<std::mutex> lock(access);
 
 	if(nextScene) {
@@ -26,7 +26,9 @@ void Renderer::render() {
 
 		nextScene.reset();
 	}
+}
 
+void Renderer::render() const {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

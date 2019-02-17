@@ -10,7 +10,8 @@ namespace LRender {
 	public:
 		Renderer();
 		void setScene(std::shared_ptr<Scene> scene);
-		void render();
+		void update();
+		void render() const;
 
 	private:
 		static bool initialized;
