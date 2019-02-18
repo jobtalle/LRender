@@ -17,6 +17,7 @@ namespace LRender {
 		void setScene(std::shared_ptr<Scene> scene);
 		void update();
 		void render() const;
+		void setSize(const size_t width, const size_t height);
 
 	private:
 		static const std::string FILE_SHADER_VERTEX_GEOMETRY;

@@ -41,6 +41,10 @@ void Renderer::render() const {
 		model->draw();
 }
 
+void Renderer::setSize(const size_t width, const size_t height) {
+	glViewport(0, 0, width, height);
+}
+
 void Renderer::initializeGL() {
 	gladLoadGL();
 
