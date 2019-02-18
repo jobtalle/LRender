@@ -1,6 +1,6 @@
 #include "renderer.h"
 #include "glad/glad.h"
-#include <iostream>
+
 using namespace LRender;
 
 const std::string Renderer::FILE_SHADER_VERTEX_GEOMETRY = "glsl/vertexGeometry.glsl";

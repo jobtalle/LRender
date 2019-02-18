@@ -111,6 +111,10 @@ Vector LRender::operator-(Vector lhs, const Vector &rhs) {
 	return lhs -= rhs;
 }
 
+Vector LRender::operator*(Vector lhs, const float rhs) {
+	return lhs *= rhs;
+}
+
 Vector LRender::operator*(Vector lhs, const Vector &rhs) {
 	return lhs *= rhs;
 }
