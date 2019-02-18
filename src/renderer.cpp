@@ -1,13 +1,18 @@
 #include "renderer.h"
 #include "glad/glad.h"
-
+#include <iostream>
 using namespace LRender;
+
+const std::string Renderer::FILE_SHADER_VERTEX_GEOMETRY = "glsl/vertexGeometry.glsl";
+const std::string Renderer::FILE_SHADER_FRAGMENT_GEOMETRY = "glsl/fragmentGeometry.glsl";
 
 bool Renderer::initialized = false;
 
 Renderer::Renderer() {
 	if(!initialized)
 		initializeGL();
+
+	shaderGeometry.reset(new Shader(FILE_SHADER_VERTEX_GEOMETRY, FILE_SHADER_FRAGMENT_GEOMETRY));
 
 	glClearColor(1, 0, 0, 1);
 }
@@ -30,6 +35,9 @@ void Renderer::update() {
 
 void Renderer::render() const {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	for(auto model : models)
+		model.draw();
 }
 
 void Renderer::initializeGL() {
