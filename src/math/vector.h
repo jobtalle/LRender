@@ -23,7 +23,17 @@ namespace LRender {
 		bool operator==(const Vector &other) const;
 		bool operator!=(const Vector &other) const;
 
-		float x, y, z;
+		union {
+			float x, r;
+		};
+
+		union {
+			float y, g;
+		};
+
+		union {
+			float z, b;
+		};
 	};
 
 	Vector operator+(Vector lhs, const Vector &rhs);

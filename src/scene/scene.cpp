@@ -9,3 +9,7 @@ Scene::Scene() {
 void Scene::addAgent(const Agent &agent) {
 	agents.push_back(agent);
 }
+
+const std::vector<Agent> &Scene::getAgents() const {
+	return agents;
+}

@@ -9,6 +9,7 @@ namespace LRender {
 	public:
 		Scene();
 		void addAgent(const Agent &agent);
+		const std::vector<Agent> &getAgents() const;
 
 	private:
 		std::vector<Agent> agents;

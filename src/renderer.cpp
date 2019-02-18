@@ -39,5 +39,14 @@ void Renderer::initializeGL() {
 }
 
 void Renderer::loadScene(const Scene *scene) {
+	models.clear();
 
+	for(auto agent : scene->getAgents())
+		models.push_back(Model(
+			{
+				Vertex(Vector(-1, -1, 0), Vector(1, 0, 0)),
+				Vertex(Vector(1, -1, 0), Vector(0, 1, 0)),
+				Vertex(Vector(0, 1, 0), Vector(0, 0, 1))
+			},
+			{ 0, 1, 2 } ));
 }

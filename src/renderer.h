@@ -3,6 +3,7 @@
 #include "scene/scene.h"
 #include "math/vector.h"
 #include "math/matrix.h"
+#include "model.h"
 
 #include <memory>
 #include <mutex>
@@ -20,6 +21,7 @@ namespace LRender {
 
 		std::mutex access;
 		std::shared_ptr<Scene> nextScene;
+		std::vector<Model> models;
 
 		static void initializeGL();
 
