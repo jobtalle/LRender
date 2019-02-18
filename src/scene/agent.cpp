@@ -1,8 +1,13 @@
 #include "agent.h"
-#include <iostream>
+
 using namespace LRender;
 
-Agent::Agent(const std::string &symbols) :
+Agent::Agent(const LRender::Vector &position, const std::string &symbols) :
+	position(position),
 	symbols(symbols) {
-	std::cout << symbols << std::endl;
+
+}
+
+const std::string &Agent::getSymbols() const {
+	return symbols;
 }

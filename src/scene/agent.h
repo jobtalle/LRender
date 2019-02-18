@@ -1,13 +1,17 @@
 #pragma once
 
+#include "../math/vector.h"
+
 #include <string>
 
 namespace LRender {
 	class Agent final {
 	public:
-		Agent(const std::string &symbols);
+		Agent(const LRender::Vector &position, const std::string &symbols);
+		const std::string &getSymbols() const;
 
 	private:
+		const LRender::Vector position;
 		const std::string symbols;
 	};
 }
