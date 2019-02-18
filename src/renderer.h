@@ -23,10 +23,11 @@ namespace LRender {
 		static const std::string FILE_SHADER_FRAGMENT_GEOMETRY;
 		static bool initialized;
 
+		Shader *shader;
 		std::unique_ptr<Shader> shaderGeometry;
 		std::mutex access;
 		std::shared_ptr<Scene> nextScene;
-		std::vector<Model> models;
+		std::vector<std::shared_ptr<Model>> models;
 
 		static void initializeGL();
 

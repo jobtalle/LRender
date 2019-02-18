@@ -1,5 +1,6 @@
 #include "model.h"
 #include <iostream>
+
 using namespace LRender;
 
 Model::Model(const std::vector<Vertex> &vertices, const std::vector<uint32_t> &indices) {
@@ -14,13 +15,6 @@ Model::~Model() {
 void Model::draw() const {
 	glBindVertexArray(vao);
 
-	GLint i;
-	glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING, &i);
-	std::cout << (i == buffers[BUFFER_INDICES]) << ", ";
-
-	glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &i);
-	std::cout << (i == buffers[BUFFER_VERTICES]) << std::endl;
-
 	glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0);
 }
 
@@ -31,13 +25,14 @@ void Model::createBuffers() {
 	glBindVertexArray(vao);
 
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[BUFFER_VERTICES]);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[BUFFER_INDICES]);
 
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[BUFFER_INDICES]);
 }
 
 void Model::upload(const std::vector<Vertex> &vertices, const std::vector<uint32_t> &indices) {

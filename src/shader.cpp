@@ -25,6 +25,10 @@ Shader::~Shader() {
 	glDeleteProgram(program);
 }
 
+void Shader::use() const {
+	glUseProgram(program);
+}
+
 GLuint Shader::createShader(const GLenum type, const GLchar *code) {
 	GLuint shader;
 	GLint success;

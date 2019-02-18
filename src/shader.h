@@ -9,6 +9,7 @@ namespace LRender {
 	public:
 		Shader(const std::string &vertex, const std::string &fragment);
 		~Shader();
+		void use() const;
 
 	private:
 		GLuint program;

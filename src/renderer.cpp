@@ -13,8 +13,7 @@ Renderer::Renderer() {
 		initializeGL();
 
 	shaderGeometry.reset(new Shader(FILE_SHADER_VERTEX_GEOMETRY, FILE_SHADER_FRAGMENT_GEOMETRY));
-
-	glClearColor(1, 0, 0, 1);
+	shader = shaderGeometry.get();
 }
 
 void Renderer::setScene(std::shared_ptr<Scene> scene) {
@@ -34,10 +33,12 @@ void Renderer::update() {
 }
 
 void Renderer::render() const {
+	shader->use();
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	for(auto model : models)
-		model.draw();
+		model->draw();
 }
 
 void Renderer::initializeGL() {
@@ -50,11 +51,11 @@ void Renderer::loadScene(const Scene *scene) {
 	models.clear();
 
 	for(auto agent : scene->getAgents())
-		models.push_back(Model(
+		models.push_back(std::shared_ptr<Model>(new Model(
 			{
 				Vertex(Vector(-1, -1, 0), Vector(1, 0, 0)),
 				Vertex(Vector(1, -1, 0), Vector(0, 1, 0)),
 				Vertex(Vector(0, 1, 0), Vector(0, 0, 1))
 			},
-			{ 0, 1, 2 } ));
+			{ 0, 1, 2 } )));
 }
