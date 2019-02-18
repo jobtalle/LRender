@@ -8,6 +8,10 @@ Agent::Agent(const LRender::Vector &position, const std::string &symbols) :
 
 }
 
+const Vector &Agent::getPosition() const {
+	return position;
+}
+
 const std::string &Agent::getSymbols() const {
 	return symbols;
 }
