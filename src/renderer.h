@@ -20,8 +20,14 @@ namespace LRender {
 		void update();
 		void render() const;
 		void setSize(const size_t width, const size_t height);
+		void mouseMove(const size_t x, const size_t y);
+		void mousePress();
+		void mouseRelease();
 
 	private:
+		static const float PITCH_MIN;
+		static const float PITCH_MAX;
+		static const float RADIANS_PER_PIXEL;
 		static const float PROJECTION_ANGLE;
 		static const float Z_NEAR;
 		static const float Z_FAR;
@@ -34,13 +40,19 @@ namespace LRender {
 		Matrix projection;
 		float aspect;
 		Shader *shader;
+		bool dragging;
+		size_t mouseX;
+		size_t mouseY;
+		float viewAngle;
+		float viewPitch;
 		std::unique_ptr<Shader> shaderGeometry;
 		std::mutex access;
 		std::shared_ptr<Scene> nextScene;
 		std::vector<std::shared_ptr<Model>> models;
 
 		void loadScene(const Scene *scene);
-		void updateUBO() const;
+		void updateUniforms();
 		void updateProjection();
+		void updateView();
 	};
 };

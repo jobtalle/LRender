@@ -66,15 +66,8 @@ Quaternion LRender::operator*(Quaternion lhs, const Quaternion &rhs) {
 	);
 }
 
-// TODO: Optimize this one:
 Vector LRender::operator*(const Quaternion &lhs, const Vector &rhs) {
-	Vector uv, uuv;
-	Vector qvec(lhs.xyz);
+	Vector t(lhs.xyz.cross(rhs) * 2);
 
-	uv = qvec.cross(rhs);
-	uuv = qvec.cross(uv);
-	uv *= (2 * lhs.w);
-	uuv *= 2;
-
-	return rhs + uv + uuv;
+	return rhs + t * lhs.w + lhs.xyz.cross(t);
 }
