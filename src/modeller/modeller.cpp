@@ -7,7 +7,7 @@
 
 using namespace LRender;
 
-const float Modeller::TURTLE_STEP = 0.05;
+const float Modeller::TURTLE_STEP = 0.1;
 const float Modeller::TURTLE_ANGLE = 0.3;
 const Vector Modeller::AXIS_PITCH(0, 0, 1);
 const Vector Modeller::AXIS_ROLL(0, 1, 0);

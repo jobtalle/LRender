@@ -15,6 +15,7 @@ namespace LRender {
 		GLuint program;
 
 		static const std::string VERSION;
+		static const std::string FILE_UNIFORM_BLOCK;
 		static GLuint createShader(const GLenum type, const GLchar *code);
 
 		std::string readFile(const std::string &file);

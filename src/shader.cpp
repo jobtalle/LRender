@@ -6,12 +6,14 @@
 using namespace LRender;
 
 const std::string Shader::VERSION = "#version 440 core\n";
+const std::string Shader::FILE_UNIFORM_BLOCK = "glsl/uniforms.glsl";
 
 Shader::Shader(const std::string &vertex, const std::string &fragment) {
 	program = glCreateProgram();
 
-	GLuint shaderVertex = createShader(GL_VERTEX_SHADER, readFile(vertex).c_str());
-	GLuint shaderFragment = createShader(GL_FRAGMENT_SHADER, readFile(fragment).c_str());
+	std::string uniforms = readFile(FILE_UNIFORM_BLOCK);
+	GLuint shaderVertex = createShader(GL_VERTEX_SHADER, (VERSION + uniforms + readFile(vertex)).c_str());
+	GLuint shaderFragment = createShader(GL_FRAGMENT_SHADER, (VERSION + uniforms + readFile(fragment)).c_str());
 
 	glAttachShader(program, shaderVertex);
 	glAttachShader(program, shaderFragment);
@@ -52,7 +54,7 @@ GLuint Shader::createShader(const GLenum type, const GLchar *code) {
 }
 
 std::string Shader::readFile(const std::string &file) {
-	std::string contents(VERSION);
+	std::string contents;
 	std::ifstream source;
 	std::string line;
 

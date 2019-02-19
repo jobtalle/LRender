@@ -184,9 +184,9 @@ Matrix Matrix::makeLookAt(const Vector &from, const Vector &to, const Vector &up
 		{ s.y, t.y, -f.y, 0 },
 		{ s.z, t.z, -f.z, 0 },
 		{
-			-Vector(s.x, t.x, -f.x).dot(from),
-			-Vector(s.y, t.y, -f.y).dot(from),
-			-Vector(s.z, t.z, -f.z).dot(from),
+			-s.dot(from),
+			-t.dot(from),
+			f.dot(from),
 			1
 		}
 	});
