@@ -24,8 +24,13 @@ namespace LRender {
 		std::shared_ptr<Model> leaves;
 
 		void build(const Agent &agent);
-		void makePath(
-			std::vector<std::vector<Vector>> &paths,
+		void makeTube(
+			std::vector<Vertex> &vertices,
+			std::vector<uint32_t> &indices,
+			const std::vector<Vector> path);
+		void trace(
+			std::vector<Vertex> &vertices,
+			std::vector<uint32_t> &indices,
 			Quaternion turtleHeading,
 			Vector turtlePosition,
 			std::string::const_iterator &at,

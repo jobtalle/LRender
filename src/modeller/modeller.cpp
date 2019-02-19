@@ -2,6 +2,7 @@
 #include "../math/vector.h"
 #include "../math/quaternion.h"
 
+#include <cstdint>
 #include <iostream>
 
 using namespace LRender;
@@ -22,15 +23,17 @@ std::shared_ptr<Model> Modeller::getLeaves() {
 }
 
 void Modeller::build(const Agent &agent) {
-	std::vector<std::vector<Vector>> paths;
+	std::vector<Vertex> vertices;
+	std::vector<uint32_t> indices;
 
-	makePath(paths, Quaternion(), agent.getPosition(), agent.getSymbols().begin(), agent.getSymbols().end());
+	trace(vertices, indices, Quaternion(), agent.getPosition(), agent.getSymbols().begin(), agent.getSymbols().end());
 
-	std::cout << "Made " << paths.size() << " paths" << std::endl;
+	branches.reset(new Model(vertices, indices));
 }
 
-void Modeller::makePath(
-	std::vector<std::vector<Vector>> &paths,
+void Modeller::trace(
+	std::vector<Vertex> &vertices,
+	std::vector<uint32_t> &indices,
 	Quaternion turtleHeading,
 	Vector turtlePosition,
 	std::string::const_iterator &at,
@@ -40,12 +43,12 @@ void Modeller::makePath(
 	while(at != last) {
 		switch(*at++) {
 		case BRANCH_OPEN:
-			makePath(paths, turtleHeading, turtlePosition, at, last);
+			trace(vertices, indices, turtleHeading, turtlePosition, at, last);
 
 			break;
 		case BRANCH_CLOSE:
 			if(path.size() > 1)
-				paths.push_back(path);
+				makeTube(vertices, indices, path);
 
 			return;
 
@@ -58,5 +61,5 @@ void Modeller::makePath(
 	}
 
 	if(path.size() > 1)
-		paths.push_back(path);
+		makeTube(vertices, indices, path);
 }

@@ -58,6 +58,9 @@ void Renderer::loadScene(const Scene *scene) {
 	for(auto agent : scene->getAgents()) {
 		Modeller modeller(agent);
 
+		models.push_back(modeller.getBranches());
+
+		/*
 		models.push_back(std::shared_ptr<Model>(new Model(
 			{
 				Vertex(Vector(-1, -1, 0), Vector(1, 0, 0)),
@@ -65,5 +68,6 @@ void Renderer::loadScene(const Scene *scene) {
 				Vertex(Vector(0, 1, 0), Vector(0, 0, 1))
 			},
 			{ 0, 1, 2 })));
+			*/
 	}
 }
