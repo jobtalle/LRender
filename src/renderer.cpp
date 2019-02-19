@@ -8,17 +8,11 @@ using namespace LRender;
 
 const std::string Renderer::FILE_SHADER_VERTEX_GEOMETRY = "glsl/vertexGeometry.glsl";
 const std::string Renderer::FILE_SHADER_FRAGMENT_GEOMETRY = "glsl/fragmentGeometry.glsl";
-const float Renderer::PITCH_MIN = 0.1f;
-const float Renderer::PITCH_MAX = atan(1) * 2 - Renderer::PITCH_MIN;
-const float Renderer::RADIANS_PER_PIXEL = 0.005f;
 const float Renderer::PROJECTION_ANGLE = atan(1) * 1.5f;
 const float Renderer::Z_NEAR = 0.01f;
 const float Renderer::Z_FAR = 600;
 
-Renderer::Renderer(const size_t width, const size_t height) :
-	dragging(false),
-	viewAngle(atan(1)),
-	viewPitch(viewAngle) {
+Renderer::Renderer(const size_t width, const size_t height) {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 
@@ -27,7 +21,6 @@ Renderer::Renderer(const size_t width, const size_t height) :
 
 	setSize(width, height);
 	updateProjection();
-	updateView();
 }
 
 void Renderer::setScene(std::shared_ptr<Scene> scene) {
@@ -46,8 +39,9 @@ void Renderer::update() {
 	}
 }
 
-void Renderer::render() const {
-	uniforms.update();
+void Renderer::render() {
+	updateUniforms();
+
 	shader->use();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -65,31 +59,15 @@ void Renderer::setSize(const size_t width, const size_t height) {
 }
 
 void Renderer::mouseMove(const size_t x, const size_t y) {
-	if(dragging) {
-		const int dx = int(x) - mouseX;
-		const int dy = int(y) - mouseY;
-
-		viewAngle += dx * RADIANS_PER_PIXEL;
-		viewPitch += dy * RADIANS_PER_PIXEL;
-
-		if(viewPitch < PITCH_MIN)
-			viewPitch = PITCH_MIN;
-		else if(viewPitch > PITCH_MAX)
-			viewPitch = PITCH_MAX;
-
-		updateView();
-	}
-
-	mouseX = x;
-	mouseY = y;
+	orbit.mouseMove(x, y);
 }
 
 void Renderer::mousePress() {
-	dragging = true;
+	orbit.mouseGrab();
 }
 
 void Renderer::mouseRelease() {
-	dragging = false;
+	orbit.mouseRelease();
 }
 
 void Renderer::loadScene(const Scene *scene) {
@@ -115,7 +93,8 @@ void Renderer::loadScene(const Scene *scene) {
 }
 
 void Renderer::updateUniforms() {
-	uniforms.setProjection(view * projection);
+	uniforms.setProjection(orbit.getMatrix() * projection);
+	uniforms.update();
 }
 
 void Renderer::updateProjection() {
@@ -124,24 +103,4 @@ void Renderer::updateProjection() {
 		aspect,
 		Z_NEAR,
 		Z_FAR);
-
-	updateUniforms();
-}
-
-void Renderer::updateView() {
-	view = Matrix::makeLookAt(
-		Vector(
-			cos(viewAngle) * cos(viewPitch),
-			sin(viewPitch),
-			sin(viewAngle) * cos(viewPitch)) * 2,
-		Vector(
-			0,
-			0,
-			0),
-		Vector(
-			0,
-			1,
-			0));
-
-	updateUniforms();
 }
