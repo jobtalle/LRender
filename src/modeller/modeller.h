@@ -16,9 +16,16 @@ namespace LRender {
 
 	private:
 		static const float TURTLE_STEP;
+		static const float TURTLE_ANGLE;
+		static const Vector AXIS_PITCH;
+		static const Vector AXIS_ROLL;
 		static const Vector UP;
 		static const char BRANCH_OPEN = '[';
 		static const char BRANCH_CLOSE = ']';
+		static const char PITCH_INCREMENT = '+';
+		static const char PITCH_DECREMENT = '-';
+		static const char ROLL_INCREMENT = '/';
+		static const char ROLL_DECREMENT = '\\';
 
 		std::shared_ptr<Model> branches;
 		std::shared_ptr<Model> leaves;

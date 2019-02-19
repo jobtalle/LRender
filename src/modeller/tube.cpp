@@ -13,7 +13,7 @@ void Modeller::makeTube(
 		));
 
 		vertices.push_back(Vertex(
-			point + Vector(0.05, 0, 0),
+			point + Vector(0.01, 0, 0),
 			Vector(0.3, 0.4, 0.5)
 		));
 
@@ -22,7 +22,10 @@ void Modeller::makeTube(
 
 			indices.push_back(size - 1);
 			indices.push_back(size - 2);
+			indices.push_back(size - 4);
+			indices.push_back(size - 4);
 			indices.push_back(size - 3);
+			indices.push_back(size - 1);
 		}
 	}
 }

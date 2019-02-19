@@ -8,7 +8,10 @@
 using namespace LRender;
 
 const float Modeller::TURTLE_STEP = 0.05;
-const Vector Modeller::UP(0, -TURTLE_STEP, 0);
+const float Modeller::TURTLE_ANGLE = 0.3;
+const Vector Modeller::AXIS_PITCH(0, 0, 1);
+const Vector Modeller::AXIS_ROLL(0, 1, 0);
+const Vector Modeller::UP(0, TURTLE_STEP, 0);
 
 Modeller::Modeller(const Agent &agent) {
 	build(agent);
@@ -51,6 +54,22 @@ void Modeller::trace(
 				makeTube(vertices, indices, path);
 
 			return;
+
+			break;
+		case PITCH_INCREMENT:
+			turtleHeading.rotate(AXIS_PITCH, TURTLE_ANGLE);
+			
+			break;
+		case PITCH_DECREMENT:
+			turtleHeading.rotate(AXIS_PITCH, -TURTLE_ANGLE);
+
+			break;
+		case ROLL_INCREMENT:
+			turtleHeading.rotate(AXIS_ROLL, TURTLE_ANGLE);
+
+			break;
+		case ROLL_DECREMENT:
+			turtleHeading.rotate(AXIS_ROLL, -TURTLE_ANGLE);
 
 			break;
 		default:
