@@ -192,18 +192,6 @@ Matrix Matrix::makeLookAt(const Vector &from, const Vector &to, const Vector &up
 	});
 }
 
-Matrix Matrix::makeDirection(const Vector &direction, const Vector &front) {
-	auto x = direction.cross(front).normalize();
-	auto y = x.cross(direction);
-
-	return Matrix({
-		{ x.x, -direction.x, y.x, 0 },
-		{ x.y, -direction.y, y.y, 0 },
-		{ x.z, -direction.z, y.z, 0 },
-		{ 0, 0, 0, 1 }
-	});
-}
-
 Matrix Matrix::makePerspective(
 	const float angle,
 	const float aspect,

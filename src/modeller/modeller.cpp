@@ -42,7 +42,7 @@ void Modeller::trace(
 	Vector turtlePosition,
 	std::string::const_iterator &at,
 	const std::string::const_iterator &last) {
-	std::vector<Vector> path({ turtlePosition });
+	std::vector<Node> path({ Node(turtlePosition, turtleHeading) });
 
 	while(at != last) {
 		switch(*at++) {
@@ -74,7 +74,9 @@ void Modeller::trace(
 
 			break;
 		default:
-			path.push_back(turtlePosition += turtleHeading * UP * TURTLE_STEP);
+			path.push_back(Node(
+				turtlePosition += turtleHeading * UP * TURTLE_STEP,
+				turtleHeading));
 
 			break;
 		}
@@ -82,4 +84,10 @@ void Modeller::trace(
 
 	if(path.size() > 1)
 		makeTube(vertices, indices, TUBE_PRECISION, path);
+}
+
+Modeller::Node::Node(const Vector &position, const Quaternion &heading) :
+	position(position),
+	heading(heading) {
+
 }

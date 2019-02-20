@@ -15,6 +15,13 @@ namespace LRender {
 		std::shared_ptr<Model> getLeaves();
 
 	private:
+		struct Node {
+			Node(const Vector &position, const Quaternion &heading);
+
+			Vector position;
+			Quaternion heading;
+		};
+
 		static const float TURTLE_STEP;
 		static const float TURTLE_ANGLE;
 		static const Vector AXIS_PITCH;
@@ -44,6 +51,6 @@ namespace LRender {
 			std::vector<Vertex> &vertices,
 			std::vector<uint32_t> &indices,
 			const size_t precision,
-			const std::vector<Vector> path);
+			const std::vector<Node> path);
 	};
 };
