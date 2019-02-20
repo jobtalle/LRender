@@ -22,7 +22,6 @@ namespace LRender {
 	private:
 		static const float TURTLE_STEP;
 		static const float TURTLE_ANGLE;
-		static const float TURTLE_RADIUS_PER_SEGMENT;
 		static const Vector AXIS_PITCH;
 		static const Vector AXIS_ROLL;
 		static const size_t TUBE_PRECISION;
@@ -39,7 +38,8 @@ namespace LRender {
 		std::shared_ptr<Model> leaves;
 
 		void build(const Agent &agent, std::mt19937 &randomizer);
-		int trace(
+		void trace(
+			Path *parent,
 			std::vector<Path> &paths,
 			Node node,
 			std::string::const_iterator &at,
@@ -49,6 +49,6 @@ namespace LRender {
 			std::vector<Vertex> &vertices,
 			std::vector<uint32_t> &indices,
 			const size_t precision,
-			const std::vector<Node> &path);
+			const Path &path);
 	};
 };

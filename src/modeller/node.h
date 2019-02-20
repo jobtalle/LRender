@@ -11,6 +11,6 @@ namespace LRender {
 
 		Vector position;
 		Quaternion heading;
-		float radius;
+		size_t topDist;
 	};
 }

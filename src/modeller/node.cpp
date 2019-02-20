@@ -6,7 +6,7 @@ using namespace LRender;
 Node::Node(const Vector &position, const Quaternion &heading) :
 	position(position),
 	heading(heading),
-	radius(0) {
+	topDist(0) {
 
 }
 
@@ -17,5 +17,5 @@ Node &Node::extrude(const float distance) {
 }
 
 bool Node::operator==(const Node &other) const {
-	return position == other.position && heading == other.heading && radius == other.radius;
+	return position == other.position && heading == other.heading;
 }

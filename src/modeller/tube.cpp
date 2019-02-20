@@ -6,11 +6,15 @@
 
 using namespace LRender;
 
+float getRadius(size_t dist) {
+	return (1.0f - (1.0f / (float(dist) / 70.0f + 1.0f))) * 0.1f;
+}
+
 void Modeller::makeTube(
 	std::vector<Vertex> &vertices,
 	std::vector<uint32_t> &indices,
 	const size_t precision,
-	const std::vector<Node> &path) {
+	const Path &path) {
 	std::vector<Vector> ring;
 	Vector color(0.5, 0.7, 0.2);
 
@@ -20,19 +24,20 @@ void Modeller::makeTube(
 		ring.push_back(Vector(cos(radians), 0, sin(radians)));
 	}
 
-	for(auto node = path.begin(); node < path.end(); ++node) {
+	for(auto node = path.getNodes().begin(); node < path.getNodes().end(); ++node) {
+		const float radius = getRadius(node->topDist);
 		const Quaternion &qa = node->heading;
-		const Quaternion &qb = node == path.begin() || node == path.end() - 1 ? node->heading : (node + 1)->heading;
+		const Quaternion &qb = node == path.getNodes().begin() || node == path.getNodes().end() - 1 ? node->heading : (node + 1)->heading;
 
 		for(auto ringPoint : ring) {
 			const Vector normal((qa * ringPoint + qb * ringPoint) * 0.5);
 
-			vertices.push_back(Vertex(node->position + normal * node->radius, normal, color));
+			vertices.push_back(Vertex(node->position + normal * radius, normal, color));
 		}
 
 		const size_t size = vertices.size();
 
-		if(node != path.begin()) for(size_t i = 0; i < precision; ++i) {
+		if(node != path.getNodes().begin()) for(size_t i = 0; i < precision; ++i) {
 			indices.push_back(size - 1 - i);
 			indices.push_back(size - 1 - precision - i);
 			indices.push_back(size - 1 - precision - ((i + 1) % precision));
