@@ -15,6 +15,8 @@ namespace LRender {
 		void mouseGrab();
 		void mouseMove(const int x, const int y);
 		void mouseRelease();
+		void zoomIn();
+		void zoomOut();
 		const Matrix &getMatrix() const;
 
 	private:
@@ -24,6 +26,7 @@ namespace LRender {
 		static const float PITCH_MAX;
 		static const float ZOOM_MIN;
 		static const float ZOOM_MAX;
+		static const float ZOOM_FACTOR;
 
 		Matrix view;
 		int x, y;

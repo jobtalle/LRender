@@ -24,6 +24,8 @@ namespace LRender {
 		void mouseMove(const size_t x, const size_t y);
 		void mousePress();
 		void mouseRelease();
+		void scrollUp();
+		void scrollDown();
 
 	private:
 		static const float PROJECTION_ANGLE;

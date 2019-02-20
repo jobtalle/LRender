@@ -8,6 +8,7 @@ const float Orbit::PITCH_MIN = 0;
 const float Orbit::PITCH_MAX = atan(1) * 2 - 0.0001f;
 const float Orbit::ZOOM_MIN = 0.1f;
 const float Orbit::ZOOM_MAX = 100;
+const float Orbit::ZOOM_FACTOR = 0.1f;
 
 Orbit::Orbit(const float angle, const float pitch, const float zoom) :
 	dragging(false),
@@ -43,6 +44,24 @@ void Orbit::mouseMove(const int x, const int y) {
 
 void Orbit::mouseRelease() {
 	dragging = false;
+}
+
+void Orbit::zoomIn() {
+	zoom *= 1 - ZOOM_FACTOR;
+
+	if(zoom < ZOOM_MIN)
+		zoom = ZOOM_MIN;
+
+	updateMatrix();
+}
+
+void Orbit::zoomOut() {
+	zoom *= 1 + ZOOM_FACTOR;
+
+	if(zoom > ZOOM_MAX)
+		zoom = ZOOM_MAX;
+
+	updateMatrix();
 }
 
 const Matrix &Orbit::getMatrix() const {

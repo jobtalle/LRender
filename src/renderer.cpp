@@ -70,6 +70,14 @@ void Renderer::mouseRelease() {
 	orbit.mouseRelease();
 }
 
+void Renderer::scrollUp() {
+	orbit.zoomIn();
+}
+
+void Renderer::scrollDown() {
+	orbit.zoomOut();
+}
+
 void Renderer::loadScene(const Scene *scene) {
 	models.clear();
 
