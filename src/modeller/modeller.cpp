@@ -32,7 +32,7 @@ void Modeller::build(const Agent &agent) {
 
 	trace(
 		paths,
-		Node(agent.getPosition(), Quaternion(), 0.05f),
+		Node(agent.getPosition(), Quaternion(), TURTLE_STEP),
 		agent.getSymbols().begin(),
 		agent.getSymbols().end());
 	

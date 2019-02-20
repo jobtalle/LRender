@@ -9,7 +9,7 @@ using namespace LRender;
 const std::string Renderer::FILE_SHADER_VERTEX_GEOMETRY = "LRender/glsl/vertexGeometry.glsl";
 const std::string Renderer::FILE_SHADER_FRAGMENT_GEOMETRY = "LRender/glsl/fragmentGeometry.glsl";
 const float Renderer::PROJECTION_ANGLE = atan(1) * 1.5f;
-const float Renderer::Z_NEAR = 0.1f;
+const float Renderer::Z_NEAR = 0.05f;
 const float Renderer::Z_FAR = 400;
 
 Renderer::Renderer(const size_t width, const size_t height) {
