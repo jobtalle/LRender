@@ -28,6 +28,7 @@ namespace LRender {
 		static Matrix makeRotateY(const float angle);
 		static Matrix makeRotateZ(const float angle);
 		static Matrix makeLookAt(const Vector &from, const Vector &to, const Vector &up);
+		static Matrix makeDirection(const Vector &direction, const Vector &front);
 		static Matrix makePerspective(
 			const float angle,
 			const float aspect,

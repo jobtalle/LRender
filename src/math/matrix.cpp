@@ -175,20 +175,32 @@ Matrix Matrix::makeRotateZ(const float angle) {
 }
 
 Matrix Matrix::makeLookAt(const Vector &from, const Vector &to, const Vector &up) {
-	auto f = (to - from).normalize();
-	auto s = f.cross(up).normalize();
-	auto t = s.cross(f);
+	auto z = (to - from).normalize();
+	auto x = z.cross(up).normalize();
+	auto y = x.cross(z);
 
 	return Matrix({
-		{ s.x, t.x, -f.x, 0 },
-		{ s.y, t.y, -f.y, 0 },
-		{ s.z, t.z, -f.z, 0 },
+		{ x.x, y.x, -z.x, 0 },
+		{ x.y, y.y, -z.y, 0 },
+		{ x.z, y.z, -z.z, 0 },
 		{
-			-s.dot(from),
-			-t.dot(from),
-			f.dot(from),
+			-x.dot(from),
+			-y.dot(from),
+			z.dot(from),
 			1
 		}
+	});
+}
+
+Matrix Matrix::makeDirection(const Vector &direction, const Vector &front) {
+	auto x = direction.cross(front).normalize();
+	auto y = x.cross(direction);
+
+	return Matrix({
+		{ x.x, -direction.x, y.x, 0 },
+		{ x.y, -direction.y, y.y, 0 },
+		{ x.z, -direction.z, y.z, 0 },
+		{ 0, 0, 0, 1 }
 	});
 }
 

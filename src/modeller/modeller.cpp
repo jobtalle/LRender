@@ -11,7 +11,8 @@ const float Modeller::TURTLE_STEP = 0.1;
 const float Modeller::TURTLE_ANGLE = 0.3;
 const Vector Modeller::AXIS_PITCH(0, 0, 1);
 const Vector Modeller::AXIS_ROLL(0, 1, 0);
-const Vector Modeller::UP(0, TURTLE_STEP, 0);
+const Vector Modeller::UP(0, 1, 0);
+const size_t Modeller::TUBE_PRECISION = 6;
 
 Modeller::Modeller(const Agent &agent) {
 	build(agent);
@@ -51,7 +52,7 @@ void Modeller::trace(
 			break;
 		case BRANCH_CLOSE:
 			if(path.size() > 1)
-				makeTube(vertices, indices, path);
+				makeTube(vertices, indices, TUBE_PRECISION, path);
 
 			return;
 
@@ -73,12 +74,12 @@ void Modeller::trace(
 
 			break;
 		default:
-			path.push_back(turtlePosition += turtleHeading * UP);
+			path.push_back(turtlePosition += turtleHeading * UP * TURTLE_STEP);
 
 			break;
 		}
 	}
 
 	if(path.size() > 1)
-		makeTube(vertices, indices, path);
+		makeTube(vertices, indices, TUBE_PRECISION, path);
 }

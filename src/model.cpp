@@ -15,7 +15,7 @@ Model::~Model() {
 void Model::draw() const {
 	glBindVertexArray(vao);
 
-	glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_LINES, count, GL_UNSIGNED_INT, 0);
 }
 
 void Model::createBuffers() {
