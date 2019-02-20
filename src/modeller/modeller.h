@@ -21,9 +21,12 @@ namespace LRender {
 	private:
 		static const float TURTLE_STEP;
 		static const float TURTLE_ANGLE;
+		static const float TURTLE_RADIUS_PER_SEGMENT;
 		static const Vector AXIS_PITCH;
 		static const Vector AXIS_ROLL;
 		static const size_t TUBE_PRECISION;
+		static const char STEP_MIN = 'A';
+		static const char STEP_MAX = 'Z';
 		static const char BRANCH_OPEN = '[';
 		static const char BRANCH_CLOSE = ']';
 		static const char PITCH_INCREMENT = '+';

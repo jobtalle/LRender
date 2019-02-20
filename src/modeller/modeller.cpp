@@ -9,6 +9,7 @@ using namespace LRender;
 const Vector Modeller::UP(0, 1, 0);
 const float Modeller::TURTLE_STEP = 0.05f;
 const float Modeller::TURTLE_ANGLE = 0.3;
+const float Modeller::TURTLE_RADIUS_PER_SEGMENT = 0.001f;
 const Vector Modeller::AXIS_PITCH(0, 0, 1);
 const Vector Modeller::AXIS_ROLL(0, 1, 0);
 const size_t Modeller::TUBE_PRECISION = 7;
@@ -24,17 +25,23 @@ std::shared_ptr<Model> Modeller::getBranches() {
 std::shared_ptr<Model> Modeller::getLeaves() {
 	return leaves;
 }
-
+#include <iostream>
 void Modeller::build(const Agent &agent) {
 	std::vector<Vertex> vertices;
 	std::vector<uint32_t> indices;
 	std::vector<Path> paths;
+	size_t maxSegments = 0;
 
 	trace(
 		paths,
-		Node(agent.getPosition(), Quaternion(), TURTLE_STEP),
+		Node(agent.getPosition(), Quaternion()),
 		agent.getSymbols().begin(),
 		agent.getSymbols().end());
+
+	for(auto path : paths) if(path.size() - 1 > maxSegments)
+		maxSegments = path.size() - 1;
+
+	(paths.end() - 1)->setRadius(TURTLE_RADIUS_PER_SEGMENT * maxSegments);
 	
 	for(size_t i = paths.size(); i-- > 0;)
 		paths[i].taper(paths);
@@ -80,7 +87,8 @@ int Modeller::trace(
 
 			break;
 		default:
-			path.add(node.extrude(TURTLE_STEP));
+			if(*(at - 1) >= STEP_MIN && *(at - 1) <= STEP_MAX)
+				path.add(node.extrude(TURTLE_STEP));
 
 			break;
 		}

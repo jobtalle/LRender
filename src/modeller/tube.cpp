@@ -22,7 +22,7 @@ void Modeller::makeTube(
 
 	for(auto node = path.begin(); node < path.end(); ++node) {
 		const Quaternion &qa = node->heading;
-		const Quaternion &qb = node == path.end() - 1 ? node->heading : (node + 1)->heading;
+		const Quaternion &qb = node == path.begin() || node == path.end() - 1 ? node->heading : (node + 1)->heading;
 
 		for(auto ringPoint : ring) {
 			const Vector normal((qa * ringPoint + qb * ringPoint) * 0.5);

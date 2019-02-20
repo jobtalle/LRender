@@ -5,8 +5,9 @@
 
 namespace LRender {
 	struct Node {
-		Node(const Vector &position, const Quaternion &heading, const float radius);
+		Node(const Vector &position, const Quaternion &heading);
 		Node &extrude(const float distance);
+		bool operator==(const Node &other) const;
 
 		Vector position;
 		Quaternion heading;

@@ -13,6 +13,7 @@ namespace LRender {
 		Quaternion &operator*=(const Quaternion &other);
 		Quaternion &rotate(const Vector &axis, const float angle);
 		Quaternion &operator=(const Quaternion &other);
+		bool operator==(const Quaternion &other) const;
 
 		static Quaternion makeRotation(const Vector &axis, const float angle);
 

@@ -57,6 +57,10 @@ Quaternion Quaternion::makeRotation(const Vector &axis, const float angle) {
 	);
 }
 
+bool Quaternion::operator==(const Quaternion &other) const {
+	return xyz == other.xyz && w == other.w;
+}
+
 Quaternion LRender::operator*(Quaternion lhs, const Quaternion &rhs) {
 	return Quaternion(
 		lhs.w * rhs.x + lhs.x * rhs.w + lhs.y * rhs.z - lhs.z * rhs.y,
