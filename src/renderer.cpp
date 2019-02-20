@@ -9,8 +9,8 @@ using namespace LRender;
 const std::string Renderer::FILE_SHADER_VERTEX_GEOMETRY = "LRender/glsl/vertexGeometry.glsl";
 const std::string Renderer::FILE_SHADER_FRAGMENT_GEOMETRY = "LRender/glsl/fragmentGeometry.glsl";
 const float Renderer::PROJECTION_ANGLE = atan(1) * 1.5f;
-const float Renderer::Z_NEAR = 0.01f;
-const float Renderer::Z_FAR = 600;
+const float Renderer::Z_NEAR = 0.1f;
+const float Renderer::Z_FAR = 400;
 
 Renderer::Renderer(const size_t width, const size_t height) {
 	glEnable(GL_DEPTH_TEST);
@@ -89,10 +89,10 @@ void Renderer::loadScene(const Scene *scene) {
 
 	models.push_back(std::shared_ptr<Model>(new Model(
 	{
-		Vertex(Vector(-1, 0, -1), Vector(1, 0, 0)),
-		Vertex(Vector(1, 0, -1), Vector(0, 1, 0)),
-		Vertex(Vector(1, 0, 1), Vector(0, 0, 1)),
-		Vertex(Vector(-1, 0, 1), Vector(1, 1, 1))
+		Vertex(Vector(-1, 0, -1), Vector(0, 1, 0), Vector(1, 0, 0)),
+		Vertex(Vector(1, 0, -1), Vector(0, 1, 0), Vector(0, 1, 0)),
+		Vertex(Vector(1, 0, 1), Vector(0, 1, 0), Vector(0, 0, 1)),
+		Vertex(Vector(-1, 0, 1), Vector(0, 1, 0), Vector(1, 1, 1))
 	},
 	{
 		0, 2, 1, 2, 0, 3

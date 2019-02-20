@@ -18,12 +18,15 @@ void Modeller::makeTube(
 	for(size_t i = 0; i < precision; ++i) {
 		const float radians = Constants::PI * 2 * float(i) / precision;
 
-		ring.push_back(Vector(cos(radians), 0, sin(radians)) * 0.02f);
+		ring.push_back(Vector(cos(radians), 0, sin(radians)));
 	}
 
 	for(auto node = path.begin(); node < path.end(); ++node) {
-		for(auto ringPoint : ring)
-			vertices.push_back(Vertex(node->position + node->heading * ringPoint, color));
+		for(auto ringPoint : ring) {
+			const Vector normal(node->heading * ringPoint);
+
+			vertices.push_back(Vertex(node->position + normal * 0.02f, normal, color));
+		}
 
 		const size_t size = vertices.size();
 
