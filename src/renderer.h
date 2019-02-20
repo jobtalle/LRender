@@ -12,6 +12,7 @@
 #include <memory>
 #include <mutex>
 #include <string>
+#include <random>
 
 namespace LRender {
 	class Renderer final {
@@ -34,6 +35,7 @@ namespace LRender {
 		static const std::string FILE_SHADER_VERTEX_GEOMETRY;
 		static const std::string FILE_SHADER_FRAGMENT_GEOMETRY;
 
+		std::mt19937 randomizer;
 		GLFunctions gl;
 		Uniforms uniforms;
 		Orbit orbit;

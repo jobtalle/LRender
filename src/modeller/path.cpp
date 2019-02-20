@@ -16,7 +16,8 @@ void Path::add(const Node &node) {
 }
 
 void Path::setRadius(const float radius) {
-	nodes[0].radius = radius;
+	if(nodes[0].radius == 0 || radius < nodes[0].radius)
+		nodes[0].radius = radius;
 }
 
 void Path::attach(int index) {
@@ -32,9 +33,8 @@ void Path::taper(std::vector<Path> &paths) {
 	for(size_t i = 1; i < size; ++i)
 		nodes[i].radius = nodes[0].radius * (1 - (float(i) / (size - 1)));
 	
-	for(auto attachment : attachments) {
+	for(auto attachment : attachments)
 		paths[attachment.path].setRadius(nodes[attachment.node].radius);
-	}
 }
 
 size_t Path::size() const {

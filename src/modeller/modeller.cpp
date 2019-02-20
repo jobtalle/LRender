@@ -1,6 +1,7 @@
 #include "modeller.h"
 #include "../math/vector.h"
 #include "../math/quaternion.h"
+#include "../math/constants.h"
 
 #include <cstdint>
 
@@ -12,10 +13,10 @@ const float Modeller::TURTLE_ANGLE = 0.3;
 const float Modeller::TURTLE_RADIUS_PER_SEGMENT = 0.001f;
 const Vector Modeller::AXIS_PITCH(0, 0, 1);
 const Vector Modeller::AXIS_ROLL(0, 1, 0);
-const size_t Modeller::TUBE_PRECISION = 7;
+const size_t Modeller::TUBE_PRECISION = 5;
 
-Modeller::Modeller(const Agent &agent) {
-	build(agent);
+Modeller::Modeller(const Agent &agent, std::mt19937 &randomizer) {
+	build(agent, randomizer);
 }
 
 std::shared_ptr<Model> Modeller::getBranches() {
@@ -25,26 +26,27 @@ std::shared_ptr<Model> Modeller::getBranches() {
 std::shared_ptr<Model> Modeller::getLeaves() {
 	return leaves;
 }
-#include <iostream>
-void Modeller::build(const Agent &agent) {
+
+void Modeller::build(const Agent &agent, std::mt19937 &randomizer) {
 	std::vector<Vertex> vertices;
 	std::vector<uint32_t> indices;
 	std::vector<Path> paths;
-	size_t maxSegments = 0;
 
 	trace(
 		paths,
-		Node(agent.getPosition(), Quaternion()),
+		Node(agent.getPosition(), Quaternion().rotate(
+			UP,
+			std::uniform_real_distribution<float>(0, Constants::PI * 2)(randomizer))),
 		agent.getSymbols().begin(),
 		agent.getSymbols().end());
-
-	for(auto path : paths) if(path.size() - 1 > maxSegments)
-		maxSegments = path.size() - 1;
-
-	(paths.end() - 1)->setRadius(TURTLE_RADIUS_PER_SEGMENT * maxSegments);
 	
-	for(size_t i = paths.size(); i-- > 0;)
+	for(auto path : paths)
+		path.setRadius(TURTLE_RADIUS_PER_SEGMENT * 40);
+
+	for(size_t i = paths.size(); i-- > 0;) {
+		paths[i].setRadius(paths[i].size() * TURTLE_RADIUS_PER_SEGMENT);
 		paths[i].taper(paths);
+	}
 
 	for(auto path : paths)
 		makeTube(vertices, indices, TUBE_PRECISION, path.getNodes());

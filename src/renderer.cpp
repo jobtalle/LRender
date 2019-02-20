@@ -82,17 +82,17 @@ void Renderer::loadScene(const Scene *scene) {
 	models.clear();
 
 	for(auto agent : scene->getAgents()) {
-		Modeller modeller(agent);
+		Modeller modeller(agent, randomizer);
 
 		models.push_back(modeller.getBranches());
 	}
 
 	models.push_back(std::shared_ptr<Model>(new Model(
 	{
-		Vertex(Vector(-1, 0, -1), Vector(0, 1, 0), Vector(1, 0, 0)),
-		Vertex(Vector(1, 0, -1), Vector(0, 1, 0), Vector(0, 1, 0)),
-		Vertex(Vector(1, 0, 1), Vector(0, 1, 0), Vector(0, 0, 1)),
-		Vertex(Vector(-1, 0, 1), Vector(0, 1, 0), Vector(1, 1, 1))
+		Vertex(Vector(-10, 0, -10), Vector(0, 1, 0), Vector(1, 0, 0)),
+		Vertex(Vector(10, 0, -10), Vector(0, 1, 0), Vector(0, 1, 0)),
+		Vertex(Vector(10, 0, 10), Vector(0, 1, 0), Vector(0, 0, 1)),
+		Vertex(Vector(-10, 0, 10), Vector(0, 1, 0), Vector(1, 1, 1))
 	},
 	{
 		0, 2, 1, 2, 0, 3

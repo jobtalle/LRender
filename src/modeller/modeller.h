@@ -8,11 +8,12 @@
 
 #include <vector>
 #include <memory>
+#include <random>
 
 namespace LRender {
 	class Modeller final {
 	public:
-		Modeller(const Agent &agent);
+		Modeller(const Agent &agent, std::mt19937 &randomizer);
 		std::shared_ptr<Model> getBranches();
 		std::shared_ptr<Model> getLeaves();
 
@@ -37,7 +38,7 @@ namespace LRender {
 		std::shared_ptr<Model> branches;
 		std::shared_ptr<Model> leaves;
 
-		void build(const Agent &agent);
+		void build(const Agent &agent, std::mt19937 &randomizer);
 		int trace(
 			std::vector<Path> &paths,
 			Node node,
