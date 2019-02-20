@@ -6,8 +6,8 @@
 
 using namespace LRender;
 
-const std::string Renderer::FILE_SHADER_VERTEX_GEOMETRY = "glsl/vertexGeometry.glsl";
-const std::string Renderer::FILE_SHADER_FRAGMENT_GEOMETRY = "glsl/fragmentGeometry.glsl";
+const std::string Renderer::FILE_SHADER_VERTEX_GEOMETRY = "LRender/glsl/vertexGeometry.glsl";
+const std::string Renderer::FILE_SHADER_FRAGMENT_GEOMETRY = "LRender/glsl/fragmentGeometry.glsl";
 const float Renderer::PROJECTION_ANGLE = atan(1) * 1.5f;
 const float Renderer::Z_NEAR = 0.01f;
 const float Renderer::Z_FAR = 600;

@@ -6,7 +6,7 @@
 using namespace LRender;
 
 const std::string Shader::VERSION = "#version 440 core\n";
-const std::string Shader::FILE_UNIFORM_BLOCK = "glsl/uniforms.glsl";
+const std::string Shader::FILE_UNIFORM_BLOCK = "LRender/glsl/uniforms.glsl";
 
 Shader::Shader(const std::string &vertex, const std::string &fragment) {
 	program = glCreateProgram();

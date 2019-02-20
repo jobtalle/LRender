@@ -22,6 +22,8 @@ namespace LRender {
 		static const float RADIANS_PER_PIXEL;
 		static const float PITCH_MIN;
 		static const float PITCH_MAX;
+		static const float ZOOM_MIN;
+		static const float ZOOM_MAX;
 
 		Matrix view;
 		int x, y;

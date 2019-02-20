@@ -4,8 +4,10 @@ using namespace LRender;
 
 const Vector Orbit::UP = Vector(0, 1, 0);
 const float Orbit::RADIANS_PER_PIXEL = 0.005f;
-const float Orbit::PITCH_MIN = 0.1f;
-const float Orbit::PITCH_MAX = atan(1) * 2 - Orbit::PITCH_MIN;
+const float Orbit::PITCH_MIN = 0;
+const float Orbit::PITCH_MAX = atan(1) * 2 - 0.0001f;
+const float Orbit::ZOOM_MIN = 0.1f;
+const float Orbit::ZOOM_MAX = 100;
 
 Orbit::Orbit(const float angle, const float pitch, const float zoom) :
 	dragging(false),
