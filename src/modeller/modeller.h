@@ -1,5 +1,6 @@
 #pragma once
 
+#include "node.h"
 #include "../scene/agent.h"
 #include "../model.h"
 #include "../math/quaternion.h"
@@ -14,19 +15,13 @@ namespace LRender {
 		std::shared_ptr<Model> getBranches();
 		std::shared_ptr<Model> getLeaves();
 
+		static const Vector UP;
+
 	private:
-		struct Node {
-			Node(const Vector &position, const Quaternion &heading);
-
-			Vector position;
-			Quaternion heading;
-		};
-
 		static const float TURTLE_STEP;
 		static const float TURTLE_ANGLE;
 		static const Vector AXIS_PITCH;
 		static const Vector AXIS_ROLL;
-		static const Vector UP;
 		static const size_t TUBE_PRECISION;
 		static const char BRANCH_OPEN = '[';
 		static const char BRANCH_CLOSE = ']';
@@ -42,8 +37,7 @@ namespace LRender {
 		void trace(
 			std::vector<Vertex> &vertices,
 			std::vector<uint32_t> &indices,
-			Quaternion turtleHeading,
-			Vector turtlePosition,
+			Node node,
 			std::string::const_iterator &at,
 			const std::string::const_iterator &last);
 

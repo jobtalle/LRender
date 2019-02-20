@@ -18,7 +18,7 @@ void Modeller::makeTube(
 	for(size_t i = 0; i < precision; ++i) {
 		const float radians = Constants::PI * 2 * float(i) / precision;
 
-		ring.push_back(Vector(cos(-radians), 0, sin(-radians)) * 0.02f);
+		ring.push_back(Vector(cos(radians), 0, sin(radians)) * 0.02f);
 	}
 
 	for(auto node = path.begin(); node < path.end(); ++node) {
