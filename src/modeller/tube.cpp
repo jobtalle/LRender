@@ -3,7 +3,6 @@
 #include "../math/matrix.h"
 
 #include <math.h>
-#include <iostream>
 
 using namespace LRender;
 
@@ -11,7 +10,7 @@ void Modeller::makeTube(
 	std::vector<Vertex> &vertices,
 	std::vector<uint32_t> &indices,
 	const size_t precision,
-	const std::vector<Node> path) {
+	const std::vector<Node> &path) {
 	std::vector<Vector> ring;
 	Vector color(0.5, 0.7, 0.2);
 
@@ -25,7 +24,7 @@ void Modeller::makeTube(
 		for(auto ringPoint : ring) {
 			const Vector normal(node->heading * ringPoint);
 
-			vertices.push_back(Vertex(node->position + normal * 0.02f, normal, color));
+			vertices.push_back(Vertex(node->position + normal * node->radius, normal, color));
 		}
 
 		const size_t size = vertices.size();

@@ -3,9 +3,10 @@
 
 using namespace LRender;
 
-Node::Node(const Vector &position, const Quaternion &heading) :
+Node::Node(const Vector &position, const Quaternion &heading, const float radius) :
 	position(position),
-	heading(heading) {
+	heading(heading),
+	radius(radius) {
 
 }
 

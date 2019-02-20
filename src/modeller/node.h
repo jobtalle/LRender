@@ -5,10 +5,11 @@
 
 namespace LRender {
 	struct Node {
-		Node(const Vector &position, const Quaternion &heading);
+		Node(const Vector &position, const Quaternion &heading, const float radius);
 		Node &extrude(const float distance);
 
 		Vector position;
 		Quaternion heading;
+		float radius;
 	};
 }

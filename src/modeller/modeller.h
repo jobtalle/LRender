@@ -1,6 +1,7 @@
 #pragma once
 
 #include "node.h"
+#include "path.h"
 #include "../scene/agent.h"
 #include "../model.h"
 #include "../math/quaternion.h"
@@ -34,9 +35,8 @@ namespace LRender {
 		std::shared_ptr<Model> leaves;
 
 		void build(const Agent &agent);
-		void trace(
-			std::vector<Vertex> &vertices,
-			std::vector<uint32_t> &indices,
+		int trace(
+			std::vector<Path> &paths,
 			Node node,
 			std::string::const_iterator &at,
 			const std::string::const_iterator &last);
@@ -45,6 +45,6 @@ namespace LRender {
 			std::vector<Vertex> &vertices,
 			std::vector<uint32_t> &indices,
 			const size_t precision,
-			const std::vector<Node> path);
+			const std::vector<Node> &path);
 	};
 };
