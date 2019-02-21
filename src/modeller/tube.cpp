@@ -26,8 +26,8 @@ void Modeller::makeTube(
 
 	for(auto node = path.getNodes().begin(); node < path.getNodes().end(); ++node) {
 		const float radius = getRadius(node->topDist);
-		const Quaternion &qa = node->getHeading();
-		const Quaternion &qb = node == path.getNodes().begin() || node == path.getNodes().end() - 1 ? node->getHeading() : (node + 1)->getHeading();
+		const Quaternion qa = node->getHeading();
+		const Quaternion qb = node == path.getNodes().end() - 1 ? qa : (node + 1)->getHeading();
 
 		for(auto ringPoint : ring) {
 			const Vector normal(((qa * ringPoint + qb * ringPoint) * 0.5).normalize());
