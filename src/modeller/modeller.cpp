@@ -7,11 +7,8 @@
 
 using namespace LRender;
 
-const Vector Modeller::UP(0, 1, 0);
 const float Modeller::TURTLE_STEP = 0.05f;
 const float Modeller::TURTLE_ANGLE = 0.3;
-const Vector Modeller::AXIS_PITCH(0, 0, 1);
-const Vector Modeller::AXIS_ROLL(0, 1, 0);
 const size_t Modeller::TUBE_PRECISION = 5;
 
 Modeller::Modeller(const Agent &agent, std::mt19937 &randomizer) {
@@ -30,13 +27,12 @@ void Modeller::build(const Agent &agent, std::mt19937 &randomizer) {
 	std::vector<Vertex> vertices;
 	std::vector<uint32_t> indices;
 	std::vector<Path> paths;
+	Node node(agent.getPosition(), std::uniform_real_distribution<float>(0, Constants::PI * 2)(randomizer));
 
 	trace(
 		nullptr,
 		paths,
-		Node(agent.getPosition(), Quaternion().rotate(
-			UP,
-			std::uniform_real_distribution<float>(0, Constants::PI * 2)(randomizer))),
+		node,
 		agent.getSymbols().begin(),
 		agent.getSymbols().end());
 
@@ -63,19 +59,19 @@ void Modeller::trace(
 		case BRANCH_CLOSE:
 			goto end;
 		case PITCH_INCREMENT:
-			node.heading.rotate(AXIS_PITCH, TURTLE_ANGLE);
+			node.pitch(TURTLE_ANGLE);
 			
 			break;
 		case PITCH_DECREMENT:
-			node.heading.rotate(AXIS_PITCH, -TURTLE_ANGLE);
+			node.pitch(-TURTLE_ANGLE);
 
 			break;
 		case ROLL_INCREMENT:
-			node.heading.rotate(AXIS_ROLL, TURTLE_ANGLE);
+			node.roll(TURTLE_ANGLE);
 
 			break;
 		case ROLL_DECREMENT:
-			node.heading.rotate(AXIS_ROLL, -TURTLE_ANGLE);
+			node.roll(-TURTLE_ANGLE);
 
 			break;
 		default:

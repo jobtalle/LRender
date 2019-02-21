@@ -17,13 +17,9 @@ namespace LRender {
 		std::shared_ptr<Model> getBranches();
 		std::shared_ptr<Model> getLeaves();
 
-		static const Vector UP;
-
 	private:
 		static const float TURTLE_STEP;
 		static const float TURTLE_ANGLE;
-		static const Vector AXIS_PITCH;
-		static const Vector AXIS_ROLL;
 		static const size_t TUBE_PRECISION;
 		static const char STEP_MIN = 'A';
 		static const char STEP_MAX = 'Z';

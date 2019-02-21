@@ -7,7 +7,7 @@
 using namespace LRender;
 
 float getRadius(size_t dist) {
-	return (1.0f - (1.0f / (float(dist) / 70.0f + 1.0f))) * 0.1f;
+	return (1.0f - (1.0f / (float(dist) / 150.0f + 1.0f))) * 0.1f;
 }
 
 void Modeller::makeTube(
@@ -26,11 +26,11 @@ void Modeller::makeTube(
 
 	for(auto node = path.getNodes().begin(); node < path.getNodes().end(); ++node) {
 		const float radius = getRadius(node->topDist);
-		const Quaternion &qa = node->heading;
-		const Quaternion &qb = node == path.getNodes().begin() || node == path.getNodes().end() - 1 ? node->heading : (node + 1)->heading;
+		const Quaternion &qa = node->getHeading();
+		const Quaternion &qb = node == path.getNodes().begin() || node == path.getNodes().end() - 1 ? node->getHeading() : (node + 1)->getHeading();
 
 		for(auto ringPoint : ring) {
-			const Vector normal((qa * ringPoint + qb * ringPoint) * 0.5);
+			const Vector normal(((qa * ringPoint + qb * ringPoint) * 0.5).normalize());
 
 			vertices.push_back(Vertex(node->position + normal * radius, normal, color));
 		}
