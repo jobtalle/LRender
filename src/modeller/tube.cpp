@@ -17,7 +17,7 @@ void Modeller::makeTube(
 	const Path &path) {
 	std::vector<Vector> ring;
 	Vector color(0.5, 0.7, 0.2);
-	size_t offset = path.isChild() ? 1 : 0;
+	size_t offset = path.isChild() ? 2 : 0;
 
 	for(size_t i = 0; i < precision; ++i) {
 		const float radians = Constants::PI * 2 * float(i) / precision;
@@ -28,7 +28,7 @@ void Modeller::makeTube(
 	for(auto node = path.getNodes().begin() + offset; node < path.getNodes().end(); ++node) {
 		const float radius = getRadius(node->topDist);
 		const Quaternion qa = node->getHeading();
-		const Quaternion qb = node == path.getNodes().end() - 1 ? qa : (node + 1)->getHeading();
+		const Quaternion qb = (node == path.getNodes().end() - 1 || (node == path.getNodes().begin() && path.isAnchor())) ? qa : (node + 1)->getHeading();
 
 		for(auto ringPoint : ring) {
 			const Vector normal(((qa * ringPoint + qb * ringPoint) * 0.5).normalize());

@@ -15,9 +15,11 @@ namespace LRender {
 		void setAnchor(const Node &node);
 		size_t size() const;
 		bool isChild() const;
+		bool isAnchor() const;
 
 	private:
 		bool child = false;
+		bool anchor = false;
 		std::vector<Node> nodes;
 	};
 }

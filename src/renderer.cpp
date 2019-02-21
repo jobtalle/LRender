@@ -62,12 +62,30 @@ void Renderer::mouseMove(const size_t x, const size_t y) {
 	orbit.mouseMove(x, y);
 }
 
-void Renderer::mousePress() {
-	orbit.mouseGrab();
+void Renderer::mousePress(const MouseButton button) {
+	switch(button) {
+	case MOUSE_DRAG:
+		orbit.mouseGrabDrag();
+
+		break;
+	case MOUSE_PAN:
+		orbit.mouseGrabPan();
+		
+		break;
+	}
 }
 
-void Renderer::mouseRelease() {
-	orbit.mouseRelease();
+void Renderer::mouseRelease(const MouseButton button) {
+	switch(button) {
+	case MOUSE_DRAG:
+		orbit.mouseReleaseDrag();
+
+		break;
+	case MOUSE_PAN:
+		orbit.mouseReleasePan();
+
+		break;
+	}
 }
 
 void Renderer::scrollUp() {

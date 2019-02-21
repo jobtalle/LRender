@@ -34,6 +34,8 @@ void Path::setRoot(const std::vector<Node> &root) {
 
 void Path::setAnchor(const Node &node) {
 	nodes.insert(nodes.begin(), node);
+
+	anchor = true;
 }
 
 size_t Path::size() const {
@@ -42,4 +44,8 @@ size_t Path::size() const {
 
 bool Path::isChild() const {
 	return child;
+}
+
+bool Path::isAnchor() const {
+	return anchor;
 }

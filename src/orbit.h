@@ -12,9 +12,11 @@ namespace LRender {
 			const float angle = atan(1),
 			const float pitch = atan(1),
 			const float zoom = 2.5f);
-		void mouseGrab();
+		void mouseGrabDrag();
+		void mouseGrabPan();
 		void mouseMove(const int x, const int y);
-		void mouseRelease();
+		void mouseReleaseDrag();
+		void mouseReleasePan();
 		void zoomIn();
 		void zoomOut();
 		const Matrix &getMatrix() const;
@@ -28,13 +30,17 @@ namespace LRender {
 		static const float ZOOM_MAX;
 		static const float ZOOM_FACTOR;
 
+		Vector eye;
+		Vector focus;
 		Matrix view;
 		int x, y;
 		bool dragging;
+		bool panning;
 		float angle;
 		float pitch;
 		float zoom;
 
+		void updateEye();
 		void updateMatrix();
 	};
 };

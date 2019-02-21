@@ -17,14 +17,19 @@
 namespace LRender {
 	class Renderer final {
 	public:
+		enum MouseButton {
+			MOUSE_DRAG,
+			MOUSE_PAN
+		};
+
 		Renderer(const size_t width, const size_t height);
 		void setScene(std::shared_ptr<Scene> scene);
 		void update();
 		void render();
 		void setSize(const size_t width, const size_t height);
 		void mouseMove(const size_t x, const size_t y);
-		void mousePress();
-		void mouseRelease();
+		void mousePress(const MouseButton button);
+		void mouseRelease(const MouseButton button);
 		void scrollUp();
 		void scrollDown();
 

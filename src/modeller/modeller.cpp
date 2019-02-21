@@ -97,10 +97,12 @@ end:
 			parent->calculateTopDist(path.getNodes()[0].topDist);
 
 		for(auto child : children) {
-			if(child.branchAt > 1)
-				paths[child.childIndex].setRoot({ path.getNodes()[child.branchAt - 2], path.getNodes()[child.branchAt - 1] });
-			else if(child.branchAt == 1)
-				paths[child.childIndex].setAnchor(path.getNodes()[0]);
+			if(child.branchAt == path.size() - 1) {
+				if(child.branchAt > 1)
+					paths[child.childIndex].setRoot({ path.getNodes()[child.branchAt - 2], path.getNodes()[child.branchAt - 1] });
+				else if(child.branchAt == 1)
+					paths[child.childIndex].setAnchor(path.getNodes()[0]);
+			}
 		}
 
 		return paths.size() - 1;

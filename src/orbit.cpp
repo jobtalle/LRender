@@ -12,21 +12,27 @@ const float Orbit::ZOOM_FACTOR = 0.15f;
 
 Orbit::Orbit(const float angle, const float pitch, const float zoom) :
 	dragging(false),
+	panning(false),
 	angle(angle),
 	pitch(pitch),
 	zoom(zoom) {
+	updateEye();
 	updateMatrix();
 }
 
-void Orbit::mouseGrab() {
+void Orbit::mouseGrabDrag() {
 	dragging = true;
 }
 
-void Orbit::mouseMove(const int x, const int y) {
-	if(dragging) {
-		const int dx = x - this->x;
-		const int dy = y - this->y;
+void Orbit::mouseGrabPan() {
+	panning = true;
+}
 
+void Orbit::mouseMove(const int x, const int y) {
+	const int dx = x - this->x;
+	const int dy = y - this->y;
+
+	if(dragging) {
 		angle += dx * RADIANS_PER_PIXEL;
 		pitch += dy * RADIANS_PER_PIXEL;
 
@@ -35,6 +41,15 @@ void Orbit::mouseMove(const int x, const int y) {
 		else if(pitch > PITCH_MAX)
 			pitch = PITCH_MAX;
 
+		updateEye();
+		updateMatrix();
+	}
+	else if(panning) {
+		Vector right = UP.cross(-eye).normalize();
+		Vector up = right.cross(-eye).normalize();
+
+		focus += right * dx * zoom * 0.002f - up * dy * zoom * 0.002f;
+
 		updateMatrix();
 	}
 
@@ -42,8 +57,12 @@ void Orbit::mouseMove(const int x, const int y) {
 	this->y = y;
 }
 
-void Orbit::mouseRelease() {
+void Orbit::mouseReleaseDrag() {
 	dragging = false;
+}
+
+void Orbit::mouseReleasePan() {
+	panning = false;
 }
 
 void Orbit::zoomIn() {
@@ -52,6 +71,7 @@ void Orbit::zoomIn() {
 	if(zoom < ZOOM_MIN)
 		zoom = ZOOM_MIN;
 
+	updateEye();
 	updateMatrix();
 }
 
@@ -61,6 +81,7 @@ void Orbit::zoomOut() {
 	if(zoom > ZOOM_MAX)
 		zoom = ZOOM_MAX;
 
+	updateEye();
 	updateMatrix();
 }
 
@@ -68,12 +89,16 @@ const Matrix &Orbit::getMatrix() const {
 	return view;
 }
 
+void Orbit::updateEye() {
+	eye = Vector(
+		cos(angle) * cos(pitch),
+		sin(pitch),
+		sin(angle) * cos(pitch)) * zoom;
+}
+
 void Orbit::updateMatrix() {
 	view = Matrix::makeLookAt(
-		Vector(
-			cos(angle) * cos(pitch),
-			sin(pitch),
-			sin(angle) * cos(pitch)) * zoom,
-		Vector(),
+		focus + eye,
+		focus,
 		UP);
 }
