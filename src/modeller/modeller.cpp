@@ -42,18 +42,24 @@ void Modeller::build(const Agent &agent, std::mt19937 &randomizer) {
 	branches.reset(new Model(vertices, indices));
 }
 
-void Modeller::trace(
+int Modeller::trace(
 	Path *parent,
 	std::vector<Path> &paths,
 	Node node,
 	std::string::const_iterator &at,
 	const std::string::const_iterator &last) {
+	std::vector<TraceChild> children;
 	Path path(node);
 
 	while(at != last) {
 		switch(*at++) {
 		case BRANCH_OPEN:
-			trace(&path, paths, node, at, last);
+			{
+				int childIndex = trace(&path, paths, node, at, last);
+
+				if(childIndex != -1)
+					children.push_back(TraceChild(path.size() - 1, childIndex));
+			}
 
 			break;
 		case BRANCH_CLOSE:
@@ -89,5 +95,22 @@ end:
 
 		if(parent)
 			parent->calculateTopDist(path.getNodes()[0].topDist);
+
+		for(auto child : children) {
+			if(child.branchAt > 1)
+				paths[child.childIndex].setRoot({ path.getNodes()[child.branchAt - 2], path.getNodes()[child.branchAt - 1] });
+			else if(child.branchAt == 1)
+				paths[child.childIndex].setAnchor(path.getNodes()[0]);
+		}
+
+		return paths.size() - 1;
 	}
+
+	return -1;
+}
+
+Modeller::TraceChild::TraceChild(const int branchAt, const int childIndex) :
+	branchAt(branchAt),
+	childIndex(childIndex) {
+
 }

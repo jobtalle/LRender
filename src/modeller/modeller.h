@@ -18,6 +18,12 @@ namespace LRender {
 		std::shared_ptr<Model> getLeaves();
 
 	private:
+		struct TraceChild {
+			TraceChild(const int branchAt, const int childIndex);
+			const int branchAt;
+			const int childIndex;
+		};
+
 		static const float TURTLE_STEP;
 		static const float TURTLE_ANGLE;
 		static const size_t TUBE_PRECISION;
@@ -34,7 +40,7 @@ namespace LRender {
 		std::shared_ptr<Model> leaves;
 
 		void build(const Agent &agent, std::mt19937 &randomizer);
-		void trace(
+		int trace(
 			Path *parent,
 			std::vector<Path> &paths,
 			Node node,

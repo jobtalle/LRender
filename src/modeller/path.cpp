@@ -1,9 +1,11 @@
 #include "path.h"
 
+#include <array>
+
 using namespace LRender;
 
-Path::Path(const Node &root) :
-	nodes({ root }) {
+Path::Path(const Node &node) :
+	nodes({ node }) {
 
 }
 
@@ -24,6 +26,20 @@ void Path::calculateTopDist(const size_t offset) {
 	}
 }
 
+void Path::setRoot(const std::vector<Node> &root) {
+	nodes.insert(nodes.begin(), root.begin(), root.end());
+
+	child = true;
+}
+
+void Path::setAnchor(const Node &node) {
+	nodes.insert(nodes.begin(), node);
+}
+
 size_t Path::size() const {
 	return nodes.size();
+}
+
+bool Path::isChild() const {
+	return child;
 }

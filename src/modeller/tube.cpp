@@ -17,6 +17,7 @@ void Modeller::makeTube(
 	const Path &path) {
 	std::vector<Vector> ring;
 	Vector color(0.5, 0.7, 0.2);
+	size_t offset = path.isChild() ? 1 : 0;
 
 	for(size_t i = 0; i < precision; ++i) {
 		const float radians = Constants::PI * 2 * float(i) / precision;
@@ -24,7 +25,7 @@ void Modeller::makeTube(
 		ring.push_back(Vector(cos(radians), 0, sin(radians)));
 	}
 
-	for(auto node = path.getNodes().begin(); node < path.getNodes().end(); ++node) {
+	for(auto node = path.getNodes().begin() + offset; node < path.getNodes().end(); ++node) {
 		const float radius = getRadius(node->topDist);
 		const Quaternion qa = node->getHeading();
 		const Quaternion qb = node == path.getNodes().end() - 1 ? qa : (node + 1)->getHeading();
@@ -37,7 +38,7 @@ void Modeller::makeTube(
 
 		const size_t size = vertices.size();
 
-		if(node != path.getNodes().begin()) for(size_t i = 0; i < precision; ++i) {
+		if(node > path.getNodes().begin() + offset) for(size_t i = 0; i < precision; ++i) {
 			indices.push_back(size - 1 - i);
 			indices.push_back(size - 1 - precision - i);
 			indices.push_back(size - 1 - precision - ((i + 1) % precision));
