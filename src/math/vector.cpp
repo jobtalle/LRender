@@ -46,9 +46,7 @@ Vector Vector::cross(const Vector &other) const {
 }
 
 Vector &Vector::normalize() {
-	const float f = 1.0 / length();
-
-	return *this *= f;
+	return *this /= length();
 }
 
 Vector Vector::operator-() const {

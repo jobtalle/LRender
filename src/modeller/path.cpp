@@ -4,6 +4,8 @@
 
 using namespace LRender;
 
+const float Path::CONNECT_THRESHOLD = 0.55f;
+
 Path::Path(const Node &node) :
 	nodes({ node }) {
 
@@ -23,8 +25,17 @@ const void Path::transform(
 	if(root.size() > 0 && node == nodes.begin()) {
 		if(root.size() == 1)
 			transform(vectors, root[0].getHeading());
-		else
-			transform(vectors, root[0].getHeading(), root[1].getHeading());
+		else {
+			if(node != nodes.end() - 1) {
+				Vector dRoot = (root[1].position - root[0].position).normalize();
+				Vector dPath = ((node + 1)->position - node->position).normalize();
+				
+				if(dRoot.dot(dPath) > CONNECT_THRESHOLD)
+					transform(vectors, root[0].getHeading(), root[1].getHeading());
+				else
+					transform(vectors, node->getHeading(), (node + 1)->getHeading());
+			}
+		}
 	}
 	else if(node == nodes.end() - 1)
 		transform(vectors, node->getHeading());
