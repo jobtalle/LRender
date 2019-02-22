@@ -62,6 +62,10 @@ void Path::transform(
 void Path::transform(
 	std::vector<Vector> &vectors,
 	const Quaternion qa, const Quaternion qb) const {
-	for(auto &vector : vectors)
-		vector = ((qa * vector + qb * vector) * 0.5f).normalize();
+	for(auto &vector : vectors) {
+		auto length = vector.length();
+
+		vector = qa * vector + qb * vector;
+		vector = (length * vector) / vector.length();
+	}
 }

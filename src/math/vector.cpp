@@ -71,6 +71,10 @@ Vector &Vector::operator*=(const Vector &other) {
 	return *this;
 }
 
+Vector &Vector::operator/=(const float scalar) {
+	return *this *= 1.0f / scalar;
+}
+
 Vector &Vector::operator+=(const Vector &other) {
 	x += other.x;
 	y += other.y;
@@ -117,6 +121,10 @@ Vector LRender::operator*(Vector lhs, const float rhs) {
 
 Vector LRender::operator*(Vector lhs, const Vector &rhs) {
 	return lhs *= rhs;
+}
+
+Vector LRender::operator/(Vector lhs, const float rhs) {
+	return lhs /= rhs;
 }
 
 std::ostream &operator<<(std::ostream &stream, const Vector &vector) {

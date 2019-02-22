@@ -29,7 +29,7 @@ void Modeller::makeTube(
 
 		path.transform(transformedRing, node);
 
-		for(auto ringPoint : transformedRing)
+		for(auto &ringPoint : transformedRing)
 			vertices.push_back(Vertex(
 				node->position + ringPoint * getRadius(node->topDist),
 				ringPoint,
