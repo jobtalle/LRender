@@ -18,51 +18,55 @@ AgentModel::AgentModel(const Agent &agent, const RadiusSampler &radiusSampler, s
 }
 
 std::shared_ptr<Model> AgentModel::getBranches() {
-	return branches;
+	return modelsBranches;
 }
 
 std::shared_ptr<Model> AgentModel::getLeaves() {
-	return leaves;
+	return modelsLeaves;
 }
 
 void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 	std::vector<Vertex> vertices;
 	std::vector<uint32_t> indices;
-	std::vector<Path> paths;
+	std::vector<Branch> branches;
+	std::vector<Leaf> leaves;
 	Node node(agent.getPosition(), std::uniform_real_distribution<float>(0, Constants::PI * 2)(randomizer));
 
-	trace(
+	traceBranch(
 		nullptr,
-		paths,
+		branches,
 		node,
 		agent.getSymbols().begin(),
 		agent.getSymbols().end());
 
-	for(auto path : paths)
+	for(auto branch : branches)
 		Tube::modelTube(
 			vertices,
 			indices,
 			Vector(0.53f, 0.39f, 0.78f),
 			radiusSampler,
 			TUBE_PRECISION,
-			path);
+			branch);
 
-	branches.reset(new Model(vertices, indices));
+	modelsBranches.reset(new Model(vertices, indices));
 }
 
-int AgentModel::trace(
-	Path *parent,
-	std::vector<Path> &paths,
+int AgentModel::traceBranch(
+	Branch *parent,
+	std::vector<Branch> &branches,
 	Node node,
 	std::string::const_iterator &at,
 	const std::string::const_iterator &last) {
-	Path path(node);
+	Branch branch(node);
 	int lastChild = -1;
 
 	while(at != last) {
 		switch(*at++) {
+		case SYM_LEAF:
+
+			break;
 		case SYM_BRANCH_OPEN:
-			lastChild = trace(&path, paths, node, at, last);
+			lastChild = traceBranch(&branch, branches, node, at, last);
 
 			break;
 		case SYM_BRANCH_CLOSE:
@@ -85,10 +89,10 @@ int AgentModel::trace(
 			break;
 		default:
 			if(*(at - 1) >= SYM_STEP_MIN && *(at - 1) <= SYM_STEP_MAX) {
-				path.add(node.extrude(TURTLE_STEP));
+				branch.add(node.extrude(TURTLE_STEP));
 
 				if(lastChild != -1) {
-					paths[lastChild].setRoot({ *(path.getNodes().end() - 2), *(path.getNodes().end() - 1) });
+					branches[lastChild].setRoot({ *(branch.getNodes().end() - 2), *(branch.getNodes().end() - 1) });
 
 					lastChild = -1;
 				}
@@ -99,17 +103,17 @@ int AgentModel::trace(
 	}
 
 end:
-	if(path.size() > 1) {
-		path.calculateTopDist();
-		paths.push_back(path);
+	if(branch.size() > 1) {
+		branch.calculateTopDist();
+		branches.push_back(branch);
 
 		if(parent)
-			parent->calculateTopDist(path.getNodes()[0].topDist);
+			parent->calculateTopDist(branch.getNodes()[0].topDist);
 
 		if(lastChild != -1)
-			paths[lastChild].setRoot({ *(path.getNodes().end() - 1) });
+			branches[lastChild].setRoot({ *(branch.getNodes().end() - 1) });
 
-		return paths.size() - 1;
+		return branches.size() - 1;
 	}
 
 	return -1;

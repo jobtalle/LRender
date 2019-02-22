@@ -11,19 +11,13 @@ void Tube::modelTube(
 	const Vector &color,
 	const RadiusSampler &radiusSampler,
 	const size_t precision,
-	const Path &path) {
-	std::vector<Vector> ring;
+	const Branch &branch) {
+	const std::vector<Vector> ring(makeRing(precision));
 
-	for(size_t i = 0; i < precision; ++i) {
-		const float radians = Constants::PI * 2 * float(i) / precision;
-
-		ring.push_back(Vector(cos(radians), 0, sin(radians)));
-	}
-
-	for(auto node = path.getNodes().begin(); node < path.getNodes().end(); ++node) {
+	for(auto node = branch.getNodes().begin(); node < branch.getNodes().end(); ++node) {
 		std::vector<Vector> transformedRing = ring;
 
-		path.transform(transformedRing, node);
+		branch.transform(transformedRing, node);
 
 		for(auto &ringPoint : transformedRing)
 			vertices.push_back(Vertex(
@@ -33,7 +27,7 @@ void Tube::modelTube(
 
 		const size_t size = vertices.size();
 
-		if(node > path.getNodes().begin()) for(size_t i = 0; i < precision; ++i) {
+		if(node > branch.getNodes().begin()) for(size_t i = 0; i < precision; ++i) {
 			indices.push_back(size - 1 - i);
 			indices.push_back(size - 1 - precision - i);
 			indices.push_back(size - 1 - precision - ((i + 1) % precision));
@@ -42,4 +36,16 @@ void Tube::modelTube(
 			indices.push_back(size - 1 - i);
 		}
 	}
+}
+
+std::vector<Vector> Tube::makeRing(const size_t precision) {
+	std::vector<Vector> ring;
+
+	for(size_t i = 0; i < precision; ++i) {
+		const float radians = Constants::PI * 2 * float(i) / precision;
+
+		ring.push_back(Vector(cos(radians), 0, sin(radians)));
+	}
+
+	return ring;
 }

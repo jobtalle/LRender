@@ -2,7 +2,7 @@
 
 #include "../vertex.h"
 #include "radiusSampler.h"
-#include "path.h"
+#include "branch.h"
 
 #include <vector>
 
@@ -15,6 +15,11 @@ namespace LRender {
 			const Vector &color,
 			const RadiusSampler &radiusSampler,
 			const size_t precision,
-			const Path &path);
+			const Branch &branch);
+
+	private:
+		Tube() = default;
+		
+		static std::vector<Vector> makeRing(const size_t precision);
 	};
 };

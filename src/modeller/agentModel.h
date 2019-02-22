@@ -1,7 +1,8 @@
 #pragma once
 
 #include "node.h"
-#include "path.h"
+#include "branch.h"
+#include "leaf.h"
 #include "radiusSampler.h"
 #include "../scene/agent.h"
 #include "../model.h"
@@ -41,15 +42,15 @@ namespace LRender {
 		static const char SYM_ROLL_INCREMENT = '/';
 		static const char SYM_ROLL_DECREMENT = '\\';
 
-		std::shared_ptr<Model> branches;
-		std::shared_ptr<Model> leaves;
+		std::shared_ptr<Model> modelsBranches;
+		std::shared_ptr<Model> modelsLeaves;
 		RadiusSampler radiusSampler;
 
 		void build(
 			const Agent &agent, std::mt19937 &randomizer);
-		int trace(
-			Path *parent,
-			std::vector<Path> &paths,
+		int traceBranch(
+			Branch *branch,
+			std::vector<Branch> &branches,
 			Node node,
 			std::string::const_iterator &at,
 			const std::string::const_iterator &last);
