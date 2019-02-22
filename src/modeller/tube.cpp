@@ -8,11 +8,11 @@ using namespace LRender;
 void Tube::modelTube(
 	std::vector<Vertex> &vertices,
 	std::vector<uint32_t> &indices,
+	const Vector &color,
 	const RadiusSampler &radiusSampler,
 	const size_t precision,
 	const Path &path) {
 	std::vector<Vector> ring;
-	Vector color(0.5, 0.7, 0.2);
 
 	for(size_t i = 0; i < precision; ++i) {
 		const float radians = Constants::PI * 2 * float(i) / precision;

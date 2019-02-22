@@ -39,7 +39,13 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 		agent.getSymbols().end());
 
 	for(auto path : paths)
-		Tube::modelTube(vertices, indices, radiusSampler, TUBE_PRECISION, path);
+		Tube::modelTube(
+			vertices,
+			indices,
+			Vector(0.53f, 0.39f, 0.78f),
+			radiusSampler,
+			TUBE_PRECISION,
+			path);
 
 	branches.reset(new Model(vertices, indices));
 }
@@ -55,30 +61,30 @@ int AgentModel::trace(
 
 	while(at != last) {
 		switch(*at++) {
-		case BRANCH_OPEN:
+		case SYM_BRANCH_OPEN:
 			lastChild = trace(&path, paths, node, at, last);
 
 			break;
-		case BRANCH_CLOSE:
+		case SYM_BRANCH_CLOSE:
 			goto end;
-		case PITCH_INCREMENT:
+		case SYM_PITCH_INCREMENT:
 			node.pitch(TURTLE_ANGLE);
 			
 			break;
-		case PITCH_DECREMENT:
+		case SYM_PITCH_DECREMENT:
 			node.pitch(-TURTLE_ANGLE);
 
 			break;
-		case ROLL_INCREMENT:
+		case SYM_ROLL_INCREMENT:
 			node.roll(TURTLE_ANGLE);
 
 			break;
-		case ROLL_DECREMENT:
+		case SYM_ROLL_DECREMENT:
 			node.roll(-TURTLE_ANGLE);
 
 			break;
 		default:
-			if(*(at - 1) >= STEP_MIN && *(at - 1) <= STEP_MAX) {
+			if(*(at - 1) >= SYM_STEP_MIN && *(at - 1) <= SYM_STEP_MAX) {
 				path.add(node.extrude(TURTLE_STEP));
 
 				if(lastChild != -1) {

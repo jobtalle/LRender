@@ -12,6 +12,7 @@ namespace LRender {
 		static void modelTube(
 			std::vector<Vertex> &vertices,
 			std::vector<uint32_t> &indices,
+			const Vector &color,
 			const RadiusSampler &radiusSampler,
 			const size_t precision,
 			const Path &path);
