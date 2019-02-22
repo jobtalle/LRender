@@ -11,9 +11,9 @@
 #include <random>
 
 namespace LRender {
-	class Modeller final {
+	class AgentModel final {
 	public:
-		Modeller(const Agent &agent, std::mt19937 &randomizer);
+		AgentModel(const Agent &agent, std::mt19937 &randomizer);
 		std::shared_ptr<Model> getBranches();
 		std::shared_ptr<Model> getLeaves();
 

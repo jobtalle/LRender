@@ -1,5 +1,5 @@
 #include "renderer.h"
-#include "modeller/modeller.h"
+#include "modeller/agentModel.h"
 #include "glad/glad.h"
 
 #include <math.h>
@@ -100,7 +100,7 @@ void Renderer::loadScene(const Scene *scene) {
 	models.clear();
 
 	for(auto agent : scene->getAgents()) {
-		Modeller modeller(agent, randomizer);
+		AgentModel modeller(agent, randomizer);
 
 		models.push_back(modeller.getBranches());
 	}

@@ -1,4 +1,4 @@
-#include "modeller.h"
+#include "agentModel.h"
 #include "../math/constants.h"
 #include "../math/matrix.h"
 
@@ -10,7 +10,7 @@ float getRadius(size_t dist) {
 	return (1.0f - (1.0f / (float(dist) / 150.0f + 1.0f))) * 0.1f;
 }
 
-void Modeller::makeTube(
+void AgentModel::makeTube(
 	std::vector<Vertex> &vertices,
 	std::vector<uint32_t> &indices,
 	const size_t precision,

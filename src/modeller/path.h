@@ -20,7 +20,7 @@ namespace LRender {
 		size_t size() const;
 
 	private:
-		static const float CONNECT_THRESHOLD;
+		static const float CONNECT_THRESHOLD_DOT;
 
 		std::vector<Node> root;
 		std::vector<Node> nodes;

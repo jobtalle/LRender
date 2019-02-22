@@ -1,4 +1,4 @@
-#include "modeller.h"
+#include "agentModel.h"
 #include "../math/vector.h"
 #include "../math/quaternion.h"
 #include "../math/constants.h"
@@ -7,23 +7,23 @@
 
 using namespace LRender;
 
-const float Modeller::TURTLE_STEP = 0.05f;
-const float Modeller::TURTLE_ANGLE = 0.3;
-const size_t Modeller::TUBE_PRECISION = 7;
+const float AgentModel::TURTLE_STEP = 0.05f;
+const float AgentModel::TURTLE_ANGLE = 0.3;
+const size_t AgentModel::TUBE_PRECISION = 7;
 
-Modeller::Modeller(const Agent &agent, std::mt19937 &randomizer) {
+AgentModel::AgentModel(const Agent &agent, std::mt19937 &randomizer) {
 	build(agent, randomizer);
 }
 
-std::shared_ptr<Model> Modeller::getBranches() {
+std::shared_ptr<Model> AgentModel::getBranches() {
 	return branches;
 }
 
-std::shared_ptr<Model> Modeller::getLeaves() {
+std::shared_ptr<Model> AgentModel::getLeaves() {
 	return leaves;
 }
 
-void Modeller::build(const Agent &agent, std::mt19937 &randomizer) {
+void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 	std::vector<Vertex> vertices;
 	std::vector<uint32_t> indices;
 	std::vector<Path> paths;
@@ -42,7 +42,7 @@ void Modeller::build(const Agent &agent, std::mt19937 &randomizer) {
 	branches.reset(new Model(vertices, indices));
 }
 
-int Modeller::trace(
+int AgentModel::trace(
 	Path *parent,
 	std::vector<Path> &paths,
 	Node node,
@@ -107,7 +107,7 @@ end:
 	return -1;
 }
 
-Modeller::TraceChild::TraceChild(const int branchAt, const int childIndex) :
+AgentModel::TraceChild::TraceChild(const int branchAt, const int childIndex) :
 	branchAt(branchAt),
 	childIndex(childIndex) {
 
