@@ -45,6 +45,7 @@ namespace LRender {
 		int traceBranch(
 			Branch *branch,
 			std::vector<Branch> &branches,
+			std::vector<Leaf> &leaves,
 			Node node,
 			std::string::const_iterator &at,
 			const std::string::const_iterator &last);

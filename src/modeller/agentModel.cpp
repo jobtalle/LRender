@@ -1,5 +1,5 @@
 #include "agentModel.h"
-#include "tube.h"
+#include "shapes/tube.h"
 #include "../math/vector.h"
 #include "../math/quaternion.h"
 #include "../math/constants.h"
@@ -24,17 +24,18 @@ std::shared_ptr<Model> AgentModel::getBranches() {
 std::shared_ptr<Model> AgentModel::getLeaves() {
 	return modelLeaves;
 }
-
+#include <iostream>
 void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 	std::vector<Vertex> vertices;
 	std::vector<uint32_t> indices;
 	std::vector<Branch> branches;
 	std::vector<Leaf> leaves;
 	Node node(agent.getPosition(), std::uniform_real_distribution<float>(0, Constants::PI * 2)(randomizer));
-
+	
 	traceBranch(
 		nullptr,
 		branches,
+		leaves,
 		node,
 		agent.getSymbols().begin(),
 		agent.getSymbols().end());
@@ -48,12 +49,22 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 			TUBE_PRECISION,
 			branch);
 
+	for(auto leaf : leaves) for(auto branch : leaf.getBranches())
+		Tube::modelTube(
+			vertices,
+			indices,
+			Vector(0.6f, 0.3f, 0.5f),
+			RadiusSampler(0.05f),
+			TUBE_PRECISION,
+			branch);
+
 	modelBranches.reset(new Model(vertices, indices));
 }
 
 int AgentModel::traceBranch(
 	Branch *parent,
 	std::vector<Branch> &branches,
+	std::vector<Leaf> &leaves,
 	Node node,
 	std::string::const_iterator &at,
 	const std::string::const_iterator &last) {
@@ -63,10 +74,16 @@ int AgentModel::traceBranch(
 	while(at != last) {
 		switch(*at++) {
 		case SYM_LEAF:
+		{
+			std::vector<Branch> leafBranches;
 
+			traceBranch(nullptr, leafBranches, leaves, node, at, last);
+
+			leaves.push_back(Leaf(leafBranches));
+		}
 			break;
 		case SYM_BRANCH_OPEN:
-			lastChild = traceBranch(&branch, branches, node, at, last);
+			lastChild = traceBranch(&branch, branches, leaves, node, at, last);
 
 			break;
 		case SYM_BRANCH_CLOSE:
@@ -106,7 +123,7 @@ end:
 	if(branch.size() > 1) {
 		branch.calculateTopDist();
 		branches.push_back(branch);
-
+		
 		if(parent)
 			parent->calculateTopDist(branch.getNodes()[0].topDist);
 

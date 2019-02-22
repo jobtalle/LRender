@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../vertex.h"
-#include "radiusSampler.h"
-#include "branch.h"
+#include "../../vertex.h"
+#include "../radiusSampler.h"
+#include "../branch.h"
 
 #include <vector>
 
