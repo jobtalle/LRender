@@ -52,12 +52,5 @@ namespace LRender {
 			Node node,
 			std::string::const_iterator &at,
 			const std::string::const_iterator &last);
-
-		static void makeTube(
-			std::vector<Vertex> &vertices,
-			std::vector<uint32_t> &indices,
-			const RadiusSampler &radiusSampler,
-			const size_t precision,
-			const Path &path);
 	};
 };

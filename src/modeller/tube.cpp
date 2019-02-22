@@ -1,12 +1,11 @@
-#include "agentModel.h"
+#include "tube.h"
 #include "../math/constants.h"
-#include "../math/matrix.h"
 
 #include <math.h>
 
 using namespace LRender;
 
-void AgentModel::makeTube(
+void Tube::modelTube(
 	std::vector<Vertex> &vertices,
 	std::vector<uint32_t> &indices,
 	const RadiusSampler &radiusSampler,

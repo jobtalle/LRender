@@ -1,4 +1,5 @@
 #include "agentModel.h"
+#include "tube.h"
 #include "../math/vector.h"
 #include "../math/quaternion.h"
 #include "../math/constants.h"
@@ -38,7 +39,7 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 		agent.getSymbols().end());
 
 	for(auto path : paths)
-		makeTube(vertices, indices, radiusSampler, TUBE_PRECISION, path);
+		Tube::modelTube(vertices, indices, radiusSampler, TUBE_PRECISION, path);
 
 	branches.reset(new Model(vertices, indices));
 }
