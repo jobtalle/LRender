@@ -2,15 +2,17 @@
 
 #include "branch.h"
 
-#include <vector>
+#include <list>
 
 namespace LRender {
 	class Leaf final {
+		friend class AgentModel;
+
 	public:
-		Leaf(const std::vector<Branch> &branches);
-		const std::vector<Branch> &getBranches() const;
+		Leaf();
+		const std::list<Branch> &getBranches() const;
 
 	private:
-		std::vector<Branch> branches;
+		std::list<Branch> branches;
 	};
 }

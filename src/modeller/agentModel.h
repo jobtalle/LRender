@@ -11,6 +11,7 @@
 #include <vector>
 #include <memory>
 #include <random>
+#include <list>
 
 namespace LRender {
 	class AgentModel final {
@@ -28,7 +29,7 @@ namespace LRender {
 		static const size_t TUBE_PRECISION;
 		static const char SYM_STEP_MIN = 'A';
 		static const char SYM_STEP_MAX = 'Z';
-		static const char SYM_LEAF = '>';
+		static const char SYM_LEAF = '<';
 		static const char SYM_BRANCH_OPEN = '[';
 		static const char SYM_BRANCH_CLOSE = ']';
 		static const char SYM_PITCH_INCREMENT = '+';
@@ -42,10 +43,11 @@ namespace LRender {
 
 		void build(
 			const Agent &agent, std::mt19937 &randomizer);
-		int traceBranch(
-			Branch *branch,
-			std::vector<Branch> &branches,
-			std::vector<Leaf> &leaves,
+		Branch *traceBranch(
+			Branch *parent,
+			const bool leaf,
+			std::list<Branch> &branches,
+			std::list<Leaf> &leaves,
 			Node node,
 			std::string::const_iterator &at,
 			const std::string::const_iterator &last);

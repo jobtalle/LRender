@@ -5,7 +5,7 @@
 
 using namespace LRender;
 
-void Tube::modelTube(
+void Shape::Tube::model(
 	std::vector<Vertex> &vertices,
 	std::vector<uint32_t> &indices,
 	const Vector &color,
@@ -38,7 +38,7 @@ void Tube::modelTube(
 	}
 }
 
-std::vector<Vector> Tube::makeRing(const size_t precision) {
+std::vector<Vector> Shape::Tube::makeRing(const size_t precision) {
 	std::vector<Vector> ring;
 
 	for(size_t i = 0; i < precision; ++i) {

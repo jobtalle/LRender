@@ -2,11 +2,10 @@
 
 using namespace LRender;
 
-Leaf::Leaf(const std::vector<Branch> &branches) :
-	branches(branches) {
+Leaf::Leaf() {
 
 }
 
-const std::vector<Branch> &Leaf::getBranches() const {
+const std::list<Branch> &Leaf::getBranches() const {
 	return branches;
 }

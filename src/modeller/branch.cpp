@@ -22,7 +22,7 @@ const std::vector<Node> &Branch::getRoot() const {
 const void Branch::transform(
 	std::vector<Vector> &vectors,
 	const std::vector<Node>::const_iterator &node) const {
-	if(root.size() > 0 && node == nodes.begin()) {
+	if(node == nodes.begin() && root.size() > 0) {
 		if(root.size() == 1)
 			transform(vectors, root[0].getHeading());
 		else {
@@ -47,6 +47,10 @@ void Branch::add(const Node &node) {
 	nodes.push_back(node);
 }
 
+void Branch::add(Branch *branch) {
+	children.push_back(Child(nodes.size() - 1, branch));
+}
+
 void Branch::calculateTopDist(const size_t offset) {
 	for(size_t i = 0; i < nodes.size(); ++i) {
 		const size_t dist = nodes.size() - i - 1 + offset;
@@ -64,6 +68,10 @@ size_t Branch::size() const {
 	return nodes.size();
 }
 
+const std::vector<Branch::Child> &Branch::getChildren() const {
+	return children;
+}
+
 void Branch::transform(
 	std::vector<Vector> &vectors,
 	const Quaternion q) const {
@@ -79,4 +87,10 @@ void Branch::transform(
 		vector = qa * vector + qb * vector;
 		vector = (length * vector) / vector.length();
 	}
+}
+
+Branch::Child::Child(const size_t index, const Branch *child) :
+	index(index),
+	child(child) {
+
 }
