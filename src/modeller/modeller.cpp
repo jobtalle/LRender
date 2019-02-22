@@ -48,18 +48,13 @@ int Modeller::trace(
 	Node node,
 	std::string::const_iterator &at,
 	const std::string::const_iterator &last) {
-	std::vector<TraceChild> children;
 	Path path(node);
+	int lastChild = -1;
 
 	while(at != last) {
 		switch(*at++) {
 		case BRANCH_OPEN:
-			{
-				int childIndex = trace(&path, paths, node, at, last);
-
-				if(childIndex != -1)
-					children.push_back(TraceChild(path.size() - 1, childIndex));
-			}
+			lastChild = trace(&path, paths, node, at, last);
 
 			break;
 		case BRANCH_CLOSE:
@@ -81,8 +76,15 @@ int Modeller::trace(
 
 			break;
 		default:
-			if(*(at - 1) >= STEP_MIN && *(at - 1) <= STEP_MAX)
+			if(*(at - 1) >= STEP_MIN && *(at - 1) <= STEP_MAX) {
 				path.add(node.extrude(TURTLE_STEP));
+
+				if(lastChild != -1) {
+					paths[lastChild].setRoot({ *(path.getNodes().end() - 2), *(path.getNodes().end() - 1) });
+
+					lastChild = -1;
+				}
+			}
 
 			break;
 		}
@@ -96,14 +98,8 @@ end:
 		if(parent)
 			parent->calculateTopDist(path.getNodes()[0].topDist);
 
-		for(auto child : children) {
-			if(child.branchAt == path.size() - 1) {
-				if(child.branchAt > 1)
-					paths[child.childIndex].setRoot({ path.getNodes()[child.branchAt - 2], path.getNodes()[child.branchAt - 1] });
-				else if(child.branchAt == 1)
-					paths[child.childIndex].setAnchor(path.getNodes()[0]);
-			}
-		}
+		if(lastChild != -1)
+			paths[lastChild].setRoot({ *(path.getNodes().end() - 1) });
 
 		return paths.size() - 1;
 	}
