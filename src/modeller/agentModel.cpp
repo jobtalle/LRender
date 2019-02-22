@@ -18,11 +18,11 @@ AgentModel::AgentModel(const Agent &agent, const RadiusSampler &radiusSampler, s
 }
 
 std::shared_ptr<Model> AgentModel::getBranches() {
-	return modelsBranches;
+	return modelBranches;
 }
 
 std::shared_ptr<Model> AgentModel::getLeaves() {
-	return modelsLeaves;
+	return modelLeaves;
 }
 
 void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
@@ -48,7 +48,7 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 			TUBE_PRECISION,
 			branch);
 
-	modelsBranches.reset(new Model(vertices, indices));
+	modelBranches.reset(new Model(vertices, indices));
 }
 
 int AgentModel::traceBranch(
@@ -117,10 +117,4 @@ end:
 	}
 
 	return -1;
-}
-
-AgentModel::TraceChild::TraceChild(const int branchAt, const int childIndex) :
-	branchAt(branchAt),
-	childIndex(childIndex) {
-
 }

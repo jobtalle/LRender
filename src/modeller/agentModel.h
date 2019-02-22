@@ -23,12 +23,6 @@ namespace LRender {
 		std::shared_ptr<Model> getLeaves();
 
 	private:
-		struct TraceChild {
-			TraceChild(const int branchAt, const int childIndex);
-			const int branchAt;
-			const int childIndex;
-		};
-
 		static const float TURTLE_STEP;
 		static const float TURTLE_ANGLE;
 		static const size_t TUBE_PRECISION;
@@ -42,8 +36,8 @@ namespace LRender {
 		static const char SYM_ROLL_INCREMENT = '/';
 		static const char SYM_ROLL_DECREMENT = '\\';
 
-		std::shared_ptr<Model> modelsBranches;
-		std::shared_ptr<Model> modelsLeaves;
+		std::shared_ptr<Model> modelBranches;
+		std::shared_ptr<Model> modelLeaves;
 		RadiusSampler radiusSampler;
 
 		void build(
