@@ -13,7 +13,7 @@ namespace LRender {
 		const std::vector<Node> &getRoot() const;
 		const void transform(
 			std::vector<Vector> &vectors,
-			const size_t nodeIndex) const;
+			const std::vector<Node>::const_iterator &node) const;
 		void add(const Node &node);
 		void calculateTopDist(const size_t offset = 0);
 		void setRoot(const std::vector<Node> &root);

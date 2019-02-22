@@ -27,7 +27,7 @@ void Modeller::makeTube(
 	for(auto node = path.getNodes().begin(); node < path.getNodes().end(); ++node) {
 		std::vector<Vector> transformedRing = ring;
 
-		path.transform(transformedRing, node - path.getNodes().begin());
+		path.transform(transformedRing, node);
 
 		for(auto ringPoint : transformedRing)
 			vertices.push_back(Vertex(

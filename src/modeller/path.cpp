@@ -19,17 +19,17 @@ const std::vector<Node> &Path::getRoot() const {
 
 const void Path::transform(
 	std::vector<Vector> &vectors,
-	const size_t nodeIndex) const {
-	if(root.size() > 0 && nodeIndex == 0) {
+	const std::vector<Node>::const_iterator &node) const {
+	if(root.size() > 0 && node == nodes.begin()) {
 		if(root.size() == 1)
 			transform(vectors, root[0].getHeading());
 		else
 			transform(vectors, root[0].getHeading(), root[1].getHeading());
 	}
-	else if(nodeIndex == nodes.size() - 1)
-		transform(vectors, nodes[nodeIndex].getHeading());
+	else if(node == nodes.end() - 1)
+		transform(vectors, node->getHeading());
 	else
-		transform(vectors, nodes[nodeIndex].getHeading(), nodes[nodeIndex + 1].getHeading());
+		transform(vectors, node->getHeading(), (node + 1)->getHeading());
 }
 
 void Path::add(const Node &node) {
@@ -46,9 +46,6 @@ void Path::calculateTopDist(const size_t offset) {
 }
 
 void Path::setRoot(const std::vector<Node> &root) {
-	nodes.erase(nodes.begin());
-	nodes.insert(nodes.begin(), *root.begin());
-
 	this->root = root;
 }
 

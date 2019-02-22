@@ -9,7 +9,7 @@ using namespace LRender;
 
 const float Modeller::TURTLE_STEP = 0.05f;
 const float Modeller::TURTLE_ANGLE = 0.3;
-const size_t Modeller::TUBE_PRECISION = 5;
+const size_t Modeller::TUBE_PRECISION = 7;
 
 Modeller::Modeller(const Agent &agent, std::mt19937 &randomizer) {
 	build(agent, randomizer);
