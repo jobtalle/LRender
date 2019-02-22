@@ -1,4 +1,5 @@
 #include "renderer.h"
+#include "modeller/radiusSampler.h"
 #include "modeller/agentModel.h"
 #include "glad/glad.h"
 
@@ -100,7 +101,7 @@ void Renderer::loadScene(const Scene *scene) {
 	models.clear();
 
 	for(auto agent : scene->getAgents()) {
-		AgentModel modeller(agent, randomizer);
+		AgentModel modeller(agent, RadiusSampler(0.15f), randomizer);
 
 		models.push_back(modeller.getBranches());
 	}

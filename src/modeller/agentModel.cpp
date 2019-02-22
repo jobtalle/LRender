@@ -11,7 +11,8 @@ const float AgentModel::TURTLE_STEP = 0.05f;
 const float AgentModel::TURTLE_ANGLE = 0.3;
 const size_t AgentModel::TUBE_PRECISION = 7;
 
-AgentModel::AgentModel(const Agent &agent, std::mt19937 &randomizer) {
+AgentModel::AgentModel(const Agent &agent, const RadiusSampler &radiusSampler, std::mt19937 &randomizer) :
+	radiusSampler(radiusSampler) {
 	build(agent, randomizer);
 }
 
@@ -37,7 +38,7 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 		agent.getSymbols().end());
 
 	for(auto path : paths)
-		makeTube(vertices, indices, TUBE_PRECISION, path);
+		makeTube(vertices, indices, radiusSampler, TUBE_PRECISION, path);
 
 	branches.reset(new Model(vertices, indices));
 }

@@ -6,13 +6,10 @@
 
 using namespace LRender;
 
-float getRadius(size_t dist) {
-	return (1.0f - (1.0f / (float(dist) / 150.0f + 1.0f))) * 0.1f;
-}
-
 void AgentModel::makeTube(
 	std::vector<Vertex> &vertices,
 	std::vector<uint32_t> &indices,
+	const RadiusSampler &radiusSampler,
 	const size_t precision,
 	const Path &path) {
 	std::vector<Vector> ring;
@@ -31,7 +28,7 @@ void AgentModel::makeTube(
 
 		for(auto &ringPoint : transformedRing)
 			vertices.push_back(Vertex(
-				node->position + ringPoint * getRadius(node->topDist),
+				node->position + ringPoint * radiusSampler.sample(node->topDist),
 				ringPoint,
 				color));
 

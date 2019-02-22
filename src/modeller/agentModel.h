@@ -2,6 +2,7 @@
 
 #include "node.h"
 #include "path.h"
+#include "radiusSampler.h"
 #include "../scene/agent.h"
 #include "../model.h"
 #include "../math/quaternion.h"
@@ -13,7 +14,10 @@
 namespace LRender {
 	class AgentModel final {
 	public:
-		AgentModel(const Agent &agent, std::mt19937 &randomizer);
+		AgentModel(
+			const Agent &agent,
+			const RadiusSampler &radiusSampler,
+			std::mt19937 &randomizer);
 		std::shared_ptr<Model> getBranches();
 		std::shared_ptr<Model> getLeaves();
 
@@ -38,8 +42,10 @@ namespace LRender {
 
 		std::shared_ptr<Model> branches;
 		std::shared_ptr<Model> leaves;
+		RadiusSampler radiusSampler;
 
-		void build(const Agent &agent, std::mt19937 &randomizer);
+		void build(
+			const Agent &agent, std::mt19937 &randomizer);
 		int trace(
 			Path *parent,
 			std::vector<Path> &paths,
@@ -50,6 +56,7 @@ namespace LRender {
 		static void makeTube(
 			std::vector<Vertex> &vertices,
 			std::vector<uint32_t> &indices,
+			const RadiusSampler &radiusSampler,
 			const size_t precision,
 			const Path &path);
 	};
