@@ -51,16 +51,17 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 			TUBE_PRECISION,
 			branch);
 
-	for(auto leaf : leaves) for(auto branch : leaf.getBranches()) {
-		for(auto &child : branch.getChildren())
-			Shape::Leaf::model(
-				vertices,
-				indices,
-				Vector(0.3f, 0.8f, 0.6f),
-				branch.getNodes().begin() + child.index,
-				branch.getNodes().end(),
-				child.child->getNodes().begin(),
-				child.child->getNodes().end());
+	for(auto &leaf : leaves) {
+		for(auto &branch : leaf.getBranches())
+			for(auto &child : branch.getChildren())
+				Shape::Leaf::model(
+					vertices,
+					indices,
+					Vector(0.3f, 0.8f, 0.6f),
+					branch.getNodes().begin() + child.index,
+					branch.getNodes().end(),
+					child.child->getNodes().begin(),
+					child.child->getNodes().end());
 
 		Shape::Tube::model(
 			vertices,
@@ -68,7 +69,7 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 			Vector(0.3f, 0.8f, 0.6f),
 			RadiusSampler(0.05f),
 			TUBE_PRECISION,
-			branch);
+			*(--leaf.getBranches().end()));
 	}
 
 	modelBranches.reset(new Model(vertices, indices));
