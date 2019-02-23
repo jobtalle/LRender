@@ -3,9 +3,9 @@
 
 using namespace LRender;
 
-Model::Model(const std::vector<Vertex> &vertices, const std::vector<uint32_t> &indices) {
+Model::Model(const Geometry &geometry) {
 	createBuffers();
-	upload(vertices, indices);
+	upload(geometry.vertices, geometry.indices);
 }
 
 Model::~Model() {

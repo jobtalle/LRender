@@ -27,8 +27,8 @@ std::shared_ptr<Model> AgentModel::getLeaves() {
 }
 
 void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
-	std::vector<Vertex> vertices;
-	std::vector<uint32_t> indices;
+	Geometry geometryBranches;
+	Geometry geometryLeaves;
 	std::list<Branch> branches;
 	std::list<Leaf> leaves;
 	Node node(agent.getPosition(), std::uniform_real_distribution<float>(0, Constants::PI * 2)(randomizer));
@@ -44,8 +44,8 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 
 	for(auto branch : branches)
 		Shape::Tube::model(
-			vertices,
-			indices,
+			geometryBranches.vertices,
+			geometryBranches.indices,
 			Vector(0.53f, 0.39f, 0.78f),
 			radiusSampler,
 			TUBE_PRECISION,
@@ -55,8 +55,8 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 		for(auto &branch : leaf.getBranches()) {
 			for(auto &child : branch.getChildren())
 				leaf.addArea(Shape::Leaf::model(
-					vertices,
-					indices,
+					geometryLeaves.vertices,
+					geometryLeaves.indices,
 					Vector(0.3f, 0.8f, 0.6f),
 					branch.getNodes().begin() + child.index,
 					branch.getNodes().end(),
@@ -64,8 +64,8 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 					child.child->getNodes().end()));
 
 			Shape::Tube::model(
-				vertices,
-				indices,
+				geometryBranches.vertices,
+				geometryBranches.indices,
 				Vector(0.3f, 0.8f, 0.6f),
 				radiusSampler,
 				TUBE_PRECISION,
@@ -73,7 +73,8 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 		}
 	}
 
-	modelBranches.reset(new Model(vertices, indices));
+	modelBranches.reset(new Model(geometryBranches));
+	modelLeaves.reset(new Model(geometryLeaves));
 }
 
 Branch *AgentModel::traceBranch(

@@ -104,9 +104,10 @@ void Renderer::loadScene(const Scene *scene) {
 		AgentModel modeller(agent, RadiusSampler(1.1f), randomizer);
 
 		models.push_back(modeller.getBranches());
+		models.push_back(modeller.getLeaves());
 	}
 
-	models.push_back(std::shared_ptr<Model>(new Model(
+	models.push_back(std::shared_ptr<Model>(new Model(Geometry(
 	{
 		Vertex(Vector(-10, 0, -10), Vector(0, 1, 0), Vector(1, 0, 0)),
 		Vertex(Vector(10, 0, -10), Vector(0, 1, 0), Vector(0, 1, 0)),
@@ -116,7 +117,7 @@ void Renderer::loadScene(const Scene *scene) {
 	{
 		0, 2, 1, 2, 0, 3
 	}
-	)));
+	))));
 }
 
 void Renderer::updateUniforms() {
