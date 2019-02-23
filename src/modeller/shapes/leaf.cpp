@@ -18,9 +18,11 @@ float Shape::Leaf::model(
 	float area = 0;
 	bool even = false;
 	bool first = true;
-	const auto nBase = ((a + 1)->position - a->position).cross((b + 1)->position - b->position).normalize();
 
-	vertices.push_back(Vertex(a->position, nBase, color));
+	vertices.push_back(Vertex(
+		a->position,
+		((a + 1)->position - a->position).cross((b + 1)->position - b->position).normalize(),
+		color));
 
 	while(++a, ++b, a < aEnd && b < bEnd) {
 		auto na = (a->position - (a - 1)->position).cross(b->position - a->position);
