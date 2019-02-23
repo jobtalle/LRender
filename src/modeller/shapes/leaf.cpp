@@ -3,7 +3,7 @@
 #include <math.h>
 
 using namespace LRender;
-
+#include <iostream>
 float Shape::Leaf::model(
 	std::vector<Vertex> &vertices,
 	std::vector<uint32_t> &indices,
@@ -12,109 +12,86 @@ float Shape::Leaf::model(
 	std::vector<Node>::const_iterator aEnd,
 	std::vector<Node>::const_iterator b,
 	std::vector<Node>::const_iterator bEnd) {
+	float area = 0;
+	auto verticesFirst = vertices.size() - 1;
+	auto verticesSize = (aEnd - a) + (bEnd - b) + 2;
 	const auto nBase = ((a + 1)->position - a->position).cross((b + 1)->position - b->position).normalize();
-	std::vector<Vertex> verticesA({ Vertex(a->position, nBase, color) });
-	std::vector<Vertex> verticesB({ Vertex(b->position, nBase, color) });
+
+	vertices.push_back(Vertex(a->position, nBase, color));
+	vertices.push_back(Vertex(b->position, nBase, color));
 
 	while(++a, ++b, a < aEnd && b < bEnd) {
-		auto na = (a->position - (a - 1)->position).cross(b->position - a->position).normalize();
-		auto nb = (b->position - (b - 1)->position).cross(b->position - a->position).normalize();
+		auto na = (a->position - (a - 1)->position).cross(b->position - a->position);
+		auto nb = (b->position - (b - 1)->position).cross(b->position - a->position);
 
 		if(a + 1 != aEnd)
-			na = (na + ((a + 1)->position - a->position).cross(b->position - a->position).normalize()) * 0.5f;
+			na += ((a + 1)->position - a->position).cross(b->position - a->position);
 
 		if(b + 1 != bEnd)
-			nb = (nb + ((b + 1)->position - b->position).cross(b->position - a->position).normalize()) * 0.5f;
+			nb +=((b + 1)->position - b->position).cross(b->position - a->position);
+		
+		vertices.push_back(Vertex(a->position, na.normalize(), color));
+		vertices.push_back(Vertex(b->position, nb.normalize(), color));
 
-		verticesA.push_back(Vertex(a->position, na, color));
-		verticesB.push_back(Vertex(b->position, nb, color));
+		indices.push_back(vertices.size() - 2);
+		indices.push_back(vertices.size() - 1);
+		indices.push_back(vertices.size() - 3);
+		indices.push_back(vertices.size() - 3);
+		indices.push_back(vertices.size() - 4);
+		indices.push_back(vertices.size() - 2);
 	}
 
 	if(a != aEnd) {
 		--a; --b;
 
+		const size_t anchor = vertices.size() - 1;
+		size_t previous = vertices.size() - 2;
+
 		while(++a < aEnd) {
-			auto n = (a->position - (a - 1)->position).cross(b->position - a->position).normalize();
+			auto n = (a->position - (a - 1)->position).cross(b->position - a->position);
 
 			if(a + 1 != aEnd)
-				n = (n + ((a + 1)->position - a->position).cross(b->position - a->position).normalize()) * 0.5f;
+				n += ((a + 1)->position - a->position).cross(b->position - a->position);
 
-			verticesA.push_back(Vertex(
+			vertices.push_back(Vertex(
 				a->position,
-				n,
+				n.normalize(),
 				color));
+
+			indices.push_back(anchor);
+			indices.push_back(previous);
+			indices.push_back(vertices.size() - 1);
+
+			previous = vertices.size() - 1;
+
 		}
 	}
 	else if(b != bEnd) {
 		--a, --b;
 
+		const size_t anchor = vertices.size() - 2;
+		size_t previous = vertices.size() - 1;
+
 		while(++b < bEnd) {
-			auto n = (b->position - (b - 1)->position).cross(b->position - a->position).normalize();
+			auto n = (b->position - (b - 1)->position).cross(b->position - a->position);
 
 			if(b + 1 != bEnd)
-				n = (n + ((b + 1)->position - b->position).cross(b->position - a->position).normalize()) * 0.5f;
+				n += ((b + 1)->position - b->position).cross(b->position - a->position);
 
-			verticesB.push_back(Vertex(
+			vertices.push_back(Vertex(
 				b->position,
-				(b->position - (b - 1)->position).cross(b->position - a->position).normalize(),
+				n.normalize(),
 				color));
+
+			indices.push_back(anchor);
+			indices.push_back(previous);
+			indices.push_back(vertices.size() - 1);
+
+			previous = vertices.size() - 1;
 		}
 	}
 
-	std::vector<Vertex>::const_iterator va = verticesA.begin();
-	std::vector<Vertex>::const_iterator vb = verticesB.begin();
-	float area = 0;
-
-	while(++va, ++vb, va < verticesA.end() && vb < verticesB.end()) {
-		area += pushTriangle(vertices, indices, *va, *vb, *(vb - 1));
-		area += pushTriangle(vertices, indices, *(vb - 1), *(va - 1), *va);
-	}
-
-	if(va != verticesA.end()) {
-		--va;
-
-		while(++va < verticesA.end())
-			area += pushTriangle(vertices, indices, *(vb - 1), *(va - 1), *va);
-	}
-	else if(vb != verticesB.end()) {
-		--vb;
-
-		while(++vb < verticesB.end())
-			area += pushTriangle(vertices, indices, *(va - 1), *vb, *(vb - 1));
-	}		
-
 	return area;
-}
-
-float Shape::Leaf::pushTriangle(
-	std::vector<Vertex> &vertices,
-	std::vector<uint32_t> &indices,
-	Vertex a,
-	Vertex b,
-	Vertex c) {
-	if(a.position == b.position || a.position == c.position || b.position == c.position)
-		return 0;
-
-	vertices.push_back(a);
-	vertices.push_back(b);
-	vertices.push_back(c);
-
-	a.normal = -a.normal;
-	b.normal = -b.normal;
-	c.normal = -c.normal;
-
-	vertices.push_back(c);
-	vertices.push_back(b);
-	vertices.push_back(a);
-
-	indices.push_back(vertices.size() - 6);
-	indices.push_back(vertices.size() - 5);
-	indices.push_back(vertices.size() - 4);
-	indices.push_back(vertices.size() - 3);
-	indices.push_back(vertices.size() - 2);
-	indices.push_back(vertices.size() - 1);
-
-	return area(a.position, b.position, c.position);
 }
 
 float Shape::Leaf::area(

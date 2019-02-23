@@ -15,7 +15,7 @@ const float Renderer::Z_FAR = 400;
 
 Renderer::Renderer(const size_t width, const size_t height) {
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
+	glDisable(GL_CULL_FACE);
 
 	shaderGeometry.reset(new Shader(FILE_SHADER_VERTEX_GEOMETRY, FILE_SHADER_FRAGMENT_GEOMETRY));
 	shader = shaderGeometry.get();

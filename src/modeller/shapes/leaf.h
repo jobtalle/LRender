@@ -21,12 +21,6 @@ namespace LRender {
 		private:
 			Leaf() = default;
 			
-			static float pushTriangle(
-				std::vector<Vertex> &vertices,
-				std::vector<uint32_t> &indices,
-				Vertex a,
-				Vertex b,
-				Vertex c);
 			static float area(
 				const Vector &a,
 				const Vector &b,
