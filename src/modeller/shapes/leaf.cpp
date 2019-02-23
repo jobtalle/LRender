@@ -36,7 +36,7 @@ float Shape::Leaf::model(
 		bPrevious = b++;
 	}
 
-	for(; a < aEnd; ++a)
+	for(; a < aEnd; aPrevious = a++)
 		area += pushTriangle(
 			vertices,
 			indices,
@@ -45,7 +45,7 @@ float Shape::Leaf::model(
 			bPrevious->position,
 			color);
 
-	for(; b < bEnd; ++b)
+	for(; b < bEnd; bPrevious = b++)
 		area += pushTriangle(
 			vertices,
 			indices,
