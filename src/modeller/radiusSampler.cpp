@@ -10,5 +10,5 @@ RadiusSampler::RadiusSampler(const float max) :
 }
 
 float RadiusSampler::sample(const size_t topDist) const {
-	return (1 - (1 / (float(topDist) / DIST_FALLOFF + 1))) * 0.1f;
+	return (1 - (1 / (float(topDist) / DIST_FALLOFF + 1))) * max;
 }

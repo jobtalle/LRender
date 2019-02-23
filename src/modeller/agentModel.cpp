@@ -9,8 +9,8 @@
 
 using namespace LRender;
 
-const float AgentModel::TURTLE_STEP = 0.05f;
-const float AgentModel::TURTLE_ANGLE = 0.3;
+const float AgentModel::TURTLE_STEP = 0.5f;
+const float AgentModel::TURTLE_ANGLE = 0.2;
 const size_t AgentModel::TUBE_PRECISION = 7;
 
 AgentModel::AgentModel(const Agent &agent, const RadiusSampler &radiusSampler, std::mt19937 &randomizer) :
@@ -54,20 +54,20 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 	for(auto &leaf : leaves) {
 		for(auto &branch : leaf.getBranches()) {
 			for(auto &child : branch.getChildren())
-				Shape::Leaf::model(
+				leaf.addArea(Shape::Leaf::model(
 					vertices,
 					indices,
 					Vector(0.3f, 0.8f, 0.6f),
 					branch.getNodes().begin() + child.index,
 					branch.getNodes().end(),
 					child.child->getNodes().begin(),
-					child.child->getNodes().end());
+					child.child->getNodes().end()));
 
 			Shape::Tube::model(
 				vertices,
 				indices,
 				Vector(0.3f, 0.8f, 0.6f),
-				RadiusSampler(0.05f),
+				radiusSampler,
 				TUBE_PRECISION,
 				branch);
 		}

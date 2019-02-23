@@ -3,18 +3,19 @@
 #include <math.h>
 
 using namespace LRender;
-#include <iostream>
+
 float Shape::Leaf::model(
 	std::vector<Vertex> &vertices,
 	std::vector<uint32_t> &indices,
 	const Vector &color,
 	std::vector<Node>::const_iterator a,
-	std::vector<Node>::const_iterator aEnd,
+	std::vector<Node>::const_iterator &aEnd,
 	std::vector<Node>::const_iterator b,
-	std::vector<Node>::const_iterator bEnd) {
+	std::vector<Node>::const_iterator &bEnd) {
+	if(a + 1 == aEnd || b + 1 == bEnd)
+		return 0;
+
 	float area = 0;
-	auto verticesFirst = vertices.size() - 1;
-	auto verticesSize = (aEnd - a) + (bEnd - b) + 2;
 	const auto nBase = ((a + 1)->position - a->position).cross((b + 1)->position - b->position).normalize();
 
 	vertices.push_back(Vertex(a->position, nBase, color));
@@ -33,19 +34,15 @@ float Shape::Leaf::model(
 		vertices.push_back(Vertex(a->position, na.normalize(), color));
 		vertices.push_back(Vertex(b->position, nb.normalize(), color));
 
-		indices.push_back(vertices.size() - 2);
-		indices.push_back(vertices.size() - 1);
-		indices.push_back(vertices.size() - 3);
-		indices.push_back(vertices.size() - 3);
-		indices.push_back(vertices.size() - 4);
-		indices.push_back(vertices.size() - 2);
+		area += addTriangle(vertices, indices, vertices.size() - 2, vertices.size() - 1, vertices.size() - 3);
+		area += addTriangle(vertices, indices, vertices.size() - 3, vertices.size() - 4, vertices.size() - 2);
 	}
 
 	if(a != aEnd) {
 		--a; --b;
 
-		const size_t anchor = vertices.size() - 1;
-		size_t previous = vertices.size() - 2;
+		const auto anchor = vertices.size() - 1;
+		auto previous = vertices.size() - 2;
 
 		while(++a < aEnd) {
 			auto n = (a->position - (a - 1)->position).cross(b->position - a->position);
@@ -58,9 +55,7 @@ float Shape::Leaf::model(
 				n.normalize(),
 				color));
 
-			indices.push_back(anchor);
-			indices.push_back(previous);
-			indices.push_back(vertices.size() - 1);
+			area += addTriangle(vertices, indices, anchor, previous, vertices.size() - 1);
 
 			previous = vertices.size() - 1;
 
@@ -69,8 +64,8 @@ float Shape::Leaf::model(
 	else if(b != bEnd) {
 		--a, --b;
 
-		const size_t anchor = vertices.size() - 2;
-		size_t previous = vertices.size() - 1;
+		const auto anchor = vertices.size() - 2;
+		auto previous = vertices.size() - 1;
 
 		while(++b < bEnd) {
 			auto n = (b->position - (b - 1)->position).cross(b->position - a->position);
@@ -83,9 +78,7 @@ float Shape::Leaf::model(
 				n.normalize(),
 				color));
 
-			indices.push_back(anchor);
-			indices.push_back(previous);
-			indices.push_back(vertices.size() - 1);
+			area += addTriangle(vertices, indices, anchor, previous, vertices.size() - 1);
 
 			previous = vertices.size() - 1;
 		}
@@ -94,7 +87,23 @@ float Shape::Leaf::model(
 	return area;
 }
 
-float Shape::Leaf::area(
+float Shape::Leaf::addTriangle(
+	const std::vector<Vertex> &vertices,
+	std::vector<uint32_t> &indices,
+	const uint32_t a,
+	const uint32_t b,
+	const uint32_t c) {
+	indices.push_back(a);
+	indices.push_back(b);
+	indices.push_back(c);
+
+	return calculateArea(
+		vertices[a].position,
+		vertices[b].position,
+		vertices[c].position);
+}
+
+float Shape::Leaf::calculateArea(
 	const Vector &a,
 	const Vector &b,
 	const Vector &c) {

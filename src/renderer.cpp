@@ -101,7 +101,7 @@ void Renderer::loadScene(const Scene *scene) {
 	models.clear();
 
 	for(auto agent : scene->getAgents()) {
-		AgentModel modeller(agent, RadiusSampler(0.15f), randomizer);
+		AgentModel modeller(agent, RadiusSampler(1.1f), randomizer);
 
 		models.push_back(modeller.getBranches());
 	}
