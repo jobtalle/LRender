@@ -17,10 +17,10 @@ float Shape::Leaf::model(
 
 	float area = 0;
 	bool even = false;
+	bool first = true;
 	const auto nBase = ((a + 1)->position - a->position).cross((b + 1)->position - b->position).normalize();
 
 	vertices.push_back(Vertex(a->position, nBase, color));
-	vertices.push_back(Vertex(b->position, nBase, color));
 
 	while(++a, ++b, a < aEnd && b < bEnd) {
 		auto na = (a->position - (a - 1)->position).cross(b->position - a->position);
@@ -35,13 +35,20 @@ float Shape::Leaf::model(
 		vertices.push_back(Vertex(a->position, na.normalize(), color));
 		vertices.push_back(Vertex(b->position, nb.normalize(), color));
 
-		if(even) {
+		if(first) {
 			area += addTriangle(vertices, indices, vertices.size() - 2, vertices.size() - 1, vertices.size() - 3);
-			area += addTriangle(vertices, indices, vertices.size() - 3, vertices.size() - 4, vertices.size() - 2);
+
+			first = false;
 		}
 		else {
-			area += addTriangle(vertices, indices, vertices.size() - 1, vertices.size() - 3, vertices.size() - 4);
-			area += addTriangle(vertices, indices, vertices.size() - 4, vertices.size() - 2, vertices.size() - 1);
+			if(even) {
+				area += addTriangle(vertices, indices, vertices.size() - 2, vertices.size() - 1, vertices.size() - 3);
+				area += addTriangle(vertices, indices, vertices.size() - 3, vertices.size() - 4, vertices.size() - 2);
+			}
+			else {
+				area += addTriangle(vertices, indices, vertices.size() - 1, vertices.size() - 3, vertices.size() - 4);
+				area += addTriangle(vertices, indices, vertices.size() - 4, vertices.size() - 2, vertices.size() - 1);
+			}
 		}
 
 		even = !even;
