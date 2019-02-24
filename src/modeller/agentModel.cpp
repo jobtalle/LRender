@@ -116,6 +116,9 @@ Branch *AgentModel::traceBranch(
 		case SYM_BRANCH_CLOSE:
 			goto end;
 		case SYM_SEED:
+			if(leaf)
+				continue;
+
 			seeds.push_back(Seed(node.position));
 
 			break;
