@@ -7,8 +7,6 @@
 
 using namespace LRender;
 
-const std::string Renderer::FILE_SHADER_VERTEX_GEOMETRY = "LRender/glsl/vertexGeometry.glsl";
-const std::string Renderer::FILE_SHADER_FRAGMENT_GEOMETRY = "LRender/glsl/fragmentGeometry.glsl";
 const float Renderer::PROJECTION_ANGLE = atan(1) * 1.5f;
 const float Renderer::Z_NEAR = 0.05f;
 const float Renderer::Z_FAR = 400;
@@ -16,9 +14,6 @@ const float Renderer::Z_FAR = 400;
 Renderer::Renderer(const size_t width, const size_t height) {
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
-
-	shaderGeometry.reset(new Shader(FILE_SHADER_VERTEX_GEOMETRY, FILE_SHADER_FRAGMENT_GEOMETRY));
-	shader = shaderGeometry.get();
 
 	setSize(width, height);
 	updateProjection();
@@ -41,11 +36,12 @@ void Renderer::update() {
 }
 
 void Renderer::render() {
-	updateUniforms();
-
-	shader->use();
+	uniforms.setProjection(orbit.getMatrix() * projection);
+	uniforms.update();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	shaders.getBranches().use();
 
 	for(auto model : models)
 		model->draw();
@@ -118,11 +114,6 @@ void Renderer::loadScene(const Scene *scene) {
 		0, 2, 1, 2, 0, 3
 	}
 	))));
-}
-
-void Renderer::updateUniforms() {
-	uniforms.setProjection(orbit.getMatrix() * projection);
-	uniforms.update();
 }
 
 void Renderer::updateProjection() {

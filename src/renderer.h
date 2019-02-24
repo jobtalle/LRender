@@ -4,7 +4,7 @@
 #include "math/vector.h"
 #include "math/matrix.h"
 #include "model.h"
-#include "shader.h"
+#include "shaders.h"
 #include "uniforms.h"
 #include "glFunctions.h"
 #include "orbit.h"
@@ -42,18 +42,16 @@ namespace LRender {
 
 		std::mt19937 randomizer;
 		GLFunctions gl;
+		Shaders shaders;
 		Uniforms uniforms;
 		Orbit orbit;
 		Matrix projection;
 		float aspect;
-		Shader *shader;
-		std::unique_ptr<Shader> shaderGeometry;
 		std::mutex access;
 		std::shared_ptr<Scene> nextScene;
 		std::vector<std::shared_ptr<Model>> models;
 
 		void loadScene(const Scene *scene);
-		void updateUniforms();
 		void updateProjection();
 	};
 };
