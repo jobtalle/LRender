@@ -19,12 +19,12 @@ AgentModel::AgentModel(const Agent &agent, const RadiusSampler &radiusSampler, s
 	build(agent, randomizer);
 }
 
-std::shared_ptr<Model> AgentModel::getBranches() {
-	return modelBranches;
+const Model &AgentModel::getBranches() const {
+	return *modelBranches;
 }
 
-std::shared_ptr<Model> AgentModel::getLeaves() {
-	return modelLeaves;
+const Model &AgentModel::getLeaves() const {
+	return *modelLeaves;
 }
 
 void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {

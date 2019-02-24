@@ -8,6 +8,7 @@
 #include "uniforms.h"
 #include "glFunctions.h"
 #include "orbit.h"
+#include "modeller/agentModel.h"
 
 #include <memory>
 #include <mutex>
@@ -49,8 +50,7 @@ namespace LRender {
 		float aspect;
 		std::mutex access;
 		std::shared_ptr<Scene> nextScene;
-		std::vector<std::shared_ptr<Model>> branches;
-		std::vector<std::shared_ptr<Model>> leaves;
+		std::vector<AgentModel> agents;
 
 		void loadScene(const Scene *scene);
 		void updateProjection();

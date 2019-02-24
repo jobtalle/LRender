@@ -1,6 +1,5 @@
 #include "renderer.h"
 #include "modeller/radiusSampler.h"
-#include "modeller/agentModel.h"
 #include "glad/glad.h"
 
 #include <math.h>
@@ -43,15 +42,15 @@ void Renderer::render() {
 
 	shaders.getBranches().use();
 
-	for(auto &model : branches)
-		model->draw();
+	for(auto &agent : agents)
+		agent.getBranches().draw();
 
 	glDisable(GL_CULL_FACE);
 
 	shaders.getLeaves().use();
 
-	for(auto &model : leaves)
-		model->draw();
+	for(auto &agent : agents)
+		agent.getLeaves().draw();
 }
 
 void Renderer::setSize(const size_t width, const size_t height) {
@@ -101,27 +100,10 @@ void Renderer::scrollDown() {
 }
 
 void Renderer::loadScene(const Scene *scene) {
-	branches.clear();
-	leaves.clear();
+	agents.clear();
 
-	for(auto agent : scene->getAgents()) {
-		AgentModel modeller(agent, RadiusSampler(1.1f), randomizer);
-
-		branches.push_back(modeller.getBranches());
-		leaves.push_back(modeller.getLeaves());
-	}
-
-	branches.push_back(std::shared_ptr<Model>(new Model(Geometry(
-	{
-		Vertex(Vector(-10, 0, -10), Vector(0, 1, 0), Vector(1, 0, 0)),
-		Vertex(Vector(10, 0, -10), Vector(0, 1, 0), Vector(0, 1, 0)),
-		Vertex(Vector(10, 0, 10), Vector(0, 1, 0), Vector(0, 0, 1)),
-		Vertex(Vector(-10, 0, 10), Vector(0, 1, 0), Vector(1, 1, 1))
-	},
-	{
-		0, 2, 1, 2, 0, 3
-	}
-	))));
+	for(auto &agent : scene->getAgents())
+		agents.push_back(AgentModel(agent, RadiusSampler(1.1f), randomizer));
 }
 
 void Renderer::updateProjection() {

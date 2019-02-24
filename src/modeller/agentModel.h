@@ -21,8 +21,8 @@ namespace LRender {
 			const Agent &agent,
 			const RadiusSampler &radiusSampler,
 			std::mt19937 &randomizer);
-		std::shared_ptr<Model> getBranches();
-		std::shared_ptr<Model> getLeaves();
+		const Model &getBranches() const;
+		const Model &getLeaves() const;
 
 	private:
 		static const float TURTLE_STEP;
@@ -39,8 +39,8 @@ namespace LRender {
 		static const char SYM_ROLL_INCREMENT = '/';
 		static const char SYM_ROLL_DECREMENT = '\\';
 
-		std::shared_ptr<Model> modelBranches;
-		std::shared_ptr<Model> modelLeaves;
+		std::unique_ptr<Model> modelBranches;
+		std::unique_ptr<Model> modelLeaves;
 		RadiusSampler radiusSampler;
 
 		void build(
