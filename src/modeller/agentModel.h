@@ -1,12 +1,13 @@
 #pragma once
 
-#include "node.h"
-#include "branch.h"
-#include "leaf.h"
-#include "radiusSampler.h"
-#include "../scene/agent.h"
-#include "../model.h"
-#include "../math/quaternion.h"
+#include "modeller/node.h"
+#include "modeller/branch.h"
+#include "modeller/leaf.h"
+#include "modeller/seed.h"
+#include "modeller/radiusSampler.h"
+#include "scene/agent.h"
+#include "model.h"
+#include "math/quaternion.h"
 
 #include <vector>
 #include <memory>
@@ -29,6 +30,7 @@ namespace LRender {
 		static const size_t TUBE_PRECISION;
 		static const char SYM_STEP_MIN = 'A';
 		static const char SYM_STEP_MAX = 'Z';
+		static const char SYM_SEED = '*';
 		static const char SYM_LEAF = '<';
 		static const char SYM_BRANCH_OPEN = '[';
 		static const char SYM_BRANCH_CLOSE = ']';
@@ -48,6 +50,7 @@ namespace LRender {
 			const bool leaf,
 			std::list<Branch> &branches,
 			std::list<Leaf> &leaves,
+			std::vector<Seed> &seeds,
 			Node node,
 			std::string::const_iterator &at,
 			const std::string::const_iterator &last);

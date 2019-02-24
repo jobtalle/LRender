@@ -1,6 +1,6 @@
 #pragma once
 
-#include "agent.h"
+#include "scene/agent.h"
 
 #include <vector>
 

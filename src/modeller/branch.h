@@ -1,7 +1,7 @@
 #pragma once
 
-#include "node.h"
-#include "../math/vector.h"
+#include "modeller/node.h"
+#include "math/vector.h"
 
 #include <vector>
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vector.h"
+#include "math/vector.h"
 
 namespace LRender {
 	class Quaternion final {

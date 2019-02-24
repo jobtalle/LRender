@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../math/vector.h"
-#include "../math/quaternion.h"
+#include "math/vector.h"
+#include "math/quaternion.h"
 
 namespace LRender {
 	class Node final {

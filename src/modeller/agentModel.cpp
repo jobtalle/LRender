@@ -1,9 +1,10 @@
-#include "agentModel.h"
-#include "shapes/tube.h"
-#include "shapes/leaf.h"
-#include "../math/vector.h"
-#include "../math/quaternion.h"
-#include "../math/constants.h"
+#include "modeller/agentModel.h"
+#include "modeller/shapes/tube.h"
+#include "modeller/shapes/leaf.h"
+#include "modeller/shapes/seed.h"
+#include "math/vector.h"
+#include "math/quaternion.h"
+#include "math/constants.h"
 
 #include <cstdint>
 
@@ -31,6 +32,7 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 	Geometry geometryLeaves;
 	std::list<Branch> branches;
 	std::list<Leaf> leaves;
+	std::vector<Seed> seeds;
 	Node node(agent.getPosition(), std::uniform_real_distribution<float>(0, Constants::PI * 2)(randomizer));
 	
 	traceBranch(
@@ -38,11 +40,12 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 		false,
 		branches,
 		leaves,
+		seeds,
 		node,
 		agent.getSymbols().begin(),
 		agent.getSymbols().end());
-
-	for(auto branch : branches)
+	
+	for(const auto &branch : branches)
 		Shape::Tube::model(
 			geometryBranches.vertices,
 			geometryBranches.indices,
@@ -52,8 +55,8 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 			branch);
 
 	for(auto &leaf : leaves) {
-		for(auto &branch : leaf.getBranches()) {
-			for(auto &child : branch.getChildren())
+		for(const auto &branch : leaf.getBranches()) {
+			for(const auto &child : branch.getChildren())
 				leaf.addArea(Shape::Leaf::model(
 					geometryLeaves.vertices,
 					geometryLeaves.indices,
@@ -73,6 +76,13 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 		}
 	}
 
+	for(const auto &seed : seeds)
+		Shape::Seed::model(
+			geometryBranches.vertices,
+			geometryBranches.indices,
+			Vector(0.6f, 0, 0),
+			seed);
+
 	modelBranches.reset(new Model(geometryBranches));
 	modelLeaves.reset(new Model(geometryLeaves));
 }
@@ -82,6 +92,7 @@ Branch *AgentModel::traceBranch(
 	const bool leaf,
 	std::list<Branch> &branches,
 	std::list<Leaf> &leaves,
+	std::vector<Seed> &seeds,
 	Node node,
 	std::string::const_iterator &at,
 	const std::string::const_iterator &last) {
@@ -94,16 +105,20 @@ Branch *AgentModel::traceBranch(
 			if(!leaf) {
 				leaves.push_back(Leaf());
 
-				branch.add(lastChild = traceBranch(&branch, true, (--leaves.end())->branches, leaves, node, at, last));
+				branch.add(lastChild = traceBranch(&branch, true, (--leaves.end())->branches, leaves, seeds, node, at, last));
 
 				break;
 			}
 		case SYM_BRANCH_OPEN:
-			branch.add(lastChild = traceBranch(&branch, leaf, branches, leaves, node, at, last));
+			branch.add(lastChild = traceBranch(&branch, leaf, branches, leaves, seeds, node, at, last));
 
 			break;
 		case SYM_BRANCH_CLOSE:
 			goto end;
+		case SYM_SEED:
+			seeds.push_back(Seed(node.position));
+
+			break;
 		case SYM_PITCH_INCREMENT:
 			node.pitch(TURTLE_ANGLE);
 			

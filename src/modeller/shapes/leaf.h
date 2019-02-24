@@ -1,9 +1,10 @@
 #pragma once
 
-#include "../../vertex.h"
-#include "../node.h"
+#include "vertex.h"
+#include "modeller/node.h"
 
 #include <vector>
+#include <cstdint>
 
 namespace LRender {
 	namespace Shape {
