@@ -14,7 +14,7 @@ void Shape::Icosphere::model(
 	const Quaternion &orientation,
 	const float radius,
 	const size_t subdivisions) {
-	const BufferedSphere &sphere = getIcosahedron(subdivisions);
+	const BufferedSphere &sphere = getSphere(subdivisions);
 	const size_t firstIndex = vertices.size();
 
 	for(auto &point : sphere.points)
@@ -24,18 +24,45 @@ void Shape::Icosphere::model(
 		indices.push_back(firstIndex + index);
 }
 
-const Shape::Icosphere::BufferedSphere &Shape::Icosphere::getIcosahedron(const size_t subdivisions) {
+const Shape::Icosphere::BufferedSphere &Shape::Icosphere::getSphere(const size_t subdivisions) {
 	while(subdivisions >= bufferedSpheres.size()) {
-		BufferedSphere newSphere;
+		if(bufferedSpheres.size() == 0) {
+			BufferedSphere newSphere;
 
-		if(bufferedSpheres.size() == 0)
 			makeIcosahedron(newSphere.points, newSphere.indices);
-		// TODO: else, subdivide
 
-		bufferedSpheres.push_back(newSphere);
+			bufferedSpheres.push_back(newSphere);
+		}
+		else
+			bufferedSpheres.push_back(subdivide(*--bufferedSpheres.end()));
 	}
 
 	return bufferedSpheres[subdivisions];
+}
+
+Shape::Icosphere::BufferedSphere Shape::Icosphere::subdivide(const Shape::Icosphere::BufferedSphere &source) {
+	BufferedSphere sphere;
+
+	sphere.points.insert(sphere.points.begin(), source.points.begin(), source.points.end());
+
+	for(auto triangle = source.indices.begin(); triangle < source.indices.end(); std::advance(triangle, 3)) {
+		const uint32_t ia = *triangle;
+		const uint32_t ib = *(triangle + 1);
+		const uint32_t ic = *(triangle + 2);
+		const Vector ab(((*(source.points.begin() + ia) + *(source.points.begin() + ib)) * 0.5f).normalize());
+		const Vector bc(((*(source.points.begin() + ib) + *(source.points.begin() + ic)) * 0.5f).normalize());
+		const Vector ca(((*(source.points.begin() + ic) + *(source.points.begin() + ia)) * 0.5f).normalize());
+		const uint32_t iab = sphere.points.size(); sphere.points.push_back(ab);
+		const uint32_t ibc = sphere.points.size(); sphere.points.push_back(bc);
+		const uint32_t ica = sphere.points.size(); sphere.points.push_back(ca);
+
+		sphere.indices.insert(sphere.indices.end(), { ia, iab, ica });
+		sphere.indices.insert(sphere.indices.end(), { ib, ibc, iab });
+		sphere.indices.insert(sphere.indices.end(), { ic, ica, ibc });
+		sphere.indices.insert(sphere.indices.end(), { iab, ibc, ica });
+	}
+
+	return sphere;
 }
 
 void Shape::Icosphere::makeIcosahedron(

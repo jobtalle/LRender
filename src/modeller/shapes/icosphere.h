@@ -27,7 +27,8 @@ namespace LRender {
 				std::vector<uint32_t> indices;
 			};
 
-			static const BufferedSphere &getIcosahedron(const size_t subdivisions);
+			static const BufferedSphere &getSphere(const size_t subdivisions);
+			static BufferedSphere subdivide(const BufferedSphere &source);
 			static void makeIcosahedron(
 				std::vector<Vector> &points,
 				std::vector<uint32_t> &indice);

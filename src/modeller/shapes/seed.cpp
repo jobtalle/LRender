@@ -15,5 +15,5 @@ void Shape::Seed::model(
 		seed.getPosition(),
 		Quaternion(),
 		0.3f,
-		0);
+		1);
 }
