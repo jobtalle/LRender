@@ -13,7 +13,6 @@ const float Renderer::Z_FAR = 400;
 
 Renderer::Renderer(const size_t width, const size_t height) {
 	glEnable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
 
 	setSize(width, height);
 	updateProjection();
@@ -40,10 +39,18 @@ void Renderer::render() {
 	uniforms.update();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_CULL_FACE);
 
 	shaders.getBranches().use();
 
-	for(auto model : models)
+	for(auto &model : branches)
+		model->draw();
+
+	glDisable(GL_CULL_FACE);
+
+	shaders.getLeaves().use();
+
+	for(auto &model : leaves)
 		model->draw();
 }
 
@@ -94,16 +101,17 @@ void Renderer::scrollDown() {
 }
 
 void Renderer::loadScene(const Scene *scene) {
-	models.clear();
+	branches.clear();
+	leaves.clear();
 
 	for(auto agent : scene->getAgents()) {
 		AgentModel modeller(agent, RadiusSampler(1.1f), randomizer);
 
-		models.push_back(modeller.getBranches());
-		models.push_back(modeller.getLeaves());
+		branches.push_back(modeller.getBranches());
+		leaves.push_back(modeller.getLeaves());
 	}
 
-	models.push_back(std::shared_ptr<Model>(new Model(Geometry(
+	branches.push_back(std::shared_ptr<Model>(new Model(Geometry(
 	{
 		Vertex(Vector(-10, 0, -10), Vector(0, 1, 0), Vector(1, 0, 0)),
 		Vertex(Vector(10, 0, -10), Vector(0, 1, 0), Vector(0, 1, 0)),
