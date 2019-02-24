@@ -49,9 +49,9 @@ Shape::Icosphere::BufferedSphere Shape::Icosphere::subdivide(const Shape::Icosph
 		const uint32_t ia = *triangle;
 		const uint32_t ib = *(triangle + 1);
 		const uint32_t ic = *(triangle + 2);
-		const Vector ab(((*(source.points.begin() + ia) + *(source.points.begin() + ib)) * 0.5f).normalize());
-		const Vector bc(((*(source.points.begin() + ib) + *(source.points.begin() + ic)) * 0.5f).normalize());
-		const Vector ca(((*(source.points.begin() + ic) + *(source.points.begin() + ia)) * 0.5f).normalize());
+		const Vector ab((*(source.points.begin() + ia) + *(source.points.begin() + ib)).normalize());
+		const Vector bc((*(source.points.begin() + ib) + *(source.points.begin() + ic)).normalize());
+		const Vector ca((*(source.points.begin() + ic) + *(source.points.begin() + ia)).normalize());
 		const uint32_t iab = sphere.points.size(); sphere.points.push_back(ab);
 		const uint32_t ibc = sphere.points.size(); sphere.points.push_back(bc);
 		const uint32_t ica = sphere.points.size(); sphere.points.push_back(ca);
