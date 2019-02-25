@@ -12,15 +12,14 @@ namespace LRender {
 		template <class ChildType>
 		class Child {
 		public:
-			Child(const size_t index, ChildType *child);
+			Child(const size_t index, ChildType *const child);
 
 			const size_t index;
-			ChildType *child;
+			ChildType *const child;
 		};
 
 		Branch(const Node &node);
 		const std::vector<Node> &getNodes() const;
-		const std::vector<Node> &getRoot() const;
 		const void transform(
 			std::vector<Vector> &vectors,
 			const std::vector<Node>::const_iterator &node) const;

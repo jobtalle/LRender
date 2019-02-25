@@ -89,7 +89,7 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 }
 
 Branch *AgentModel::traceBranch(
-	Branch *parent,
+	Branch *const parent,
 	const bool leaf,
 	std::list<Branch> &branches,
 	std::list<Leaf> &leaves,

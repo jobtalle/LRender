@@ -15,10 +15,6 @@ const std::vector<Node> &Branch::getNodes() const {
 	return nodes;
 }
 
-const std::vector<Node> &Branch::getRoot() const {
-	return root;
-}
-
 const void Branch::transform(
 	std::vector<Vector> &vectors,
 	const std::vector<Node>::const_iterator &node) const {
@@ -62,7 +58,7 @@ void Branch::calculateTopDist(const size_t offset) {
 		if(dist > nodes[i].topDist)
 			nodes[i].topDist = dist;
 	}
-
+	
 	for(Child<Seed> &seed : seeds)
 		seed.child->setTopDist(nodes[seed.index].topDist);
 }
@@ -97,7 +93,7 @@ void Branch::transform(
 }
 
 template <class ChildType>
-Branch::Child<ChildType>::Child(const size_t index, ChildType *child) :
+Branch::Child<ChildType>::Child(const size_t index, ChildType *const child) :
 	index(index),
 	child(child) {
 

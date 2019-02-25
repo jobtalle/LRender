@@ -46,7 +46,7 @@ namespace LRender {
 		void build(
 			const Agent &agent, std::mt19937 &randomizer);
 		Branch *traceBranch(
-			Branch *parent,
+			Branch *const parent,
 			const bool leaf,
 			std::list<Branch> &branches,
 			std::list<Leaf> &leaves,
