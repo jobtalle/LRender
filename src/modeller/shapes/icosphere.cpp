@@ -49,12 +49,13 @@ Shape::Icosphere::BufferedSphere Shape::Icosphere::subdivide(const Shape::Icosph
 		const uint32_t ia = *triangle;
 		const uint32_t ib = *(triangle + 1);
 		const uint32_t ic = *(triangle + 2);
-		const Vector ab((*(source.points.begin() + ia) + *(source.points.begin() + ib)).normalize());
-		const Vector bc((*(source.points.begin() + ib) + *(source.points.begin() + ic)).normalize());
-		const Vector ca((*(source.points.begin() + ic) + *(source.points.begin() + ia)).normalize());
-		const uint32_t iab = sphere.points.size(); sphere.points.push_back(ab);
-		const uint32_t ibc = sphere.points.size(); sphere.points.push_back(bc);
-		const uint32_t ica = sphere.points.size(); sphere.points.push_back(ca);
+		const uint32_t iab = sphere.points.size();
+		const uint32_t ibc = sphere.points.size() + 1;
+		const uint32_t ica = sphere.points.size() + 2;
+
+		sphere.points.push_back((*(source.points.begin() + ia) + *(source.points.begin() + ib)).normalize());
+		sphere.points.push_back((*(source.points.begin() + ib) + *(source.points.begin() + ic)).normalize());
+		sphere.points.push_back((*(source.points.begin() + ic) + *(source.points.begin() + ia)).normalize());
 
 		sphere.indices.insert(sphere.indices.end(), { ia, iab, ica });
 		sphere.indices.insert(sphere.indices.end(), { ib, ibc, iab });

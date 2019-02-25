@@ -50,7 +50,7 @@ namespace LRender {
 			const bool leaf,
 			std::list<Branch> &branches,
 			std::list<Leaf> &leaves,
-			std::vector<Seed> &seeds,
+			std::list<Seed> &seeds,
 			Node node,
 			std::string::const_iterator &at,
 			const std::string::const_iterator &last);

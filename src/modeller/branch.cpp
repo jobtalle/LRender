@@ -48,7 +48,11 @@ void Branch::add(const Node &node) {
 }
 
 void Branch::add(Branch *branch) {
-	children.push_back(Child(nodes.size() - 1, branch));
+	branches.push_back(ChildBranch(nodes.size() - 1, branch));
+}
+
+void Branch::add(Seed *seed) {
+	seeds.push_back(ChildSeed(nodes.size() - 1, seed));
 }
 
 void Branch::calculateTopDist(const size_t offset) {
@@ -58,6 +62,9 @@ void Branch::calculateTopDist(const size_t offset) {
 		if(dist > nodes[i].topDist)
 			nodes[i].topDist = dist;
 	}
+
+	for(ChildSeed &seed : seeds)
+		seed.child->setTopDist(nodes[seed.index].topDist);
 }
 
 void Branch::setRoot(const std::vector<Node> &root) {
@@ -68,8 +75,8 @@ size_t Branch::size() const {
 	return nodes.size();
 }
 
-const std::vector<Branch::Child> &Branch::getChildren() const {
-	return children;
+const std::vector<Branch::ChildBranch> &Branch::getChildren() const {
+	return branches;
 }
 
 void Branch::transform(
@@ -89,7 +96,13 @@ void Branch::transform(
 	}
 }
 
-Branch::Child::Child(const size_t index, const Branch *child) :
+Branch::ChildBranch::ChildBranch(const size_t index, Branch *child) :
+	index(index),
+	child(child) {
+
+}
+
+Branch::ChildSeed::ChildSeed(const size_t index, Seed *child) :
 	index(index),
 	child(child) {
 

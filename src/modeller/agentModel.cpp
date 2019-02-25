@@ -32,7 +32,7 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 	Geometry geometryLeaves;
 	std::list<Branch> branches;
 	std::list<Leaf> leaves;
-	std::vector<Seed> seeds;
+	std::list<Seed> seeds;
 	Node node(agent.getPosition(), std::uniform_real_distribution<float>(0, Constants::PI * 2)(randomizer));
 	
 	traceBranch(
@@ -81,6 +81,7 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 			geometryBranches.vertices,
 			geometryBranches.indices,
 			Vector(0.6f, 0, 0),
+			radiusSampler,
 			seed);
 
 	modelBranches.reset(new Model(geometryBranches));
@@ -92,7 +93,7 @@ Branch *AgentModel::traceBranch(
 	const bool leaf,
 	std::list<Branch> &branches,
 	std::list<Leaf> &leaves,
-	std::vector<Seed> &seeds,
+	std::list<Seed> &seeds,
 	Node node,
 	std::string::const_iterator &at,
 	const std::string::const_iterator &last) {
@@ -120,6 +121,8 @@ Branch *AgentModel::traceBranch(
 				continue;
 
 			seeds.push_back(Seed(node.position));
+
+			branch.add(&*--seeds.end());
 
 			break;
 		case SYM_PITCH_INCREMENT:
