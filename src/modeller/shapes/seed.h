@@ -23,6 +23,7 @@ namespace LRender {
 
 			static const float RADIUS_FACTOR;
 			static const float RADIUS_MIN;
+			static const size_t SUBDIVISIONS;
 		};
 	};
 };

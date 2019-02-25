@@ -7,6 +7,7 @@ using namespace LRender;
 
 const float Shape::Seed::RADIUS_FACTOR = 2.0f;
 const float Shape::Seed::RADIUS_MIN = 0.2f;
+const size_t Shape::Seed::SUBDIVISIONS = 1;
 
 void Shape::Seed::model(
 	std::vector<Vertex> &vertices,
@@ -21,5 +22,5 @@ void Shape::Seed::model(
 		seed.getPosition(),
 		Quaternion(),
 		std::max(radiusSampler.sample(seed.getTopDist()) * RADIUS_FACTOR, RADIUS_MIN),
-		1);
+		SUBDIVISIONS);
 }
