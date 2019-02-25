@@ -8,7 +8,7 @@
 
 namespace LRender {
 	namespace Shape {
-		class Tube final {
+		class Branch final {
 		public:
 			static void model(
 				std::vector<Vertex> &vertices,
@@ -16,10 +16,10 @@ namespace LRender {
 				const Vector &color,
 				const RadiusSampler &radiusSampler,
 				const size_t precision,
-				const Branch &branch);
+				const LRender::Branch &branch);
 
 		private:
-			Tube() = default;
+			Branch() = default;
 
 			static std::vector<Vector> makeRing(const size_t precision);
 		};

@@ -48,11 +48,11 @@ void Branch::add(const Node &node) {
 }
 
 void Branch::add(Branch *branch) {
-	branches.push_back(ChildBranch(nodes.size() - 1, branch));
+	branches.push_back(Child<Branch>(nodes.size() - 1, branch));
 }
 
 void Branch::add(Seed *seed) {
-	seeds.push_back(ChildSeed(nodes.size() - 1, seed));
+	seeds.push_back(Child<Seed>(nodes.size() - 1, seed));
 }
 
 void Branch::calculateTopDist(const size_t offset) {
@@ -63,7 +63,7 @@ void Branch::calculateTopDist(const size_t offset) {
 			nodes[i].topDist = dist;
 	}
 
-	for(ChildSeed &seed : seeds)
+	for(Child<Seed> &seed : seeds)
 		seed.child->setTopDist(nodes[seed.index].topDist);
 }
 
@@ -75,7 +75,7 @@ size_t Branch::size() const {
 	return nodes.size();
 }
 
-const std::vector<Branch::ChildBranch> &Branch::getChildren() const {
+const std::vector<Branch::Child<Branch>> &Branch::getBranches() const {
 	return branches;
 }
 
@@ -96,13 +96,8 @@ void Branch::transform(
 	}
 }
 
-Branch::ChildBranch::ChildBranch(const size_t index, Branch *child) :
-	index(index),
-	child(child) {
-
-}
-
-Branch::ChildSeed::ChildSeed(const size_t index, Seed *child) :
+template <class ChildType>
+Branch::Child<ChildType>::Child(const size_t index, ChildType *child) :
 	index(index),
 	child(child) {
 

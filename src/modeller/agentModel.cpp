@@ -1,5 +1,5 @@
 #include "modeller/agentModel.h"
-#include "modeller/shapes/tube.h"
+#include "modeller/shapes/branch.h"
 #include "modeller/shapes/leaf.h"
 #include "modeller/shapes/seed.h"
 #include "math/vector.h"
@@ -46,7 +46,7 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 		agent.getSymbols().end());
 	
 	for(const auto &branch : branches)
-		Shape::Tube::model(
+		Shape::Branch::model(
 			geometryBranches.vertices,
 			geometryBranches.indices,
 			Vector(0.53f, 0.39f, 0.78f),
@@ -56,7 +56,15 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 
 	for(auto &leaf : leaves) {
 		for(const auto &branch : leaf.getBranches()) {
-			for(const auto &child : branch.getChildren())
+			Shape::Branch::model(
+				geometryBranches.vertices,
+				geometryBranches.indices,
+				Vector(0.3f, 0.8f, 0.6f),
+				radiusSampler,
+				TUBE_PRECISION,
+				branch);
+
+			for(const auto &child : branch.getBranches())
 				leaf.addArea(Shape::Leaf::model(
 					geometryLeaves.vertices,
 					geometryLeaves.indices,
@@ -65,14 +73,6 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 					branch.getNodes().end(),
 					child.child->getNodes().begin(),
 					child.child->getNodes().end()));
-
-			Shape::Tube::model(
-				geometryBranches.vertices,
-				geometryBranches.indices,
-				Vector(0.3f, 0.8f, 0.6f),
-				radiusSampler,
-				TUBE_PRECISION,
-				branch);
 		}
 	}
 
@@ -117,12 +117,11 @@ Branch *AgentModel::traceBranch(
 		case SYM_BRANCH_CLOSE:
 			goto end;
 		case SYM_SEED:
-			if(leaf)
-				continue;
+			if(!leaf) {
+				seeds.push_back(Seed(node.position));
 
-			seeds.push_back(Seed(node.position));
-
-			branch.add(&*--seeds.end());
+				branch.add(&*--seeds.end());
+			}
 
 			break;
 		case SYM_PITCH_INCREMENT:
@@ -167,7 +166,7 @@ end:
 		if(lastChild)
 			lastChild->setRoot({ *(branch.getNodes().end() - 1) });
 
-		return &*(--branches.end());
+		return &*--branches.end();
 	}
 
 	return nullptr;

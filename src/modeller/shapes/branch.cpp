@@ -1,17 +1,17 @@
-#include "tube.h"
+#include "branch.h"
 #include "math/constants.h"
 
 #include <math.h>
 
 using namespace LRender;
 
-void Shape::Tube::model(
+void Shape::Branch::model(
 	std::vector<Vertex> &vertices,
 	std::vector<uint32_t> &indices,
 	const Vector &color,
 	const RadiusSampler &radiusSampler,
 	const size_t precision,
-	const Branch &branch) {
+	const LRender::Branch &branch) {
 	const std::vector<Vector> ring(makeRing(precision));
 
 	for(auto node = branch.getNodes().begin(); node < branch.getNodes().end(); ++node) {
@@ -38,7 +38,7 @@ void Shape::Tube::model(
 	}
 }
 
-std::vector<Vector> Shape::Tube::makeRing(const size_t precision) {
+std::vector<Vector> Shape::Branch::makeRing(const size_t precision) {
 	std::vector<Vector> ring;
 
 	for(size_t i = 0; i < precision; ++i) {
