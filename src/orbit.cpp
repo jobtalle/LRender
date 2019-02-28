@@ -20,6 +20,12 @@ Orbit::Orbit(const float angle, const float pitch, const float zoom) :
 	updateMatrix();
 }
 
+void Orbit::setFocus(const Vector &focus) {
+	this->focus = focus;
+
+	updateMatrix();
+}
+
 void Orbit::mouseGrabDrag() {
 	dragging = true;
 }

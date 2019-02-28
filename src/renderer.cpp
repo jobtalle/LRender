@@ -109,7 +109,12 @@ void Renderer::loadScene(const Scene *scene) {
 	terrains.push_back(TerrainModel(scene->getTerrain()));
 
 	for(auto &agent : scene->getAgents())
-		agents.push_back(AgentModel(agent, RadiusSampler(1.1f), randomizer));
+		agents.push_back(AgentModel(agent, RadiusSampler(0.11f), randomizer));
+
+	orbit.setFocus(Vector(
+		scene->getTerrain().getWidth() * 0.5f,
+		0,
+		scene->getTerrain().getHeight() * 0.5f));
 }
 
 void Renderer::updateProjection() {

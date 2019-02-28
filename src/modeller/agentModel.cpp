@@ -10,7 +10,7 @@
 
 using namespace LRender;
 
-const float AgentModel::TURTLE_STEP = 0.5f;
+const float AgentModel::TURTLE_STEP = 0.05f;
 const float AgentModel::TURTLE_ANGLE = 0.2;
 const size_t AgentModel::TUBE_PRECISION = 7;
 

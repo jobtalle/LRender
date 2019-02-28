@@ -11,7 +11,8 @@ namespace LRender {
 		Orbit(
 			const float angle = atan(1),
 			const float pitch = atan(1),
-			const float zoom = 15);
+			const float zoom = 1.5f);
+		void setFocus(const Vector &focus);
 		void mouseGrabDrag();
 		void mouseGrabPan();
 		void mouseMove(const int x, const int y);
