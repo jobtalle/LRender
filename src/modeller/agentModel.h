@@ -52,7 +52,7 @@ namespace LRender {
 			std::list<Leaf> &leaves,
 			std::list<Seed> &seeds,
 			Node node,
-			std::string::const_iterator at,
+			std::string::const_iterator &at,
 			const std::string::const_iterator &last);
 	};
 };

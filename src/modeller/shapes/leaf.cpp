@@ -3,7 +3,7 @@
 #include <math.h>
 
 using namespace LRender;
-
+#include <iostream>
 float Shape::Leaf::model(
 	std::vector<Vertex> &vertices,
 	std::vector<uint32_t> &indices,
