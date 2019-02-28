@@ -5,7 +5,7 @@
 
 using namespace LRender;
 
-const float TerrainModel::RESOLUTION = 0.5f;
+const float TerrainModel::RESOLUTION = 0.25f;
 
 TerrainModel::TerrainModel(const Terrain &terrain) {
 	build(terrain);
@@ -54,10 +54,18 @@ void TerrainModel::build(const Terrain &terrain) {
 			color));
 
 		if(x != xCells && y != yCells) {
-			geometry.indices.insert(geometry.indices.end(),
+			if((x & 1) && (y & 1)) {
+				geometry.indices.insert(geometry.indices.end(),
 				{ index + xCells + 1, index + xCells + 2, index + 1 });
-			geometry.indices.insert(geometry.indices.end(),
+				geometry.indices.insert(geometry.indices.end(),
 				{ index + 1, index, index + xCells + 1 });
+			}
+			else {
+				geometry.indices.insert(geometry.indices.end(),
+				{ index + xCells + 2, index + 1, index });
+				geometry.indices.insert(geometry.indices.end(),
+				{ index, index + xCells + 1, index + xCells + 2 });
+			}
 		}
 	}
 
