@@ -42,6 +42,9 @@ void Renderer::render() {
 
 	shaders.getBranches().use();
 
+	for(auto &terrain : terrains)
+		terrain.getModel().draw();
+
 	for(auto &agent : agents)
 		agent.getBranches().draw();
 
@@ -100,7 +103,10 @@ void Renderer::scrollDown() {
 }
 
 void Renderer::loadScene(const Scene *scene) {
+	terrains.clear();
 	agents.clear();
+
+	terrains.push_back(TerrainModel(scene->getTerrain()));
 
 	for(auto &agent : scene->getAgents())
 		agents.push_back(AgentModel(agent, RadiusSampler(1.1f), randomizer));

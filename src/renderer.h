@@ -8,6 +8,7 @@
 #include "uniforms.h"
 #include "glFunctions.h"
 #include "orbit.h"
+#include "modeller/terrainModel.h"
 #include "modeller/agentModel.h"
 
 #include <memory>
@@ -51,6 +52,7 @@ namespace LRender {
 		std::mutex access;
 		std::shared_ptr<Scene> nextScene;
 		std::vector<AgentModel> agents;
+		std::vector<TerrainModel> terrains;
 
 		void loadScene(const Scene *scene);
 		void updateProjection();
