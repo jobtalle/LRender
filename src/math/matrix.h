@@ -35,7 +35,7 @@ namespace LRender {
 			const float zfar);
 
 	private:
-		float m[4][4] = { 0 };
+		float m[4][4] = { { 0 } };
 
 		Matrix(const float (&values)[4][4]);
 	};

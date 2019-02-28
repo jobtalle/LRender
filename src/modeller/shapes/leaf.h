@@ -15,9 +15,9 @@ namespace LRender {
 				std::vector<uint32_t> &indices,
 				const Vector &color,
 				std::vector<Node>::const_iterator a,
-				std::vector<Node>::const_iterator &aEnd,
+				const std::vector<Node>::const_iterator &aEnd,
 				std::vector<Node>::const_iterator b,
-				std::vector<Node>::const_iterator &bEnd);
+				const std::vector<Node>::const_iterator &bEnd);
 
 		private:
 			Leaf() = default;
