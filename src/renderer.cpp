@@ -1,12 +1,13 @@
 #include "renderer.h"
 #include "modeller/radiusSampler.h"
 #include "glad/glad.h"
+#include "math/constants.h"
 
 #include <math.h>
 
 using namespace LRender;
 
-const float Renderer::PROJECTION_ANGLE = atan(1) * 1.5f;
+const float Renderer::PROJECTION_ANGLE = Constants::PI * 0.25f;
 const float Renderer::Z_NEAR = 0.05f;
 const float Renderer::Z_FAR = 400;
 
