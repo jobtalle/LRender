@@ -18,19 +18,23 @@ Renderer::Renderer(const size_t width, const size_t height) {
 	updateProjection();
 }
 
-void Renderer::setScene(std::shared_ptr<Scene> scene) {
+void Renderer::setScene(
+	std::shared_ptr<Scene> scene,
+	std::function<void(std::shared_ptr<Report>)> callback) {
 	std::lock_guard<std::mutex> lock(access);
 
-	nextScene = scene;
+	renderTasks.push_back(RenderTask(scene, callback));
 }
 
 void Renderer::update() {
 	std::lock_guard<std::mutex> lock(access);
 
-	if(nextScene) {
-		loadScene(nextScene.get());
+	if(!renderTasks.empty()) {
+		auto task = *renderTasks.begin();
 
-		nextScene.reset();
+		renderTasks.erase(renderTasks.begin());
+
+		loadScene(task.scene.get());
 	}
 }
 
@@ -124,4 +128,12 @@ void Renderer::updateProjection() {
 		aspect,
 		Z_NEAR,
 		Z_FAR);
+}
+
+Renderer::RenderTask::RenderTask(
+	std::shared_ptr<Scene> scene,
+	std::function<void(std::shared_ptr<Report>)> report) :
+	scene(scene),
+	report(report) {
+
 }

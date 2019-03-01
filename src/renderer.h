@@ -10,11 +10,13 @@
 #include "orbit.h"
 #include "modeller/terrainModel.h"
 #include "modeller/agentModel.h"
+#include "report.h"
 
 #include <memory>
 #include <mutex>
 #include <string>
 #include <random>
+#include <functional>
 
 namespace LRender {
 	class Renderer final {
@@ -25,7 +27,9 @@ namespace LRender {
 		};
 
 		Renderer(const size_t width, const size_t height);
-		void setScene(std::shared_ptr<Scene> scene);
+		void setScene(
+			std::shared_ptr<Scene> scene,
+			std::function<void(std::shared_ptr<Report>)> callback);
 		void update();
 		void render();
 		void setSize(const size_t width, const size_t height);
@@ -36,6 +40,15 @@ namespace LRender {
 		void scrollDown();
 
 	private:
+		struct RenderTask {
+			RenderTask(
+				std::shared_ptr<Scene> scene,
+				std::function<void(std::shared_ptr<Report>)> report);
+
+			std::shared_ptr<Scene> scene;
+			std::function<void(std::shared_ptr<Report>)> report;
+		};
+
 		static const float PROJECTION_ANGLE;
 		static const float Z_NEAR;
 		static const float Z_FAR;
@@ -50,7 +63,7 @@ namespace LRender {
 		Matrix projection;
 		float aspect;
 		std::mutex access;
-		std::shared_ptr<Scene> nextScene;
+		std::vector<RenderTask> renderTasks;
 		std::vector<AgentModel> agents;
 		std::vector<TerrainModel> terrains;
 
