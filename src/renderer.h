@@ -10,7 +10,7 @@
 #include "orbit.h"
 #include "modeller/terrainModel.h"
 #include "modeller/agentModel.h"
-#include "report.h"
+#include "report/report.h"
 
 #include <memory>
 #include <mutex>
