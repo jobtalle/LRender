@@ -29,7 +29,7 @@ namespace LRender {
 		Renderer(const size_t width, const size_t height);
 		void setScene(
 			std::shared_ptr<Scene> scene,
-			std::function<void(std::shared_ptr<Report>)> callback);
+			std::function<void(Report&)> callback);
 		void update();
 		void render();
 		void setSize(const size_t width, const size_t height);
@@ -43,10 +43,10 @@ namespace LRender {
 		struct RenderTask {
 			RenderTask(
 				std::shared_ptr<Scene> scene,
-				std::function<void(std::shared_ptr<Report>)> report);
+				std::function<void(Report&)> report);
 
 			std::shared_ptr<Scene> scene;
-			std::function<void(std::shared_ptr<Report>)> report;
+			std::function<void(Report&)> report;
 		};
 
 		static const float PROJECTION_ANGLE;

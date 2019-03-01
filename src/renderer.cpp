@@ -20,7 +20,7 @@ Renderer::Renderer(const size_t width, const size_t height) {
 
 void Renderer::setScene(
 	std::shared_ptr<Scene> scene,
-	std::function<void(std::shared_ptr<Report>)> callback) {
+	std::function<void(Report&)> callback) {
 	std::lock_guard<std::mutex> lock(access);
 
 	renderTasks.push_back(RenderTask(scene, callback));
@@ -30,11 +30,17 @@ void Renderer::update() {
 	std::lock_guard<std::mutex> lock(access);
 
 	if(!renderTasks.empty()) {
+		Report report;
 		auto task = *renderTasks.begin();
 
 		renderTasks.erase(renderTasks.begin());
 
 		loadScene(task.scene.get());
+
+		for(auto &agent : task.scene->getAgents())
+			report.add(ReportAgent());
+
+		task.report(report);
 	}
 }
 
@@ -132,7 +138,7 @@ void Renderer::updateProjection() {
 
 Renderer::RenderTask::RenderTask(
 	std::shared_ptr<Scene> scene,
-	std::function<void(std::shared_ptr<Report>)> report) :
+	std::function<void(Report&)> report) :
 	scene(scene),
 	report(report) {
 
