@@ -19,10 +19,11 @@ namespace LRender {
 	public:
 		AgentModel(
 			const Agent &agent,
-			const RadiusSampler &radiusSampler,
 			std::mt19937 &randomizer);
 		const Model &getBranches() const;
 		const Model &getLeaves() const;
+		const Vector &getMinimum() const;
+		const Vector &getMaximum() const;
 
 	private:
 		static const float TURTLE_STEP;
@@ -41,7 +42,8 @@ namespace LRender {
 
 		std::unique_ptr<Model> modelBranches;
 		std::unique_ptr<Model> modelLeaves;
-		RadiusSampler radiusSampler;
+		Vector minimum;
+		Vector maximum;
 
 		void build(
 			const Agent &agent, std::mt19937 &randomizer);

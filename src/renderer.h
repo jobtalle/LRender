@@ -52,8 +52,7 @@ namespace LRender {
 		static const float PROJECTION_ANGLE;
 		static const float Z_NEAR;
 		static const float Z_FAR;
-		static const std::string FILE_SHADER_VERTEX_GEOMETRY;
-		static const std::string FILE_SHADER_FRAGMENT_GEOMETRY;
+		static const Vector CLEAR_COLOR;
 
 		std::mt19937 randomizer;
 		GLFunctions gl;
@@ -67,7 +66,7 @@ namespace LRender {
 		std::vector<AgentModel> agents;
 		std::vector<TerrainModel> terrains;
 
-		void loadScene(const Scene *scene);
+		void loadScene(const Scene *scene, Report &report);
 		void updateProjection();
 	};
 };

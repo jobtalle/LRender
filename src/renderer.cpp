@@ -1,5 +1,4 @@
 #include "renderer.h"
-#include "modeller/radiusSampler.h"
 #include "glad/glad.h"
 #include "math/constants.h"
 
@@ -10,9 +9,11 @@ using namespace LRender;
 const float Renderer::PROJECTION_ANGLE = Constants::PI * 0.25f;
 const float Renderer::Z_NEAR = 0.05f;
 const float Renderer::Z_FAR = 400;
+const Vector Renderer::CLEAR_COLOR = Vector(0.3f, 0.4f, 0.6f);
 
 Renderer::Renderer(const size_t width, const size_t height) {
 	glEnable(GL_DEPTH_TEST);
+	glClearColor(CLEAR_COLOR.r, CLEAR_COLOR.g, CLEAR_COLOR.b, 1);
 
 	setSize(width, height);
 	updateProjection();
@@ -35,10 +36,7 @@ void Renderer::update() {
 
 		renderTasks.erase(renderTasks.begin());
 
-		loadScene(task.scene.get());
-
-		for(auto &agent : task.scene->getAgents())
-			report.add(ReportAgent());
+		loadScene(task.scene.get(), report);
 
 		task.report(report);
 	}
@@ -113,14 +111,21 @@ void Renderer::scrollDown() {
 	orbit.zoomOut();
 }
 
-void Renderer::loadScene(const Scene *scene) {
+void Renderer::loadScene(const Scene *scene, Report &report) {
 	terrains.clear();
 	agents.clear();
 
 	terrains.push_back(TerrainModel(scene->getTerrain()));
 
-	for(auto &agent : scene->getAgents())
-		agents.push_back(AgentModel(agent, RadiusSampler(0.11f), randomizer));
+	for(auto &agent : scene->getAgents()) {
+		agents.push_back(AgentModel(agent, randomizer));
+
+		auto model = --agents.end();
+		
+		report.add(ReportAgent(
+			ReportLimits(model->getMinimum(), model->getMaximum())
+		));
+	}
 
 	orbit.setFocus(Vector(
 		scene->getTerrain().getWidth() * 0.5f,

@@ -14,8 +14,9 @@ const float AgentModel::TURTLE_STEP = 0.05f;
 const float AgentModel::TURTLE_ANGLE = 0.2;
 const size_t AgentModel::TUBE_PRECISION = 7;
 
-AgentModel::AgentModel(const Agent &agent, const RadiusSampler &radiusSampler, std::mt19937 &randomizer) :
-	radiusSampler(radiusSampler) {
+AgentModel::AgentModel(const Agent &agent, std::mt19937 &randomizer) :
+	minimum(agent.getPosition()),
+	maximum(agent.getPosition()) {
 	build(agent, randomizer);
 }
 
@@ -27,7 +28,16 @@ const Model &AgentModel::getLeaves() const {
 	return *modelLeaves;
 }
 
+const Vector &AgentModel::getMinimum() const {
+	return minimum;
+}
+
+const Vector &AgentModel::getMaximum() const {
+	return maximum;
+}
+
 void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
+	RadiusSampler radiusSampler(0.1f);
 	Geometry geometryBranches;
 	Geometry geometryLeaves;
 	std::list<Branch> branches;
@@ -143,6 +153,21 @@ Branch *AgentModel::traceBranch(
 		default:
 			if(*(at - 1) >= SYM_STEP_MIN && *(at - 1) <= SYM_STEP_MAX) {
 				branch.add(node.extrude(TURTLE_STEP));
+
+				if(node.position.x < minimum.x)
+					minimum.x = node.position.x;
+				else if(node.position.x > maximum.x)
+					maximum.x = node.position.x;
+
+				if(node.position.y < minimum.y)
+					minimum.y = node.position.y;
+				else if(node.position.y > maximum.y)
+					maximum.y = node.position.y;
+
+				if(node.position.z < minimum.z)
+					minimum.z = node.position.z;
+				else if(node.position.z > maximum.z)
+					maximum.z = node.position.z;
 
 				if(lastChild) {
 					lastChild->setRoot({ *(branch.getNodes().end() - 2), *(branch.getNodes().end() - 1) });
