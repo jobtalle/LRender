@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vertex.h"
+#include "renderer/vertex.h"
 #include "math/quaternion.h"
 
 #include <vector>

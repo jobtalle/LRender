@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vertex.h"
+#include "renderer/vertex.h"
 #include "modeller/radiusSampler.h"
 #include "modeller/branch.h"
 
