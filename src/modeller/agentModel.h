@@ -24,6 +24,7 @@ namespace LRender {
 		const Model &getLeaves() const;
 		const Vector &getMinimum() const;
 		const Vector &getMaximum() const;
+		float getArea() const;
 
 	private:
 		static const float TURTLE_STEP;
@@ -44,6 +45,7 @@ namespace LRender {
 		std::unique_ptr<Model> modelLeaves;
 		Vector minimum;
 		Vector maximum;
+		float area;
 
 		void build(
 			const Agent &agent, std::mt19937 &randomizer);

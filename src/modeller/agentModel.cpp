@@ -16,7 +16,8 @@ const size_t AgentModel::TUBE_PRECISION = 7;
 
 AgentModel::AgentModel(const Agent &agent, std::mt19937 &randomizer) :
 	minimum(agent.getPosition()),
-	maximum(agent.getPosition()) {
+	maximum(agent.getPosition()),
+	area(0) {
 	build(agent, randomizer);
 }
 
@@ -34,6 +35,10 @@ const Vector &AgentModel::getMinimum() const {
 
 const Vector &AgentModel::getMaximum() const {
 	return maximum;
+}
+
+float AgentModel::getArea() const {
+	return area;
 }
 
 void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
@@ -84,6 +89,8 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 					child.child->getNodes().begin(),
 					child.child->getNodes().end()));
 		}
+
+		area += leaf.getArea();
 	}
 
 	for(const auto &seed : seeds)

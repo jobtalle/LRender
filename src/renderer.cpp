@@ -123,7 +123,8 @@ void Renderer::loadScene(const Scene *scene, Report &report) {
 		auto model = --agents.end();
 		
 		report.add(ReportAgent(
-			ReportLimits(model->getMinimum(), model->getMaximum())
+			ReportLimits(model->getMinimum(), model->getMaximum()),
+			ReportArea(model->getArea())
 		));
 	}
 
