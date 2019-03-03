@@ -53,19 +53,6 @@ void Renderer::enqueue(const std::shared_ptr<const Task> task) {
 	tasks.push_back(task);
 }
 
-void Renderer::setMode(const Mode mode) {
-	switch(mode) {
-	case DEFAULT:
-		updatePass.reset(new RenderPassViewDefault());
-
-		break;
-	case WIREFRAME:
-		updatePass.reset(new RenderPassViewWireframe());
-
-		break;
-	}
-}
-
 void Renderer::update() {
 	std::lock_guard<std::mutex> lock(access);
 
@@ -123,6 +110,19 @@ void Renderer::scrollUp() {
 
 void Renderer::scrollDown() {
 	orbit.zoomOut();
+}
+
+void Renderer::setMode(const Mode mode) {
+	switch(mode) {
+	case DEFAULT:
+		updatePass.reset(new RenderPassViewDefault());
+
+		break;
+	case WIREFRAME:
+		updatePass.reset(new RenderPassViewWireframe());
+
+		break;
+	}
 }
 
 void Renderer::loadScene(const Scene *scene, Report &report) {

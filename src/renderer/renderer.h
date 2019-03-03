@@ -35,7 +35,6 @@ namespace LRender {
 
 		Renderer(const size_t width, const size_t height);
 		void enqueue(const std::shared_ptr<const Task> task);
-		void setMode(const Mode mode);
 		void update();
 		void render();
 		void setSize(const size_t width, const size_t height);
@@ -63,6 +62,7 @@ namespace LRender {
 		std::vector<TerrainModel> terrains;
 		std::vector<std::shared_ptr<const Task>> tasks;
 
+		void setMode(const Mode mode);
 		void loadScene(const Scene *scene, Report &report);
 		void updateProjection();
 	};
