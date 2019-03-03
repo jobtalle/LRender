@@ -21,21 +21,21 @@
 namespace LRender {
 	class Renderer final {
 	public:
+		class Task;
+
 		enum MouseButton {
-			MOUSE_DRAG,
-			MOUSE_PAN
+			DRAG,
+			PAN
 		};
 
-		enum RenderMode {
-			RENDER_DEFAULT,
-			RENDER_WIREFRAME
+		enum Mode {
+			DEFAULT,
+			WIREFRAME
 		};
 
 		Renderer(const size_t width, const size_t height);
-		void setMode(const RenderMode mode);
-		void setScene(
-			std::shared_ptr<Scene> scene,
-			std::function<void(Report&)> callback);
+		void enqueue(const std::shared_ptr<const Task> task);
+		void setMode(const Mode mode);
 		void update();
 		void render();
 		void setSize(const size_t width, const size_t height);
@@ -46,22 +46,11 @@ namespace LRender {
 		void scrollDown();
 
 	private:
-		struct RenderTask {
-			RenderTask(
-				std::shared_ptr<Scene> scene,
-				std::function<void(Report&)> report);
-
-			std::shared_ptr<Scene> scene;
-			std::function<void(Report&)> report;
-		};
-
 		static const float PROJECTION_ANGLE;
 		static const float Z_NEAR;
 		static const float Z_FAR;
 		static const Vector CLEAR_COLOR;
 
-		RenderMode mode;
-		RenderMode nextMode;
 		std::mt19937 randomizer;
 		GLFunctions gl;
 		Shaders shaders;
@@ -70,9 +59,9 @@ namespace LRender {
 		float aspect;
 		std::unique_ptr<RenderPass> updatePass;
 		std::mutex access;
-		std::vector<RenderTask> renderTasks;
 		std::vector<AgentModel> agents;
 		std::vector<TerrainModel> terrains;
+		std::vector<std::shared_ptr<const Task>> tasks;
 
 		void loadScene(const Scene *scene, Report &report);
 		void updateProjection();

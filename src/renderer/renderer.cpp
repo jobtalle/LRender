@@ -3,6 +3,7 @@
 #include "math/constants.h"
 #include "renderer/passes/renderPassViewDefault.h"
 #include "renderer/passes/renderPassViewWireframe.h"
+#include "renderer/tasks/task.h"
 
 #include <math.h>
 
@@ -33,9 +34,7 @@ MessageCallback(GLenum source,
 //
 
 Renderer::Renderer(const size_t width, const size_t height) :
-	updatePass(new RenderPassViewDefault()),
-	mode(RENDER_DEFAULT),
-	nextMode(mode) {
+	updatePass(new RenderPassViewDefault()) {
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(CLEAR_COLOR.r, CLEAR_COLOR.g, CLEAR_COLOR.b, 1);
 
@@ -48,53 +47,35 @@ Renderer::Renderer(const size_t width, const size_t height) :
 	updateProjection();
 }
 
-void Renderer::setMode(const RenderMode mode) {
+void Renderer::enqueue(const std::shared_ptr<const Task> task) {
 	std::lock_guard<std::mutex> lock(access);
 
-	nextMode = mode;
+	tasks.push_back(task);
 }
 
-void Renderer::setScene(
-	std::shared_ptr<Scene> scene,
-	std::function<void(Report&)> callback) {
-	std::lock_guard<std::mutex> lock(access);
+void Renderer::setMode(const Mode mode) {
+	switch(mode) {
+	case DEFAULT:
+		updatePass.reset(new RenderPassViewDefault());
 
-	renderTasks.push_back(RenderTask(scene, callback));
+		break;
+	case WIREFRAME:
+		updatePass.reset(new RenderPassViewWireframe());
+
+		break;
+	}
 }
 
 void Renderer::update() {
 	std::lock_guard<std::mutex> lock(access);
 
-	if(!renderTasks.empty()) {
-		Report report;
-		auto task = *renderTasks.begin();
+	for(auto &task : tasks)
+		task->perform(*this);
 
-		renderTasks.erase(renderTasks.begin());
-
-		loadScene(task.scene.get(), report);
-
-		task.report(report);
-	}
-
-	if(nextMode != mode) {
-		mode = nextMode;
-
-		switch(mode) {
-		case RENDER_DEFAULT:
-			updatePass.reset(new RenderPassViewDefault());
-
-			break;
-		case RENDER_WIREFRAME:
-			updatePass.reset(new RenderPassViewWireframe());
-
-			break;
-		}
-	}
+	tasks.clear();
 }
 
 void Renderer::render() {
-	std::lock_guard<std::mutex> lock(access);
-
 	updatePass->render(shaders, orbit, projection, terrains, agents);
 }
 
@@ -112,11 +93,11 @@ void Renderer::mouseMove(const size_t x, const size_t y) {
 
 void Renderer::mousePress(const MouseButton button) {
 	switch(button) {
-	case MOUSE_DRAG:
+	case DRAG:
 		orbit.mouseGrabDrag();
 
 		break;
-	case MOUSE_PAN:
+	case PAN:
 		orbit.mouseGrabPan();
 		
 		break;
@@ -125,11 +106,11 @@ void Renderer::mousePress(const MouseButton button) {
 
 void Renderer::mouseRelease(const MouseButton button) {
 	switch(button) {
-	case MOUSE_DRAG:
+	case DRAG:
 		orbit.mouseReleaseDrag();
 
 		break;
-	case MOUSE_PAN:
+	case PAN:
 		orbit.mouseReleasePan();
 
 		break;
@@ -171,12 +152,4 @@ void Renderer::updateProjection() {
 		aspect,
 		Z_NEAR,
 		Z_FAR);
-}
-
-Renderer::RenderTask::RenderTask(
-	std::shared_ptr<Scene> scene,
-	std::function<void(Report&)> report) :
-	scene(scene),
-	report(report) {
-
 }
