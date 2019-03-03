@@ -1,7 +1,7 @@
 #pragma once
 
 #include "scene/terrain.h"
-#include "renderer/model.h"
+#include "model/model.h"
 
 #include <memory>
 

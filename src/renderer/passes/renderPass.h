@@ -2,7 +2,7 @@
 
 #include "modeller/agentModel.h"
 #include "modeller/terrainModel.h"
-#include "renderer/shaders.h"
+#include "renderer/shaders/shaders.h"
 #include "renderer/orbit.h"
 #include "math/matrix.h"
 

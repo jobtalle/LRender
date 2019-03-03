@@ -6,7 +6,7 @@
 #include "modeller/seed.h"
 #include "modeller/radiusSampler.h"
 #include "scene/agent.h"
-#include "renderer/model.h"
+#include "model/model.h"
 #include "math/quaternion.h"
 
 #include <vector>
