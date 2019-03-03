@@ -6,14 +6,21 @@
 using namespace LRender;
 
 const std::string Shader::VERSION = "#version 440 core\n";
-const std::string Shader::FILE_UNIFORM_BLOCK = "LRender/glsl/uniforms.glsl";
+const std::vector<std::string> Shader::FILE_UNIFORM_BLOCKS = {
+	"LRender/glsl/uniformsView.glsl"
+};
+
+bool Shader::loadedPrefix = false;
+std::string Shader::prefix = "";
 
 Shader::Shader(const std::string &vertex, const std::string &fragment) {
+	if(!loadedPrefix)
+		loadPrefix();
+
 	program = glCreateProgram();
 
-	std::string uniforms = readFile(FILE_UNIFORM_BLOCK);
-	GLuint shaderVertex = createShader(GL_VERTEX_SHADER, (VERSION + uniforms + readFile(vertex)).c_str());
-	GLuint shaderFragment = createShader(GL_FRAGMENT_SHADER, (VERSION + uniforms + readFile(fragment)).c_str());
+	GLuint shaderVertex = createShader(GL_VERTEX_SHADER, (prefix + readFile(vertex)).c_str());
+	GLuint shaderFragment = createShader(GL_FRAGMENT_SHADER, (prefix + readFile(fragment)).c_str());
 
 	glAttachShader(program, shaderVertex);
 	glAttachShader(program, shaderFragment);
@@ -66,4 +73,13 @@ std::string Shader::readFile(const std::string &file) {
 	source.close();
 
 	return contents;
+}
+
+void Shader::loadPrefix() {
+	prefix = VERSION;
+
+	for(auto &uboFile : FILE_UNIFORM_BLOCKS)
+		prefix += readFile(uboFile);
+
+	loadedPrefix = true;
 }

@@ -5,9 +5,9 @@
 #include "math/matrix.h"
 #include "renderer/model.h"
 #include "renderer/shaders.h"
-#include "renderer/uniforms.h"
 #include "renderer/glFunctions.h"
 #include "renderer/orbit.h"
+#include "renderer/passes/renderPass.h"
 #include "modeller/terrainModel.h"
 #include "modeller/agentModel.h"
 #include "report/report.h"
@@ -57,10 +57,10 @@ namespace LRender {
 		std::mt19937 randomizer;
 		GLFunctions gl;
 		Shaders shaders;
-		Uniforms uniforms;
 		Orbit orbit;
 		Matrix projection;
 		float aspect;
+		std::unique_ptr<RenderPass> renderPass;
 		std::mutex access;
 		std::vector<RenderTask> renderTasks;
 		std::vector<AgentModel> agents;

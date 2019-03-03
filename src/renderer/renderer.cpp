@@ -1,6 +1,7 @@
 #include "renderer.h"
 #include "glad/glad.h"
 #include "math/constants.h"
+#include "renderer/passes/renderPassView.h"
 
 #include <math.h>
 
@@ -11,7 +12,8 @@ const float Renderer::Z_NEAR = 0.05f;
 const float Renderer::Z_FAR = 400;
 const Vector Renderer::CLEAR_COLOR = Vector(0.3f, 0.4f, 0.6f);
 
-Renderer::Renderer(const size_t width, const size_t height) {
+Renderer::Renderer(const size_t width, const size_t height) :
+	renderPass(new RenderPassView()) {
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(CLEAR_COLOR.r, CLEAR_COLOR.g, CLEAR_COLOR.b, 1);
 
@@ -43,26 +45,8 @@ void Renderer::update() {
 }
 
 void Renderer::render() {
-	uniforms.setProjection(orbit.getMatrix() * projection);
-	uniforms.update();
-
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_CULL_FACE);
-
-	shaders.getBranches().use();
-
-	for(auto &terrain : terrains)
-		terrain.getModel().draw();
-
-	for(auto &agent : agents)
-		agent.getBranches().draw();
-
-	glDisable(GL_CULL_FACE);
-
-	shaders.getLeaves().use();
-
-	for(auto &agent : agents)
-		agent.getLeaves().draw();
+	if(renderPass)
+		renderPass->render(shaders, orbit, projection, terrains, agents);
 }
 
 void Renderer::setSize(const size_t width, const size_t height) {

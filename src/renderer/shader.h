@@ -3,6 +3,7 @@
 #include "glad/glad.h"
 
 #include <string>
+#include <vector>
 
 namespace LRender {
 	class Shader final {
@@ -12,12 +13,15 @@ namespace LRender {
 		void use() const;
 
 	private:
-		GLuint program;
-
 		static const std::string VERSION;
-		static const std::string FILE_UNIFORM_BLOCK;
+		static const std::vector<std::string> FILE_UNIFORM_BLOCKS;
 		static GLuint createShader(const GLenum type, const GLchar *code);
+		static bool loadedPrefix;
+		static std::string prefix;
 
-		std::string readFile(const std::string &file);
+		static void loadPrefix();
+		static std::string readFile(const std::string &file);
+
+		GLuint program;
 	};
 };
