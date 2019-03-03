@@ -1,7 +1,8 @@
 #include "renderer.h"
 #include "glad/glad.h"
 #include "math/constants.h"
-#include "renderer/passes/renderPassView.h"
+#include "renderer/passes/renderPassViewDefault.h"
+#include "renderer/passes/renderPassViewWireframe.h"
 
 #include <math.h>
 
@@ -12,13 +13,45 @@ const float Renderer::Z_NEAR = 0.05f;
 const float Renderer::Z_FAR = 400;
 const Vector Renderer::CLEAR_COLOR = Vector(0.3f, 0.4f, 0.6f);
 
+// OpenGL debugging:
+#include <iostream>
+
+void GLAPIENTRY
+MessageCallback(GLenum source,
+	GLenum type,
+	GLuint id,
+	GLenum severity,
+	GLsizei length,
+	const GLchar* message,
+	const void* userParam)
+{
+	if(type != GL_DEBUG_TYPE_ERROR)
+		return;
+
+	std::cout << message << std::endl;
+}
+//
+
 Renderer::Renderer(const size_t width, const size_t height) :
-	renderPass(new RenderPassView()) {
+	updatePass(new RenderPassViewDefault()),
+	mode(RENDER_DEFAULT),
+	nextMode(mode) {
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(CLEAR_COLOR.r, CLEAR_COLOR.g, CLEAR_COLOR.b, 1);
 
+	// OpenGL debugging:
+	glEnable(GL_DEBUG_OUTPUT);
+	glDebugMessageCallback(MessageCallback, 0);
+	//
+
 	setSize(width, height);
 	updateProjection();
+}
+
+void Renderer::setMode(const RenderMode mode) {
+	std::lock_guard<std::mutex> lock(access);
+
+	nextMode = mode;
 }
 
 void Renderer::setScene(
@@ -42,11 +75,27 @@ void Renderer::update() {
 
 		task.report(report);
 	}
+
+	if(nextMode != mode) {
+		mode = nextMode;
+
+		switch(mode) {
+		case RENDER_DEFAULT:
+			updatePass.reset(new RenderPassViewDefault());
+
+			break;
+		case RENDER_WIREFRAME:
+			updatePass.reset(new RenderPassViewWireframe());
+
+			break;
+		}
+	}
 }
 
 void Renderer::render() {
-	if(renderPass)
-		renderPass->render(shaders, orbit, projection, terrains, agents);
+	std::lock_guard<std::mutex> lock(access);
+
+	updatePass->render(shaders, orbit, projection, terrains, agents);
 }
 
 void Renderer::setSize(const size_t width, const size_t height) {

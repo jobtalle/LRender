@@ -4,7 +4,7 @@
 #include "renderer/uniforms/uniformsView.h"
 
 namespace LRender {
-	class RenderPassView final : public RenderPass {
+	class RenderPassViewWireframe final : public RenderPass {
 	public:
 		void render(
 			const Shaders &shaders,

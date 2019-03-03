@@ -26,7 +26,13 @@ namespace LRender {
 			MOUSE_PAN
 		};
 
+		enum RenderMode {
+			RENDER_DEFAULT,
+			RENDER_WIREFRAME
+		};
+
 		Renderer(const size_t width, const size_t height);
+		void setMode(const RenderMode mode);
 		void setScene(
 			std::shared_ptr<Scene> scene,
 			std::function<void(Report&)> callback);
@@ -54,13 +60,15 @@ namespace LRender {
 		static const float Z_FAR;
 		static const Vector CLEAR_COLOR;
 
+		RenderMode mode;
+		RenderMode nextMode;
 		std::mt19937 randomizer;
 		GLFunctions gl;
 		Shaders shaders;
 		Orbit orbit;
 		Matrix projection;
 		float aspect;
-		std::unique_ptr<RenderPass> renderPass;
+		std::unique_ptr<RenderPass> updatePass;
 		std::mutex access;
 		std::vector<RenderTask> renderTasks;
 		std::vector<AgentModel> agents;

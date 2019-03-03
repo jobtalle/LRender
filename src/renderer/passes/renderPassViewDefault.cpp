@@ -1,9 +1,9 @@
-#include "renderPassView.h"
+#include "renderPassViewDefault.h"
 #include "glad/glad.h"
 
 using namespace LRender;
 
-void RenderPassView::render(
+void RenderPassViewDefault::render(
 	const Shaders &shaders,
 	const Orbit &orbit,
 	const Matrix &projection,

@@ -11,10 +11,10 @@ Model::~Model() {
 	freeBuffers();
 }
 
-void Model::draw() const {
+void Model::draw(const bool wireframe) const {
 	glBindVertexArray(vao);
 
-	glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0);
+	glDrawElements(wireframe ? GL_LINES : GL_TRIANGLES, count, GL_UNSIGNED_INT, 0);
 }
 
 void Model::createBuffers() {

@@ -11,7 +11,7 @@ namespace LRender {
 	public:
 		Model(const Geometry &geometry);
 		~Model();
-		void draw() const;
+		void draw(const bool wireframe = false) const;
 
 	private:
 		enum Buffer {
