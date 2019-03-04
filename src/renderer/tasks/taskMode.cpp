@@ -7,6 +7,6 @@ Renderer::Task::Mode::Mode(const Renderer::Mode mode) :
 
 }
 
-void Renderer::Task::Mode::perform(Renderer &renderer) const {
+void Renderer::Task::Mode::perform(Renderer &renderer) {
 	renderer.setMode(mode);
 }

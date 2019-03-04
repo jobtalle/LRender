@@ -47,7 +47,7 @@ Renderer::Renderer(const size_t width, const size_t height) :
 	updateProjection();
 }
 
-void Renderer::enqueue(const std::shared_ptr<const Task> task) {
+void Renderer::enqueue(const std::shared_ptr<Task> task) {
 	std::lock_guard<std::mutex> lock(access);
 
 	tasks.push_back(task);

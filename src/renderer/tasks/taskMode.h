@@ -6,7 +6,7 @@ namespace LRender {
 	class Renderer::Task::Mode final : public Renderer::Task {
 	public:
 		Mode(const Renderer::Mode mode);
-		void perform(Renderer &renderer) const override final;
+		void perform(Renderer &renderer) override final;
 
 	private:
 		Renderer::Mode mode;

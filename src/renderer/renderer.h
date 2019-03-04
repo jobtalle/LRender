@@ -34,7 +34,7 @@ namespace LRender {
 		};
 
 		Renderer(const size_t width, const size_t height);
-		void enqueue(const std::shared_ptr<const Task> task);
+		void enqueue(const std::shared_ptr<Task> task);
 		void update();
 		void render();
 		void setSize(const size_t width, const size_t height);
@@ -60,7 +60,7 @@ namespace LRender {
 		std::mutex access;
 		std::vector<AgentModel> agents;
 		std::vector<TerrainModel> terrains;
-		std::vector<std::shared_ptr<const Task>> tasks;
+		std::vector<std::shared_ptr<Task>> tasks;
 
 		void setMode(const Mode mode);
 		void loadScene(const Scene *scene, Report &report);

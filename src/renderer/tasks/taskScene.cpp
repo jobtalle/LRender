@@ -2,18 +2,22 @@
 
 using namespace LRender;
 
-Renderer::Task::Scene::Scene(
-	const std::shared_ptr<LRender::Scene> scene,
-	const std::function<void(Report&)> callback) :
+Renderer::Task::Scene::Scene(const std::shared_ptr<LRender::Scene> scene) :
 	scene(scene),
-	callback(callback) {
+	reportValue(report.get_future()) {
 
 }
 
-void Renderer::Task::Scene::perform(Renderer &renderer) const {
-	Report report;
+void Renderer::Task::Scene::perform(Renderer &renderer) {
+	auto report = std::make_shared<Report>();
 
-	renderer.loadScene(scene.get(), report);
+	renderer.loadScene(scene.get(), *report);
 
-	callback(report);
+	this->report.set_value(report);
+}
+
+const std::shared_ptr<Report> Renderer::Task::Scene::getReport() {
+	reportValue.wait();
+
+	return reportValue.get();
 }

@@ -9,6 +9,6 @@ namespace LRender {
 		class Scene;
 
 		virtual ~Task() = default;
-		virtual void perform(Renderer &renderer) const = 0;
+		virtual void perform(Renderer &renderer) = 0;
 	};
 };

@@ -4,16 +4,19 @@
 #include "scene/scene.h"
 #include "report/report.h"
 
+#include <future>
+#include <memory>
+
 namespace LRender {
 	class Renderer::Task::Scene final : public Renderer::Task {
 	public:
-		Scene(
-			std::shared_ptr<LRender::Scene> scene,
-			const std::function<void(Report&)> callback);
-		void perform(Renderer &renderer) const override final;
+		Scene(const std::shared_ptr<LRender::Scene> scene);
+		void perform(Renderer &renderer) override final;
+		const std::shared_ptr<Report> getReport();
 
 	private:
+		std::promise<std::shared_ptr<Report>> report;
+		std::future<std::shared_ptr<Report>> reportValue;
 		std::shared_ptr<LRender::Scene> scene;
-		const std::function<void(Report&)> callback;
 	};
 };
