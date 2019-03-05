@@ -16,6 +16,6 @@ namespace LRender {
 
 	private:
 		std::vector<ReportAgent> agents;
-		std::unique_ptr<ReportLimits> limits;
+		std::shared_ptr<ReportLimits> limits;
 	};
 };

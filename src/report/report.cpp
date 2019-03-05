@@ -10,7 +10,7 @@ void Report::add(const ReportAgent &agent) {
 	agents.push_back(agent);
 
 	if(!limits)
-		limits.reset(new ReportLimits(agent.getLimits()));
+		limits = std::make_unique<ReportLimits>(agent.getLimits());
 	else
 		limits->add(agent.getLimits());
 }

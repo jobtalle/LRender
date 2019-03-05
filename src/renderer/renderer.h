@@ -56,7 +56,7 @@ namespace LRender {
 		Orbit orbit;
 		Matrix projection;
 		float aspect;
-		std::unique_ptr<RenderPass> updatePass;
+		std::shared_ptr<RenderPass> updatePass;
 		std::mutex access;
 		std::vector<AgentModel> agents;
 		std::vector<TerrainModel> terrains;

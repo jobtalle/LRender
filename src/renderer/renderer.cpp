@@ -34,7 +34,7 @@ MessageCallback(GLenum source,
 //
 
 Renderer::Renderer(const size_t width, const size_t height) :
-	updatePass(new RenderPassViewDefault()) {
+	updatePass(std::make_shared<RenderPassViewDefault>()) {
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(CLEAR_COLOR.r, CLEAR_COLOR.g, CLEAR_COLOR.b, 1);
 
@@ -115,11 +115,11 @@ void Renderer::scrollDown() {
 void Renderer::setMode(const Mode mode) {
 	switch(mode) {
 	case DEFAULT:
-		updatePass.reset(new RenderPassViewDefault());
+		updatePass = std::make_shared<RenderPassViewDefault>();
 
 		break;
 	case WIREFRAME:
-		updatePass.reset(new RenderPassViewWireframe());
+		updatePass = std::make_shared<RenderPassViewWireframe>();
 
 		break;
 	}

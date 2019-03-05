@@ -69,5 +69,5 @@ void TerrainModel::build(const Terrain &terrain) {
 		}
 	}
 
-	model.reset(new Model(geometry));
+	model = std::make_unique<Model>(geometry);
 }

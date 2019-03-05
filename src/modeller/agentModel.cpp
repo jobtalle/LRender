@@ -50,6 +50,8 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 	std::list<Seed> seeds;
 	Node node(agent.getPosition(), std::uniform_real_distribution<float>(0, Constants::PI * 2)(randomizer));
 	
+	auto at = agent.getSymbols().begin();
+	
 	traceBranch(
 		nullptr,
 		false,
@@ -57,7 +59,7 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 		leaves,
 		seeds,
 		node,
-		agent.getSymbols().begin(),
+		at,
 		agent.getSymbols().end());
 	
 	for(const auto &branch : branches)
@@ -101,8 +103,8 @@ void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
 			radiusSampler,
 			seed);
 
-	modelBranches.reset(new Model(geometryBranches));
-	modelLeaves.reset(new Model(geometryLeaves));
+	modelBranches = std::make_unique<Model>(geometryBranches);
+	modelLeaves = std::make_unique<Model>(geometryLeaves);
 }
 
 Branch *AgentModel::traceBranch(
