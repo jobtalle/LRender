@@ -1,14 +1,14 @@
-#include "taskScene.h"
+#include "taskSceneReport.h"
 
 using namespace LRender;
 
-Renderer::Task::Scene::Scene(const std::shared_ptr<LRender::Scene> scene) :
+Renderer::Task::SceneReport::SceneReport(const std::shared_ptr<LRender::Scene> scene) :
 	scene(scene),
 	reportValue(report.get_future()) {
 
 }
 
-void Renderer::Task::Scene::perform(Renderer &renderer) {
+void Renderer::Task::SceneReport::perform(Renderer &renderer) {
 	auto report = std::make_shared<Report>();
 
 	renderer.loadScene(scene.get(), report.get());
@@ -16,7 +16,7 @@ void Renderer::Task::Scene::perform(Renderer &renderer) {
 	this->report.set_value(report);
 }
 
-const std::shared_ptr<Report> Renderer::Task::Scene::getReport() {
+const std::shared_ptr<Report> Renderer::Task::SceneReport::getReport() {
 	reportValue.wait();
 
 	return reportValue.get();

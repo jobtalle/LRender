@@ -6,7 +6,7 @@ namespace LRender {
 	class Renderer::Task {
 	public:
 		class Mode;
-		class Scene;
+		class SceneReport;
 
 		virtual ~Task() = default;
 		virtual void perform(Renderer &renderer) = 0;

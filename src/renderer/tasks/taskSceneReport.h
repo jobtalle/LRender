@@ -8,9 +8,9 @@
 #include <memory>
 
 namespace LRender {
-	class Renderer::Task::Scene final : public Renderer::Task {
+	class Renderer::Task::SceneReport final : public Renderer::Task {
 	public:
-		Scene(const std::shared_ptr<LRender::Scene> scene);
+		SceneReport(const std::shared_ptr<LRender::Scene> scene);
 		void perform(Renderer &renderer) override final;
 		const std::shared_ptr<Report> getReport();
 
