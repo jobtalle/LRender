@@ -6,11 +6,12 @@ namespace LRender {
 	class ReportLimits final {
 	public:
 		ReportLimits(const Vector &minimum, const Vector &maximum);
+		void add(const ReportLimits &limits);
 		const Vector &getMinimum() const;
 		const Vector &getMaximum() const;
 
 	private:
-		const Vector minimum;
-		const Vector maximum;
+		Vector minimum;
+		Vector maximum;
 	};
 };

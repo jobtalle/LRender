@@ -11,7 +11,7 @@ Renderer::Task::Scene::Scene(const std::shared_ptr<LRender::Scene> scene) :
 void Renderer::Task::Scene::perform(Renderer &renderer) {
 	auto report = std::make_shared<Report>();
 
-	renderer.loadScene(scene.get(), *report);
+	renderer.loadScene(scene.get(), report.get());
 
 	this->report.set_value(report);
 }

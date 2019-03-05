@@ -125,7 +125,7 @@ void Renderer::setMode(const Mode mode) {
 	}
 }
 
-void Renderer::loadScene(const Scene *scene, Report &report) {
+void Renderer::loadScene(const Scene *scene, Report *report) {
 	terrains.clear();
 	agents.clear();
 
@@ -134,12 +134,14 @@ void Renderer::loadScene(const Scene *scene, Report &report) {
 	for(auto &agent : scene->getAgents()) {
 		agents.push_back(AgentModel(agent, randomizer));
 
-		auto model = --agents.end();
-		
-		report.add(ReportAgent(
-			ReportLimits(model->getMinimum(), model->getMaximum()),
-			ReportArea(model->getArea())
-		));
+		if(report) {
+			auto model = --agents.end();
+
+			report->add(ReportAgent(
+				ReportLimits(model->getMinimum(), model->getMaximum()),
+				ReportArea(model->getArea())
+			));
+		}
 	}
 
 	if(agents.size() == 1)
