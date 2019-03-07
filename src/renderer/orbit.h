@@ -44,4 +44,4 @@ namespace LRender {
 		void updateEye();
 		void updateMatrix();
 	};
-};
+}

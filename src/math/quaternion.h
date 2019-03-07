@@ -30,4 +30,4 @@ namespace LRender {
 
 	Quaternion operator*(Quaternion lhs, const Quaternion &rhs);
 	Vector operator*(const Quaternion &lhs, const Vector &rhs);
-};
+}

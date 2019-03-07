@@ -24,4 +24,4 @@ namespace LRender {
 			static std::vector<Vector> makeRing(const size_t precision);
 		};
 	};
-};
+}

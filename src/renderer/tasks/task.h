@@ -11,4 +11,4 @@ namespace LRender {
 		virtual ~Task() = default;
 		virtual void perform(Renderer &renderer) = 0;
 	};
-};
+}

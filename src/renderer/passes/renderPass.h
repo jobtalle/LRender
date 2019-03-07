@@ -19,4 +19,4 @@ namespace LRender {
 			const std::vector<LRender::TerrainModel> &terrains,
 			const std::vector<LRender::AgentModel> &agents) = 0;
 	};
-};
+}

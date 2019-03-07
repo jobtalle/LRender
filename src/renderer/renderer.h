@@ -66,4 +66,4 @@ namespace LRender {
 		void loadScene(const Scene *scene, Report *report = nullptr);
 		void updateProjection();
 	};
-};
+}

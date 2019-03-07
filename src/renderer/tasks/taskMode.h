@@ -11,4 +11,4 @@ namespace LRender {
 	private:
 		Renderer::Mode mode;
 	};
-};
+}

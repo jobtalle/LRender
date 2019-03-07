@@ -14,4 +14,4 @@ namespace LRender {
 		const Vector position;
 		size_t topDist;
 	};
-};
+}

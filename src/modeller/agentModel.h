@@ -59,4 +59,4 @@ namespace LRender {
 			std::string::const_iterator &at,
 			const std::string::const_iterator &last);
 	};
-};
+}

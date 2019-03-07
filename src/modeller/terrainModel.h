@@ -18,4 +18,4 @@ namespace LRender {
 
 		void build(const Terrain &terrain);
 	};
-};
+}

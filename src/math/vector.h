@@ -42,6 +42,6 @@ namespace LRender {
 	Vector operator*(Vector lhs, const float rhs);
 	Vector operator*(Vector lhs, const Vector &rhs);
 	Vector operator/(Vector lhs, const float rhs);
-};
+}
 
 std::ostream &operator<<(std::ostream &stream, const LRender::Vector &vector);
