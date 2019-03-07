@@ -150,25 +150,25 @@ Matrix Matrix::makeScale(const Vector &scale) {
 Matrix Matrix::makeRotateX(const float angle) {
 	return Matrix({
 		{ 1, 0, 0, 0 },
-		{ 0, cos(angle), -sin(angle), 0 },
-		{ 0, sin(angle), cos(angle), 0 },
+		{ 0, std::cos(angle), -std::sin(angle), 0 },
+		{ 0, std::sin(angle), std::cos(angle), 0 },
 		{ 0, 0, 0, 1 }
 	});
 }
 
 Matrix Matrix::makeRotateY(const float angle) {
 	return Matrix({
-		{ cos(angle), 0, sin(angle), 0 },
+		{ std::cos(angle), 0, std::sin(angle), 0 },
 		{ 0, 1, 0, 0 },
-		{ -sin(angle), 0, cos(angle), 0 },
+		{ -std::sin(angle), 0, std::cos(angle), 0 },
 		{ 0, 0, 0, 1 }
 	});
 }
 
 Matrix Matrix::makeRotateZ(const float angle) {
 	return Matrix({
-		{ cos(angle), -sin(angle), 0, 0 },
-		{ sin(angle), cos(angle), 0, 0 },
+		{ std::cos(angle), -std::sin(angle), 0, 0 },
+		{ std::sin(angle), std::cos(angle), 0, 0 },
 		{ 0, 0, 1, 0 },
 		{ 0, 0, 0, 1 }
 	});
