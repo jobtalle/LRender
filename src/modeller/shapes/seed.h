@@ -26,4 +26,4 @@ namespace LRender {
 			static const size_t SUBDIVISIONS;
 		};
 	};
-};
+}

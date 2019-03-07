@@ -16,4 +16,4 @@ namespace LRender {
 	private:
 		UniformsView uniforms;
 	};
-};
+}

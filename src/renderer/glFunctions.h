@@ -8,4 +8,4 @@ namespace LRender {
 	private:
 		static bool initialized;
 	};
-};
+}

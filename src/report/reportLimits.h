@@ -14,4 +14,4 @@ namespace LRender {
 		Vector minimum;
 		Vector maximum;
 	};
-};
+}

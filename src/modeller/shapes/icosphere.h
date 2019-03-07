@@ -36,4 +36,4 @@ namespace LRender {
 			static std::vector<BufferedSphere> bufferedSpheres;
 		};
 	};
-};
+}

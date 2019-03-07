@@ -17,4 +17,4 @@ namespace LRender {
 			Matrix projection;
 		} payload;
 	};
-};
+}

@@ -41,6 +41,6 @@ namespace LRender {
 	};
 
 	Matrix operator*(Matrix lhs, const Matrix &rhs);
-};
+}
 
 std::ostream &operator<<(std::ostream &stream, const LRender::Matrix &matrix);

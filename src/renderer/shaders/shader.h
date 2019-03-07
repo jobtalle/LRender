@@ -24,4 +24,4 @@ namespace LRender {
 
 		GLuint program;
 	};
-};
+}

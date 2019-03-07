@@ -15,4 +15,4 @@ namespace LRender {
 	private:
 		GLuint ubo;
 	};
-};
+}

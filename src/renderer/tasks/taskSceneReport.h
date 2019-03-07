@@ -19,4 +19,4 @@ namespace LRender {
 		std::future<std::shared_ptr<Report>> reportValue;
 		std::shared_ptr<LRender::Scene> scene;
 	};
-};
+}
