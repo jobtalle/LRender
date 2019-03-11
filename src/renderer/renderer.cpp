@@ -60,6 +60,11 @@ void Renderer::update() {
 	tasks.clear();
 }
 
+void Renderer::bindDefault() {
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+
 void Renderer::render() const {
 	render(*updatePass);
 }

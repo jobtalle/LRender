@@ -33,6 +33,7 @@ namespace LRender {
 		Renderer(const size_t width, const size_t height);
 		void enqueue(const std::shared_ptr<Task>& task);
 		void update();
+		static void bindDefault();
 		void render() const;
 		void render(RenderPass &pass) const;
 		void center();
