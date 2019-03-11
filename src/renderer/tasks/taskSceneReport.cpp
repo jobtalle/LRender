@@ -22,7 +22,7 @@ void Renderer::Task::SceneReport::perform(Renderer &renderer) {
 	const auto target = std::make_shared<RenderTargetColor>(800, 600);
 	auto areaPass = RenderPassArea();
 	target->bind();
-	renderer.render(areaPass);
+	renderer.render();
 	renderer.bindDefault();
 
 	renderer.setPass(std::make_shared<RenderPassImage>(target));

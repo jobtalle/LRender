@@ -33,7 +33,7 @@ namespace LRender {
 		Renderer(const size_t width, const size_t height);
 		void enqueue(const std::shared_ptr<Task>& task);
 		void update();
-		static void bindDefault();
+		void bindDefault();
 		void render() const;
 		void render(RenderPass &pass) const;
 		void center();
@@ -57,6 +57,8 @@ namespace LRender {
 		Matrix projection;
 		Vector sceneCenter;
 		float aspect;
+		size_t width;
+		size_t height;
 		std::shared_ptr<RenderPass> updatePass;
 		std::mutex access;
 		std::vector<AgentModel> agents;

@@ -29,6 +29,7 @@ RenderTarget::~RenderTarget() {
 
 void RenderTarget::bind() const {
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+	glViewport(0, 0, width, height);
 }
 
 size_t RenderTarget::getWidth() const {

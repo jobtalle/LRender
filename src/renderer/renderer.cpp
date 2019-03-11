@@ -62,6 +62,7 @@ void Renderer::update() {
 
 void Renderer::bindDefault() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glViewport(0, 0, width, height);
 }
 
 
@@ -78,7 +79,8 @@ void Renderer::center() {
 }
 
 void Renderer::setSize(const size_t width, const size_t height) {
-	glViewport(0, 0, width, height);
+	this->width = width;
+	this->height = height;
 
 	aspect = float(width) / height;
 
