@@ -3,7 +3,6 @@
 #include "scene/scene.h"
 #include "math/vector.h"
 #include "math/matrix.h"
-#include "model/model.h"
 #include "renderer/shaders/shaders.h"
 #include "renderer/glFunctions.h"
 #include "renderer/orbit.h"
@@ -14,9 +13,7 @@
 
 #include <memory>
 #include <mutex>
-#include <string>
 #include <random>
-#include <functional>
 
 namespace LRender {
 	class Renderer final {
@@ -34,9 +31,10 @@ namespace LRender {
 		};
 
 		Renderer(const size_t width, const size_t height);
-		void enqueue(const std::shared_ptr<Task> task);
+		void enqueue(const std::shared_ptr<Task>& task);
 		void update();
-		void render();
+		void render() const;
+		void center();
 		void setSize(const size_t width, const size_t height);
 		void mouseMove(const size_t x, const size_t y);
 		void mousePress(const MouseButton button);
@@ -55,6 +53,7 @@ namespace LRender {
 		Shaders shaders;
 		Orbit orbit;
 		Matrix projection;
+		Vector sceneCenter;
 		float aspect;
 		std::shared_ptr<RenderPass> updatePass;
 		std::mutex access;

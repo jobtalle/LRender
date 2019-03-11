@@ -5,8 +5,6 @@
 #include "renderer/passes/renderPassViewWireframe.h"
 #include "renderer/tasks/task.h"
 
-#include <math.h>
-
 using namespace LRender;
 
 const float Renderer::PROJECTION_ANGLE = Constants::PI * 0.25f;
@@ -47,7 +45,7 @@ Renderer::Renderer(const size_t width, const size_t height) :
 	updateProjection();
 }
 
-void Renderer::enqueue(const std::shared_ptr<Task> task) {
+void Renderer::enqueue(const std::shared_ptr<Task>& task) {
 	std::lock_guard<std::mutex> lock(access);
 
 	tasks.push_back(task);
@@ -62,8 +60,12 @@ void Renderer::update() {
 	tasks.clear();
 }
 
-void Renderer::render() {
+void Renderer::render() const {
 	updatePass->render(shaders, orbit, projection, terrains, agents);
+}
+
+void Renderer::center() {
+	orbit.setFocus(sceneCenter);
 }
 
 void Renderer::setSize(const size_t width, const size_t height) {
@@ -135,7 +137,7 @@ void Renderer::loadScene(const Scene *scene, Report *report) {
 		agents.push_back(AgentModel(agent, randomizer));
 
 		if(report) {
-			auto model = --agents.end();
+			const auto model = --agents.end();
 
 			report->add(ReportAgent(
 				ReportLimits(model->getMinimum(), model->getMaximum()),
@@ -144,8 +146,15 @@ void Renderer::loadScene(const Scene *scene, Report *report) {
 		}
 	}
 
-	if(agents.size() == 1)
-		orbit.setFocus(agents[0].getMinimum() + (agents[0].getMaximum() - agents[0].getMinimum()) * 0.5f);
+	// Calculate center
+	sceneCenter.x = scene->getTerrain().getWidth() * 0.5f;
+	sceneCenter.z = scene->getTerrain().getHeight() * 0.5f;
+
+	if(report->hasLimits())
+		sceneCenter.y = report->getLimits().getMinimum().y +
+		(report->getLimits().getMaximum().y - report->getLimits().getMinimum().y) * 0.5f;
+	else
+		sceneCenter.y = 0;
 }
 
 void Renderer::updateProjection() {

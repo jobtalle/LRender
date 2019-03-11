@@ -9,10 +9,11 @@
 namespace LRender {
 	class Report final {
 	public:
-		Report();
+		Report() = default;
 		void add(const ReportAgent &agent);
 		const std::vector<ReportAgent> &getAgents() const;
 		const ReportLimits &getLimits() const;
+		bool hasLimits() const;
 
 	private:
 		std::vector<ReportAgent> agents;
