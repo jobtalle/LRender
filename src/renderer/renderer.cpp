@@ -61,7 +61,11 @@ void Renderer::update() {
 }
 
 void Renderer::render() const {
-	updatePass->render(shaders, orbit, projection, terrains, agents);
+	render(*updatePass);
+}
+
+void Renderer::render(RenderPass &pass) const {
+	pass.render(shaders, orbit, projection, terrains, agents);
 }
 
 void Renderer::center() {

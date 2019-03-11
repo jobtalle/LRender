@@ -34,6 +34,7 @@ namespace LRender {
 		void enqueue(const std::shared_ptr<Task>& task);
 		void update();
 		void render() const;
+		void render(RenderPass &pass) const;
 		void center();
 		void setSize(const size_t width, const size_t height);
 		void mouseMove(const size_t x, const size_t y);
