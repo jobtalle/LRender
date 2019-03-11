@@ -126,14 +126,18 @@ void Renderer::scrollDown() {
 void Renderer::setMode(const Mode mode) {
 	switch(mode) {
 	case DEFAULT:
-		updatePass = std::make_shared<RenderPassViewDefault>();
+		setPass(std::make_shared<RenderPassViewDefault>());
 
 		break;
 	case WIREFRAME:
-		updatePass = std::make_shared<RenderPassViewWireframe>();
+		setPass(std::make_shared<RenderPassViewWireframe>());
 
 		break;
 	}
+}
+
+void Renderer::setPass(const std::shared_ptr<RenderPass> &pass) {
+	updatePass = pass;
 }
 
 void Renderer::loadScene(const Scene *scene, Report *report) {

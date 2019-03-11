@@ -11,6 +11,9 @@ RenderTargetColor::~RenderTargetColor() {
 	glDeleteTextures(1, &texture);
 }
 
+GLuint RenderTargetColor::getTexture() const {
+	return texture;
+}
 
 GLuint RenderTargetColor::makeTexture(const size_t width, const size_t height) {
 	glGenTextures(1, &texture);

@@ -19,3 +19,7 @@ const Shader &Shaders::getBranches() const {
 const Shader &Shaders::getLeaves() const {
 	return leaves;
 }
+
+const ShaderImage& Shaders::getImage() const {
+	return image;
+}

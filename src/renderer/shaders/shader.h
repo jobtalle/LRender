@@ -6,11 +6,14 @@
 #include <vector>
 
 namespace LRender {
-	class Shader final {
+	class Shader {
 	public:
 		Shader(const std::string &vertex, const std::string &fragment);
 		~Shader();
 		void use() const;
+
+	protected:
+		GLuint program;
 
 	private:
 		static const std::string VERSION;
@@ -21,7 +24,5 @@ namespace LRender {
 
 		static void loadPrefix();
 		static std::string readFile(const std::string &file);
-
-		GLuint program;
 	};
 }

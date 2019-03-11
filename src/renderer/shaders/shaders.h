@@ -1,6 +1,7 @@
 #pragma once
 
 #include "shader.h"
+#include "renderer/shaders/shaderImage.h"
 
 namespace LRender {
 	class Shaders final {
@@ -8,9 +9,11 @@ namespace LRender {
 		Shaders();
 		const Shader &getBranches() const;
 		const Shader &getLeaves() const;
+		const ShaderImage &getImage() const;
 
 	private:
 		const Shader branches;
 		const Shader leaves;
+		const ShaderImage image;
 	};
 }

@@ -8,15 +8,15 @@
 #include <memory>
 
 namespace LRender {
-	class Renderer::Task::SceneReport final : public Renderer::Task {
+	class Renderer::Task::SceneReport final : public Task {
 	public:
-		SceneReport(const std::shared_ptr<LRender::Scene> scene);
+		SceneReport(std::shared_ptr<LRender::Scene> scene);
 		void perform(Renderer &renderer) override final;
 		const std::shared_ptr<Report> getReport();
 
 	private:
+		std::shared_ptr<LRender::Scene> scene;
 		std::promise<std::shared_ptr<Report>> report;
 		std::future<std::shared_ptr<Report>> reportValue;
-		std::shared_ptr<LRender::Scene> scene;
 	};
 }

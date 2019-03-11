@@ -7,6 +7,7 @@ namespace LRender {
 	public:
 		RenderTargetColor(const size_t width, const size_t height);
 		~RenderTargetColor();
+		GLuint getTexture() const;
 
 	private:
 		GLuint texture;

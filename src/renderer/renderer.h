@@ -64,6 +64,7 @@ namespace LRender {
 		std::vector<std::shared_ptr<Task>> tasks;
 
 		void setMode(const Mode mode);
+		void setPass(const std::shared_ptr<RenderPass> &pass);
 		void loadScene(const Scene *scene, Report *report = nullptr);
 		void updateProjection();
 	};
