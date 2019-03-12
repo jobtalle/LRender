@@ -1,6 +1,8 @@
 #include "branch.h"
 #include "math/constants.h"
 
+#include <cmath>
+
 using namespace LRender;
 
 void Shape::Branch::model(
@@ -42,7 +44,7 @@ std::vector<Vector> Shape::Branch::makeRing(const size_t precision) {
 	for(size_t i = 0; i < precision; ++i) {
 		const float radians = Constants::PI * 2 * float(i) / precision;
 
-		ring.push_back(Vector(cos(radians), 0, sin(radians)));
+		ring.push_back(Vector(std::cos(radians), 0, std::sin(radians)));
 	}
 
 	return ring;

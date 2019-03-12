@@ -2,6 +2,8 @@
 
 #include "renderer/target/renderTarget.h"
 
+#include <stdlib.h>
+
 namespace LRender {
 	class RenderTargetColor final : public RenderTarget {
 	public:
