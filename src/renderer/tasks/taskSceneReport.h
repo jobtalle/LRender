@@ -15,7 +15,7 @@ namespace LRender {
 		const std::shared_ptr<Report> getReport();
 
 	private:
-		std::shared_ptr<LRender::Scene> scene;
+		std::shared_ptr<Scene> scene;
 		std::promise<std::shared_ptr<Report>> report;
 		std::future<std::shared_ptr<Report>> reportValue;
 	};

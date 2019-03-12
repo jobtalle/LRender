@@ -1,6 +1,19 @@
 #include "renderPassArea.h"
+#include "renderer/renderer.h"
 
 using namespace LRender;
+
+RenderPassArea::RenderPassArea(const ReportLimits &limits) {
+	makeViewport(limits);
+}
+
+float RenderPassArea::getViewportWidth() const {
+	return viewport.width;
+}
+
+float RenderPassArea::getViewportHeight() const {
+	return viewport.height;
+}
 
 void RenderPassArea::render(
 	const Shaders& shaders,
@@ -8,5 +21,49 @@ void RenderPassArea::render(
 	const Matrix& projection,
 	const std::vector<LRender::TerrainModel>& terrains,
 	const std::vector<LRender::AgentModel>& agents) {
-	
+	uniforms.setProjection(lookAt * this->projection);
+	uniforms.update();
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_CULL_FACE);
+
+	shaders.getBranches().use();
+
+	for(auto &terrain : terrains)
+		terrain.getModel().draw();
+
+	for(auto &agent : agents)
+		agent.getBranches().draw();
+
+	glDisable(GL_CULL_FACE);
+
+	shaders.getLeaves().use();
+
+	for(auto &agent : agents)
+		agent.getLeaves().draw();
+}
+
+#include <iostream>
+
+void RenderPassArea::makeViewport(const ReportLimits& limits) {
+	const Vector center = limits.getMinimum() + (limits.getMaximum() - limits.getMinimum()) * 0.5f;
+	const float dx = limits.getMinimum().x - center.x;
+	const float dy = limits.getMinimum().y - center.y;
+
+	viewport.width = limits.getMaximum().z - limits.getMinimum().z;
+	viewport.height = std::sqrt(dx * dx + dy * dy) * 2;
+
+	projection = Matrix::makeOrtho(
+		-viewport.width * 0.5f, 
+		-viewport.height * 0.5f,
+		viewport.width * 0.5f,
+		viewport.height * 0.5f,
+		Renderer::Z_NEAR,
+		Renderer::Z_FAR);
+	lookAt = Matrix::makeLookAt(
+		center + Vector(0, Renderer::Z_FAR * 0.5f, 0), 
+		center, 
+		Vector(-1, 0, 0));
+
+	std::cout << viewport.width << std::endl << viewport.height << std::endl;
 }

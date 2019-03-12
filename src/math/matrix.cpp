@@ -207,6 +207,22 @@ Matrix Matrix::makePerspective(
 	});
 }
 
+Matrix Matrix::makeOrtho(
+	const float left,
+	const float top,
+	const float right,
+	const float bottom,
+	const float znear,
+	const float zfar) {
+	return Matrix({
+		{ 2.0f / (left - right), 0, 0, 0 },
+		{ 0, 2.0f / (top - bottom), 0, 0 },
+		{ 0, 0, -2.0f / (zfar- znear), 0 },
+		{ -(right + left) / (left - right), -(top + bottom) / (top - bottom), -(zfar + znear) / (zfar - znear), 1 }
+	});
+}
+
+
 Matrix LRender::operator*(Matrix lhs, const Matrix &rhs) {
 	return lhs *= rhs;
 }

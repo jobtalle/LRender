@@ -19,13 +19,19 @@ void Renderer::Task::SceneReport::perform(Renderer &renderer) {
 
 	renderer.loadScene(scene.get(), report.get());
 
-	const auto target = std::make_shared<RenderTargetColor>(800, 600);
-	auto areaPass = RenderPassArea();
-	target->bind();
-	renderer.render();
-	renderer.bindDefault();
+	if(!report->getAgents().empty()) {
+		auto areaPass = RenderPassArea(report->getLimits());
+		const size_t scale = 32;
+		const auto target = std::make_shared<RenderTargetColor>(
+			static_cast<size_t>(std::ceil(areaPass.getViewportWidth())) * scale,
+			static_cast<size_t>(std::ceil(areaPass.getViewportHeight())) * scale);
 
-	renderer.setPass(std::make_shared<RenderPassImage>(target));
+		target->bind();
+		renderer.render(areaPass);
+		renderer.bindDefault();
+
+		renderer.setPass(std::make_shared<RenderPassImage>(target));
+	}
 
 	this->report.set_value(report);
 }

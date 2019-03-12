@@ -44,10 +44,11 @@ namespace LRender {
 		void scrollUp();
 		void scrollDown();
 
-	private:
-		static const float PROJECTION_ANGLE;
 		static const float Z_NEAR;
 		static const float Z_FAR;
+
+	private:
+		static const float PROJECTION_ANGLE;
 		static const Vector CLEAR_COLOR;
 
 		std::mt19937 randomizer;

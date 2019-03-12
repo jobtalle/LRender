@@ -1,8 +1,6 @@
 #include "branch.h"
 #include "math/constants.h"
 
-#include <math.h>
-
 using namespace LRender;
 
 void Shape::Branch::model(

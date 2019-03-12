@@ -65,7 +65,6 @@ void Renderer::bindDefault() {
 	glViewport(0, 0, width, height);
 }
 
-
 void Renderer::render() const {
 	render(*updatePass);
 }

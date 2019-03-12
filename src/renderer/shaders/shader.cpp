@@ -11,7 +11,7 @@ const std::vector<std::string> Shader::FILE_UNIFORM_BLOCKS = {
 };
 
 bool Shader::loadedPrefix = false;
-std::string Shader::prefix = "";
+std::string Shader::prefix;
 
 Shader::Shader(const std::string &vertex, const std::string &fragment) {
 	if(!loadedPrefix)
@@ -19,8 +19,8 @@ Shader::Shader(const std::string &vertex, const std::string &fragment) {
 
 	program = glCreateProgram();
 
-	GLuint shaderVertex = createShader(GL_VERTEX_SHADER, (prefix + readFile(vertex)).c_str());
-	GLuint shaderFragment = createShader(GL_FRAGMENT_SHADER, (prefix + readFile(fragment)).c_str());
+	const GLuint shaderVertex = createShader(GL_VERTEX_SHADER, (prefix + readFile(vertex)).c_str());
+	const GLuint shaderFragment = createShader(GL_FRAGMENT_SHADER, (prefix + readFile(fragment)).c_str());
 
 	glAttachShader(program, shaderVertex);
 	glAttachShader(program, shaderFragment);
@@ -39,10 +39,8 @@ void Shader::use() const {
 }
 
 GLuint Shader::createShader(const GLenum type, const GLchar *code) {
-	GLuint shader;
 	GLint success;
-
-	shader = glCreateShader(type);
+	GLuint shader = glCreateShader(type);
 
 	glShaderSource(shader, 1, &code, nullptr);
 	glCompileShader(shader);

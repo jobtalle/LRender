@@ -33,6 +33,13 @@ namespace LRender {
 			const float aspect,
 			const float znear,
 			const float zfar);
+		static Matrix makeOrtho(
+			const float left,
+			const float top,
+			const float right,
+			const float bottom,
+			const float znear,
+			const float zfar);
 
 	private:
 		float m[4][4] = { { 0 } };
