@@ -39,7 +39,7 @@ void RenderPassArea::render(
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_CULL_FACE);
-	//glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 
 	shaders.getBranches().use();
 
@@ -49,7 +49,7 @@ void RenderPassArea::render(
 	for(auto &agent : agents)
 		agent.getBranches().draw();
 
-	//glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 	glDisable(GL_CULL_FACE);
 
 	shaders.getLeaves().use();
