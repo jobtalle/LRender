@@ -2,6 +2,7 @@
 #include "renderer/target/renderTargetColor.h"
 #include "renderer/passes/renderPassArea.h"
 #include "renderer/passes/renderPassImage.h"
+#include "math/constants.h"
 
 #include <memory>
 #include <utility>
@@ -21,6 +22,8 @@ void Renderer::Task::SceneReport::perform(Renderer &renderer) {
 
 	if(!report->getAgents().empty()) {
 		auto areaPass = RenderPassArea(report->getLimits());
+		areaPass.setAngle(Constants::PI * 0.5f);
+
 		const size_t scale = 32;
 		const auto target = std::make_shared<RenderTargetColor>(
 			static_cast<size_t>(std::ceil(areaPass.getViewportWidth())) * scale,

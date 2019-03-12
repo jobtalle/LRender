@@ -10,6 +10,7 @@ namespace LRender {
 		RenderPassArea(const ReportLimits &limits);
 		float getViewportWidth() const;
 		float getViewportHeight() const;
+		void setAngle(const float angle);
 		void render(
 			const Shaders &shaders,
 			const Orbit &orbit,
@@ -19,6 +20,7 @@ namespace LRender {
 
 	private:
 		UniformsView uniforms;
+		Vector center;
 		Matrix projection;
 		Matrix lookAt;
 

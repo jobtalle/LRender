@@ -15,6 +15,19 @@ float RenderPassArea::getViewportHeight() const {
 	return viewport.height;
 }
 
+void RenderPassArea::setAngle(const float angle) {
+	const float c = std::cos(angle);
+	const float s = std::sin(angle);
+
+	lookAt = Matrix::makeLookAt(
+		center + Vector(
+			c * Renderer::Z_FAR * 0.5f,
+			s * Renderer::Z_FAR * 0.5f, 
+			0),
+		center,
+		Vector(s, -c, 0));
+}
+
 void RenderPassArea::render(
 	const Shaders& shaders,
 	const Orbit& orbit,
@@ -26,6 +39,7 @@ void RenderPassArea::render(
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_CULL_FACE);
+	//glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 
 	shaders.getBranches().use();
 
@@ -35,6 +49,7 @@ void RenderPassArea::render(
 	for(auto &agent : agents)
 		agent.getBranches().draw();
 
+	//glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 	glDisable(GL_CULL_FACE);
 
 	shaders.getLeaves().use();
@@ -43,10 +58,9 @@ void RenderPassArea::render(
 		agent.getLeaves().draw();
 }
 
-#include <iostream>
-
 void RenderPassArea::makeViewport(const ReportLimits& limits) {
-	const Vector center = limits.getMinimum() + (limits.getMaximum() - limits.getMinimum()) * 0.5f;
+	center = limits.getMinimum() + (limits.getMaximum() - limits.getMinimum()) * 0.5f;
+
 	const float dx = limits.getMinimum().x - center.x;
 	const float dy = limits.getMinimum().y - center.y;
 
@@ -60,10 +74,4 @@ void RenderPassArea::makeViewport(const ReportLimits& limits) {
 		viewport.height * 0.5f,
 		Renderer::Z_NEAR,
 		Renderer::Z_FAR);
-	lookAt = Matrix::makeLookAt(
-		center + Vector(0, Renderer::Z_FAR * 0.5f, 0), 
-		center, 
-		Vector(-1, 0, 0));
-
-	std::cout << viewport.width << std::endl << viewport.height << std::endl;
 }
