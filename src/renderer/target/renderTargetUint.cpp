@@ -25,7 +25,7 @@ void RenderTargetUint::makeHistogram(std::vector<unsigned>& histogram) const {
 	const auto pixels = static_cast<GLuint*>(glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY));
 
 	for(size_t pixel = 0; pixel < pixelCount; ++pixel) if(pixels[pixel] != VALUE_DEFAULT)
-		++*(histogram.begin() + pixels[pixel] + 1);
+		++*(histogram.begin() + pixels[pixel]);
 
 	glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
 }

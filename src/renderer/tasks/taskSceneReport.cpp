@@ -37,11 +37,13 @@ void Renderer::Task::SceneReport::perform(Renderer &renderer) {
 
 		// TODO: Read all blitted pixels from the PBO's and calculate exposure.
 
-		std::vector<unsigned int> histogram(scene->getAgents().size() + 1);
+		std::vector<unsigned int> histogram(scene->getAgents().size());
+		std::fill(histogram.begin(), histogram.end(), 0);
+
 		target->makeHistogram(histogram);
 
 		for(size_t i = 0; i < scene->getAgents().size(); ++i)
-			std::cout << "Agent #" << i << " " << histogram[i + 1] << std::endl;
+			std::cout << "Agent #" << i << " " << histogram[i] << std::endl;
 	}
 
 	this->report.set_value(report);
