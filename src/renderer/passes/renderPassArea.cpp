@@ -41,7 +41,7 @@ void RenderPassArea::render(
 	glEnable(GL_CULL_FACE);
 	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 
-	shaders.getBranches().use();
+	shaders.getExposure().use();
 
 	for(auto &terrain : terrains)
 		terrain.getModel().draw();
@@ -51,8 +51,6 @@ void RenderPassArea::render(
 
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 	glDisable(GL_CULL_FACE);
-
-	shaders.getLeaves().use();
 
 	for(auto &agent : agents)
 		agent.getLeaves().draw();
