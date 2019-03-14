@@ -14,7 +14,7 @@ Renderer::Task::SceneReport::SceneReport(std::shared_ptr<LRender::Scene> scene) 
 	reportValue(report.get_future()) {
 
 }
-
+#include <iostream>
 void Renderer::Task::SceneReport::perform(Renderer &renderer) {
 	auto report = std::make_shared<Report>();
 
@@ -38,6 +38,31 @@ void Renderer::Task::SceneReport::perform(Renderer &renderer) {
 		renderer.setPass(std::make_shared<RenderPassImage>(target));
 
 		// TODO: Read all blitted pixels from the PBO's and calculate exposure.
+
+		GLuint pbo;
+		const size_t pixelCount = target->getWidth() * target->getHeight();
+
+		target->bind();
+		glGenBuffers(1, &pbo);
+		glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo);
+		glBufferData(GL_PIXEL_PACK_BUFFER, pixelCount << 2, nullptr, GL_STREAM_READ);
+		glReadBuffer(GL_COLOR_ATTACHMENT0);
+		glReadPixels(0, 0, target->getWidth(), target->getHeight(), GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+
+		auto *pixels = static_cast<GLuint*>(glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY));
+		size_t black = 0;
+		size_t white = 0;
+
+		for(size_t pixel = 0; pixel < pixelCount; ++pixel) {
+			if(pixels[pixel] == 0xFFFFFFFF)
+				++white;
+			else
+				++black;
+		}
+
+		std::cout << ((float(white) / pixelCount)) << "% coverage" << std::endl;
+
+		glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
 	}
 
 	this->report.set_value(report);
