@@ -12,9 +12,9 @@ namespace LRender {
 		void makeHistogram(std::vector<unsigned int> &histogram) const;
 		void clear() const;
 
+	private:
 		static const unsigned int VALUE_DEFAULT = 0xFFFFFFFF;
 
-	private:
 		GLuint texture;
 
 		GLuint makeTexture(const size_t width, const size_t height);
