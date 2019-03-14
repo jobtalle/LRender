@@ -14,6 +14,8 @@ namespace LRender {
 			const std::vector<LRender::AgentModel> &agents) override final;
 
 	private:
+		static const Vector CLEAR_COLOR;
+
 		UniformsView uniforms;
 	};
 }

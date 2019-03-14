@@ -2,6 +2,8 @@
 
 using namespace LRender;
 
+const Vector RenderPassViewWireframe::CLEAR_COLOR = Vector(0.3f, 0.3f, 0.3f);
+
 void RenderPassViewWireframe::render(
 	const Shaders &shaders,
 	const Orbit &orbit,
@@ -11,6 +13,7 @@ void RenderPassViewWireframe::render(
 	uniforms.setProjection(orbit.getMatrix() * projection);
 	uniforms.update();
 
+	glClearColor(CLEAR_COLOR.r, CLEAR_COLOR.g, CLEAR_COLOR.b, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_CULL_FACE);
 

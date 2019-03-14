@@ -49,8 +49,7 @@ namespace LRender {
 
 	private:
 		static const float PROJECTION_ANGLE;
-		static const Vector CLEAR_COLOR;
-
+		
 		std::mt19937 randomizer;
 		GLFunctions gl;
 		Shaders shaders;

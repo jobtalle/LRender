@@ -10,7 +10,6 @@ using namespace LRender;
 const float Renderer::PROJECTION_ANGLE = Constants::PI * 0.25f;
 const float Renderer::Z_NEAR = 0.05f;
 const float Renderer::Z_FAR = 400;
-const Vector Renderer::CLEAR_COLOR = Vector(0.3f, 0.4f, 0.6f);
 
 // OpenGL debugging:
 #include <iostream>
@@ -34,7 +33,6 @@ MessageCallback(GLenum source,
 Renderer::Renderer(const size_t width, const size_t height) :
 	updatePass(std::make_shared<RenderPassViewDefault>()) {
 	glEnable(GL_DEPTH_TEST);
-	glClearColor(CLEAR_COLOR.r, CLEAR_COLOR.g, CLEAR_COLOR.b, 1);
 
 	// OpenGL debugging:
 	glEnable(GL_DEBUG_OUTPUT);
