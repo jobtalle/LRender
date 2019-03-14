@@ -13,7 +13,7 @@ namespace LRender {
 		void clear() const;
 
 	private:
-		static const unsigned int VALUE_DEFAULT = 0xFFFFFFFF;
+		static const unsigned int VALUE_DEFAULT;
 
 		GLuint texture;
 

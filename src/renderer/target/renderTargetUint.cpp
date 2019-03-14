@@ -2,6 +2,8 @@
 
 using namespace LRender;
 
+const unsigned int RenderTargetUint::VALUE_DEFAULT = 0xFFFFFFFF;
+
 RenderTargetUint::RenderTargetUint(const size_t width, const size_t height) :
 	RenderTarget(width, height, { makeTexture(width, height) }) {
 	
