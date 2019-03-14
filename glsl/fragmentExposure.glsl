@@ -1,6 +1,7 @@
-out vec4 color;
+out uvec4 color;
 
 void main()
 {
-	color = vec4(1);
+	uint n = 15000;
+	color = uvec4(n);
 }

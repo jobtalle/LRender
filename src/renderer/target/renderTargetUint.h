@@ -3,11 +3,10 @@
 #include "renderer/target/renderTarget.h"
 
 namespace LRender {
-	class RenderTargetColor final : public RenderTarget {
+	class RenderTargetUint final : public RenderTarget {
 	public:
-		RenderTargetColor(const size_t width, const size_t height);
-		~RenderTargetColor();
-		GLuint getTexture() const;
+		RenderTargetUint(const size_t width, const size_t height);
+		~RenderTargetUint();
 
 	private:
 		GLuint texture;
