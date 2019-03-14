@@ -2,6 +2,7 @@
 
 #include "shader.h"
 #include "renderer/shaders/shaderImage.h"
+#include "renderer/shaders/shaderExposure.h"
 
 namespace LRender {
 	class Shaders final {
@@ -9,13 +10,13 @@ namespace LRender {
 		Shaders();
 		const Shader &getBranches() const;
 		const Shader &getLeaves() const;
-		const Shader &getExposure() const;
+		const ShaderExposure &getExposure() const;
 		const ShaderImage &getImage() const;
 
 	private:
 		const Shader branches;
 		const Shader leaves;
-		const Shader exposure;
+		const ShaderExposure exposure;
 		const ShaderImage image;
 	};
 }

@@ -37,8 +37,6 @@ void RenderPassArea::render(
 	uniforms.setProjection(lookAt * this->projection);
 	uniforms.update();
 
-	glClearColor(0, 0, 0, 0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_CULL_FACE);
 	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 
@@ -53,8 +51,11 @@ void RenderPassArea::render(
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 	glDisable(GL_CULL_FACE);
 
-	for(auto &agent : agents)
-		agent.getLeaves().draw();
+	for(size_t agent = 0; agent < agents.size(); ++agent) {
+		shaders.getExposure().setAgent(agent);
+
+		agents[agent].getLeaves().draw();
+	}
 }
 
 void RenderPassArea::makeViewport(const ReportLimits& limits) {

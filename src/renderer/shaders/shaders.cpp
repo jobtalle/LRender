@@ -8,10 +8,7 @@ Shaders::Shaders() :
 		"LRender/glsl/fragmentGeometry.glsl"),
 	leaves(
 		"LRender/glsl/vertexGeometry.glsl",
-		"LRender/glsl/fragmentLeaf.glsl"),
-	exposure(
-		"LRender/glsl/vertexExposure.glsl",
-		"LRender/glsl/fragmentExposure.glsl") {
+		"LRender/glsl/fragmentLeaf.glsl") {
 
 }
 
@@ -23,7 +20,7 @@ const Shader &Shaders::getLeaves() const {
 	return leaves;
 }
 
-const Shader &Shaders::getExposure() const {
+const ShaderExposure &Shaders::getExposure() const {
 	return exposure;
 }
 

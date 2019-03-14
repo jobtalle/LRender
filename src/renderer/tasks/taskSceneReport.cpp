@@ -30,76 +30,18 @@ void Renderer::Task::SceneReport::perform(Renderer &renderer) {
 			static_cast<size_t>(std::ceil(areaPass.getViewportHeight())) * scale);
 
 		target->bind();
+		target->clear();
+
 		renderer.render(areaPass);
 		renderer.setMode(Renderer::Mode::DEFAULT);
 
 		// TODO: Read all blitted pixels from the PBO's and calculate exposure.
 
-		GLuint pbo;
-		const size_t pixelCount = target->getWidth() * target->getHeight();
+		std::vector<unsigned int> histogram(scene->getAgents().size() + 1);
+		target->makeHistogram(histogram);
 
-		target->bind();
-		glGenBuffers(1, &pbo);
-		glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo);
-		glBufferData(GL_PIXEL_PACK_BUFFER, pixelCount << 2, nullptr, GL_STREAM_READ);
-		glReadBuffer(GL_COLOR_ATTACHMENT0);
-		glReadPixels(0, 0, target->getWidth(), target->getHeight(), GL_RED_INTEGER, GL_UNSIGNED_INT, nullptr);
-
-		auto *pixels = static_cast<GLuint*>(glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY));
-		size_t black = 0;
-		size_t white = 0;
-
-		for(size_t pixel = 0; pixel < pixelCount; ++pixel) {
-			if(pixels[pixel] == 15000)
-				++white;
-			else
-				++black;
-		}
-
-		std::cout << ((float(white) / pixelCount)) << "% coverage" << std::endl;
-
-		glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
-
-		// TODO: For each angle, create a texture and perform a render pass. Execute a read command to a PBO.
-		/*
-		const size_t scale = 32;
-		const auto target = std::make_shared<RenderTargetColor>(
-			static_cast<size_t>(std::ceil(areaPass.getViewportWidth())) * scale,
-			static_cast<size_t>(std::ceil(areaPass.getViewportHeight())) * scale);
-
-		target->bind();
-		renderer.render(areaPass);
-		renderer.bindDefault();
-
-		renderer.setPass(std::make_shared<RenderPassImage>(target));
-
-		// TODO: Read all blitted pixels from the PBO's and calculate exposure.
-
-		GLuint pbo;
-		const size_t pixelCount = target->getWidth() * target->getHeight();
-
-		target->bind();
-		glGenBuffers(1, &pbo);
-		glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo);
-		glBufferData(GL_PIXEL_PACK_BUFFER, pixelCount << 2, nullptr, GL_STREAM_READ);
-		glReadBuffer(GL_COLOR_ATTACHMENT0);
-		glReadPixels(0, 0, target->getWidth(), target->getHeight(), GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-
-		auto *pixels = static_cast<GLuint*>(glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY));
-		size_t black = 0;
-		size_t white = 0;
-
-		for(size_t pixel = 0; pixel < pixelCount; ++pixel) {
-			if(pixels[pixel] == 0xFFFFFFFF)
-				++white;
-			else
-				++black;
-		}
-
-		std::cout << ((float(white) / pixelCount)) << "% coverage" << std::endl;
-
-		glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
-		*/
+		for(size_t i = 0; i < scene->getAgents().size(); ++i)
+			std::cout << "Agent #" << i << " " << histogram[i + 1] << std::endl;
 	}
 
 	this->report.set_value(report);
