@@ -5,7 +5,7 @@ using namespace LRender;
 const unsigned int RenderTargetUint::VALUE_DEFAULT = 0xFFFF;
 
 RenderTargetUint::RenderTargetUint(const size_t width, const size_t height) :
-	RenderTarget(width, height, { makeTexture(width, height) }) {
+	RenderTarget(width, height, { makeTexture(width, height) }, true) {
 	
 }
 
@@ -39,12 +39,11 @@ void RenderTargetUint::makeHistogram(std::vector<unsigned>& histogram) const {
 void RenderTargetUint::clear() const {
 	bind();
 
-	const GLfloat depth = 0;
+	const GLfloat depth = 1;
 
 	glClearBufferuiv(GL_COLOR, 0, &VALUE_DEFAULT);
 	glClearBufferfv(GL_DEPTH, 0, &depth);
 }
-
 
 GLuint RenderTargetUint::makeTexture(const size_t width, const size_t height) {
 	glGenTextures(1, &texture);

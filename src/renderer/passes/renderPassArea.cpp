@@ -37,10 +37,10 @@ void RenderPassArea::render(
 	uniforms.setProjection(lookAt * this->projection);
 	uniforms.update();
 
+	shaders.getExposure().use();
+
 	glEnable(GL_CULL_FACE);
 	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-
-	shaders.getExposure().use();
 
 	for(auto &terrain : terrains)
 		terrain.getModel().draw();
