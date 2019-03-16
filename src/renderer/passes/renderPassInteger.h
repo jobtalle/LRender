@@ -1,17 +1,13 @@
 #pragma once
 
 #include "renderer/passes/renderPass.h"
-#include "renderer/target/renderTargetColor.h"
-#include "glad/glad.h"
-
-#include <memory>
-#include <vector>
+#include "renderer/target/renderTargetUint.h"
 
 namespace LRender {
-	class RenderPassImage final : public RenderPass {
+	class RenderPassInteger final : public RenderPass {
 	public:
-		RenderPassImage(std::shared_ptr<RenderTargetColor> image);
-		~RenderPassImage();
+		RenderPassInteger(std::shared_ptr<RenderTargetUint> image);
+		~RenderPassInteger();
 		void render(
 			const Shaders &shaders,
 			const Orbit &orbit,
@@ -21,7 +17,7 @@ namespace LRender {
 
 	private:
 		static const std::vector<float> VERTICES;
-		const std::shared_ptr<RenderTargetColor> image;
+		const std::shared_ptr<RenderTargetUint> image;
 		GLuint vao;
 		GLuint vertices;
 	};

@@ -24,6 +24,10 @@ const ShaderExposure &Shaders::getExposure() const {
 	return exposure;
 }
 
-const ShaderImage& Shaders::getImage() const {
+const ShaderImage &Shaders::getImage() const {
 	return image;
+}
+
+const ShaderInteger &Shaders::getInteger() const {
+	return integer;
 }

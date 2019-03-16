@@ -2,7 +2,7 @@
 
 using namespace LRender;
 
-const unsigned int RenderTargetUint::VALUE_DEFAULT = 0xFFFFFFFF;
+const unsigned int RenderTargetUint::VALUE_DEFAULT = 0xFFFF;
 
 RenderTargetUint::RenderTargetUint(const size_t width, const size_t height) :
 	RenderTarget(width, height, { makeTexture(width, height) }) {
@@ -11,6 +11,10 @@ RenderTargetUint::RenderTargetUint(const size_t width, const size_t height) :
 
 RenderTargetUint::~RenderTargetUint() {
 	glDeleteTextures(1, &texture);
+}
+
+GLuint RenderTargetUint::getTexture() const {
+	return texture;
 }
 
 void RenderTargetUint::makeHistogram(std::vector<unsigned>& histogram) const {
@@ -22,9 +26,9 @@ void RenderTargetUint::makeHistogram(std::vector<unsigned>& histogram) const {
 	glGenBuffers(1, &pbo);
 	glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo);
 	glBufferData(GL_PIXEL_PACK_BUFFER, pixelCount << 2, nullptr, GL_STREAM_READ);
-	glReadPixels(0, 0, getWidth(), getHeight(), GL_RED_INTEGER, GL_UNSIGNED_INT, nullptr);
+	glReadPixels(0, 0, getWidth(), getHeight(), GL_RED_INTEGER, GL_UNSIGNED_SHORT, nullptr);
 
-	const auto pixels = static_cast<GLuint*>(glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY));
+	const auto pixels = static_cast<GLushort*>(glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY));
 
 	for(size_t pixel = 0; pixel < pixelCount; ++pixel) if(pixels[pixel] != VALUE_DEFAULT)
 		++*(histogram.begin() + pixels[pixel]);
@@ -35,7 +39,10 @@ void RenderTargetUint::makeHistogram(std::vector<unsigned>& histogram) const {
 void RenderTargetUint::clear() const {
 	bind();
 
+	const GLfloat depth = 0;
+
 	glClearBufferuiv(GL_COLOR, 0, &VALUE_DEFAULT);
+	glClearBufferfv(GL_DEPTH, 0, &depth);
 }
 
 
@@ -46,7 +53,7 @@ GLuint RenderTargetUint::makeTexture(const size_t width, const size_t height) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32UI, width, height, 0, GL_RED_INTEGER, GL_UNSIGNED_INT, nullptr);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_R16UI, width, height, 0, GL_RED_INTEGER, GL_UNSIGNED_SHORT, nullptr);
 
 	return texture;
 }

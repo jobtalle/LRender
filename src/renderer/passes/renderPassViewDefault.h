@@ -10,8 +10,8 @@ namespace LRender {
 			const Shaders &shaders,
 			const Orbit &orbit,
 			const Matrix &projection,
-			const std::vector<LRender::TerrainModel> &terrains,
-			const std::vector<LRender::AgentModel> &agents) override final;
+			const std::vector<TerrainModel> &terrains,
+			const std::vector<AgentModel> &agents) override final;
 
 	private:
 		static const Vector CLEAR_COLOR;

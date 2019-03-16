@@ -9,6 +9,7 @@ namespace LRender {
 	public:
 		RenderTargetUint(const size_t width, const size_t height);
 		~RenderTargetUint();
+		GLuint getTexture() const;
 		void makeHistogram(std::vector<unsigned int> &histogram) const;
 		void clear() const;
 

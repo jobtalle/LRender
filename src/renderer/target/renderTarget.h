@@ -3,7 +3,6 @@
 #include "glad/glad.h"
 
 #include <vector>
-#include <stdlib.h>
 
 namespace LRender {
 	class RenderTarget {

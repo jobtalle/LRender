@@ -10,7 +10,7 @@
 namespace LRender {
 	class Renderer::Task::SceneReport final : public Task {
 	public:
-		SceneReport(std::shared_ptr<LRender::Scene> scene);
+		SceneReport(std::shared_ptr<Scene> scene);
 		void perform(Renderer &renderer) override final;
 		const std::shared_ptr<Report> getReport();
 

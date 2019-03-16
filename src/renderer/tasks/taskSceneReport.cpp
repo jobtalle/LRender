@@ -9,7 +9,7 @@
 
 using namespace LRender;
 
-Renderer::Task::SceneReport::SceneReport(std::shared_ptr<LRender::Scene> scene) :
+Renderer::Task::SceneReport::SceneReport(std::shared_ptr<Scene> scene) :
 	scene(std::move(scene)),
 	reportValue(report.get_future()) {
 

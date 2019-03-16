@@ -1,9 +1,8 @@
-#include "renderPassImage.h"
-#include <utility>
+#include "renderPassInteger.h"
 
 using namespace LRender;
 
-const std::vector<float> RenderPassImage::VERTICES = {
+const std::vector<float> RenderPassInteger::VERTICES = {
 	0, 0,
 	1, 0,
 	1, 1,
@@ -12,7 +11,7 @@ const std::vector<float> RenderPassImage::VERTICES = {
 	0, 0
 };
 
-RenderPassImage::RenderPassImage(std::shared_ptr<RenderTargetColor> image) :
+RenderPassInteger::RenderPassInteger(std::shared_ptr<RenderTargetUint> image) :
 	image(std::move(image)) {
 	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &vertices);
@@ -27,21 +26,21 @@ RenderPassImage::RenderPassImage(std::shared_ptr<RenderTargetColor> image) :
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, nullptr);
 }
 
-RenderPassImage::~RenderPassImage() {
+RenderPassInteger::~RenderPassInteger() {
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(1, &vertices);
 }
 
-void RenderPassImage::render(
-	const Shaders &shaders,
-	const Orbit &orbit,
-	const Matrix &projection,
-	const std::vector<TerrainModel> &terrains,
-	const std::vector<AgentModel> &agents) {
+void RenderPassInteger::render(
+	const Shaders& shaders,
+	const Orbit& orbit,
+	const Matrix& projection,
+	const std::vector<TerrainModel>& terrains,
+	const std::vector<AgentModel>& agents) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	shaders.getImage().use();
-	shaders.getImage().setImage(image->getTexture());
+	shaders.getInteger().use();
+	shaders.getInteger().setImage(image->getTexture());
 
 	glBindVertexArray(vao);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
