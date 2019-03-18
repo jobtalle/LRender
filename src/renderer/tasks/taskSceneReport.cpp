@@ -14,7 +14,7 @@ Renderer::Task::SceneReport::SceneReport(std::shared_ptr<Scene> scene) :
 	reportValue(report.get_future()) {
 
 }
-#include <iostream>
+
 void Renderer::Task::SceneReport::perform(Renderer &renderer) {
 	auto report = std::make_shared<Report>();
 
@@ -25,6 +25,7 @@ void Renderer::Task::SceneReport::perform(Renderer &renderer) {
 		areaPass.setAngle(Constants::PI * 0.5f);
 
 		const size_t scale = 32;
+		const float scaleFactor = 1.0f / (scale * scale);
 		const auto target = std::make_shared<RenderTargetUint>(
 			static_cast<size_t>(std::ceil(areaPass.getViewportWidth())) * scale,
 			static_cast<size_t>(std::ceil(areaPass.getViewportHeight())) * scale);
@@ -42,8 +43,16 @@ void Renderer::Task::SceneReport::perform(Renderer &renderer) {
 
 		target->makeHistogram(histogram);
 
-		for(size_t i = 0; i < scene->getAgents().size(); ++i)
-			std::cout << "Agent #" << i << " " << histogram[i] << std::endl;
+		for(size_t i = 0; i < scene->getAgents().size(); ++i) {
+			auto const area = report->getAgents()[i].getArea().getArea();
+
+			if(area == 0)
+				continue;
+
+			auto exposure = ReportExposure(scaleFactor * histogram[i] / area);
+
+			report->getAgents()[i].setExposure(exposure);
+		}
 	}
 
 	this->report.set_value(report);

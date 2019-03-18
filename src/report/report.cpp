@@ -11,7 +11,7 @@ void Report::add(const ReportAgent &agent) {
 		limits->add(agent.getLimits());
 }
 
-const std::vector<ReportAgent> &Report::getAgents() const {
+std::vector<ReportAgent> &Report::getAgents() {
 	return agents;
 }
 

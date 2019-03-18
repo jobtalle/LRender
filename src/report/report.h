@@ -11,7 +11,7 @@ namespace LRender {
 	public:
 		Report() = default;
 		void add(const ReportAgent &agent);
-		const std::vector<ReportAgent> &getAgents() const;
+		std::vector<ReportAgent> &getAgents();
 		const ReportLimits &getLimits() const;
 		bool hasLimits() const;
 

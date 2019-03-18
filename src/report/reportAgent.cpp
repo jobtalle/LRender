@@ -1,13 +1,18 @@
 #include "reportAgent.h"
+#include <utility>
 
 using namespace LRender;
 
 ReportAgent::ReportAgent(
-	const ReportLimits &limits,
-	const ReportArea &area) :
-	limits(limits),
-	area(area) {
+	ReportLimits limits,
+	ReportArea area) :
+	limits(std::move(limits)),
+	area(std::move(area)) {
 
+}
+
+void ReportAgent::setExposure(ReportExposure &exposure) {
+	this->exposure = exposure;
 }
 
 const ReportLimits &ReportAgent::getLimits() const {
@@ -16,4 +21,8 @@ const ReportLimits &ReportAgent::getLimits() const {
 
 const ReportArea &ReportAgent::getArea() const {
 	return area;
+}
+
+const ReportExposure& ReportAgent::getExposure() const {
+	return exposure;
 }
