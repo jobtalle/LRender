@@ -10,6 +10,7 @@ namespace LRender {
 		RenderTargetUint(const size_t width, const size_t height);
 		~RenderTargetUint();
 		GLuint getTexture() const;
+		void prepareHistogram() const;
 		void makeHistogram(std::vector<unsigned int> &histogram) const;
 		void clear() const;
 
@@ -17,6 +18,7 @@ namespace LRender {
 		static const unsigned int VALUE_DEFAULT;
 
 		GLuint texture;
+		GLuint pbo;
 
 		GLuint makeTexture(const size_t width, const size_t height);
 	};

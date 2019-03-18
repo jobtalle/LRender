@@ -9,6 +9,9 @@
 
 using namespace LRender;
 
+const size_t Renderer::Task::SceneReport::PROJECTION_SCALE = 32;
+const size_t Renderer::Task::SceneReport::PROJECTION_COUNT = 3;
+
 Renderer::Task::SceneReport::SceneReport(std::shared_ptr<Scene> scene) :
 	scene(std::move(scene)),
 	reportValue(report.get_future()) {
@@ -21,27 +24,31 @@ void Renderer::Task::SceneReport::perform(Renderer &renderer) {
 	renderer.loadScene(scene.get(), report.get());
 
 	if(!report->getAgents().empty()) {
+		const float scaleFactor = 1.0f / (PROJECTION_SCALE * PROJECTION_SCALE * PROJECTION_COUNT);
+		std::vector<std::unique_ptr<RenderTargetUint>> targets;
 		auto areaPass = RenderPassArea(report->getLimits());
-		areaPass.setAngle(Constants::PI * 0.5f);
 
-		const size_t scale = 32;
-		const float scaleFactor = 1.0f / (scale * scale);
-		const auto target = std::make_shared<RenderTargetUint>(
-			static_cast<size_t>(std::ceil(areaPass.getViewportWidth())) * scale,
-			static_cast<size_t>(std::ceil(areaPass.getViewportHeight())) * scale);
+		for(size_t projection = 0; projection < PROJECTION_COUNT; ++projection) {
+			areaPass.setAngle(Constants::PI * (float(1 + projection) / (PROJECTION_COUNT + 1)));
+			targets.push_back(std::make_unique<RenderTargetUint>(
+				static_cast<size_t>(std::ceil(areaPass.getViewportWidth())) * PROJECTION_SCALE,
+				static_cast<size_t>(std::ceil(areaPass.getViewportHeight())) * PROJECTION_SCALE));
 
-		target->bind();
-		target->clear();
+			const auto &target = targets[targets.size() - 1];
 
-		renderer.render(areaPass);
-		renderer.setMode(Renderer::Mode::DEFAULT);
+			target->bind();
+			target->clear();
 
-		// TODO: Read all blitted pixels from the PBO's and calculate exposure.
+			renderer.render(areaPass);
+
+			target->prepareHistogram();
+		}
 
 		std::vector<unsigned int> histogram(scene->getAgents().size());
 		std::fill(histogram.begin(), histogram.end(), 0);
 
-		target->makeHistogram(histogram);
+		for(auto &target : targets)
+			target->makeHistogram(histogram);
 
 		for(size_t i = 0; i < scene->getAgents().size(); ++i) {
 			auto const area = report->getAgents()[i].getArea().getArea();
@@ -53,6 +60,8 @@ void Renderer::Task::SceneReport::perform(Renderer &renderer) {
 
 			report->getAgents()[i].setExposure(exposure);
 		}
+
+		renderer.setMode(Renderer::Mode::DEFAULT);
 	}
 
 	this->report.set_value(report);

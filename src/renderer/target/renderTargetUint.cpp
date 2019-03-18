@@ -6,10 +6,13 @@ const unsigned int RenderTargetUint::VALUE_DEFAULT = 0xFFFF;
 
 RenderTargetUint::RenderTargetUint(const size_t width, const size_t height) :
 	RenderTarget(width, height, { makeTexture(width, height) }, true) {
-	
+	glGenBuffers(1, &pbo);
+	glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo);
+	glBufferData(GL_PIXEL_PACK_BUFFER, (getWidth() * getHeight()) << 2, nullptr, GL_STREAM_READ);
 }
 
 RenderTargetUint::~RenderTargetUint() {
+	glDeleteBuffers(1, &pbo);
 	glDeleteTextures(1, &texture);
 }
 
@@ -17,18 +20,18 @@ GLuint RenderTargetUint::getTexture() const {
 	return texture;
 }
 
+void RenderTargetUint::prepareHistogram() const {
+	glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo);
+	glReadPixels(0, 0, getWidth(), getHeight(), GL_RED_INTEGER, GL_UNSIGNED_SHORT, nullptr);
+}
+
 void RenderTargetUint::makeHistogram(std::vector<unsigned>& histogram) const {
 	bind();
 
-	const size_t pixelCount = getWidth() * getHeight();
-	GLuint pbo;
-
-	glGenBuffers(1, &pbo);
 	glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo);
-	glBufferData(GL_PIXEL_PACK_BUFFER, pixelCount << 2, nullptr, GL_STREAM_READ);
-	glReadPixels(0, 0, getWidth(), getHeight(), GL_RED_INTEGER, GL_UNSIGNED_SHORT, nullptr);
 
 	const auto pixels = static_cast<GLushort*>(glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY));
+	const auto pixelCount = getWidth() * getHeight();
 
 	for(size_t pixel = 0; pixel < pixelCount; ++pixel) if(pixels[pixel] != VALUE_DEFAULT)
 		++*(histogram.begin() + pixels[pixel]);
