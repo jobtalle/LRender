@@ -43,6 +43,8 @@ namespace LRender {
 		void mouseRelease(const MouseButton button);
 		void scrollUp();
 		void scrollDown();
+		size_t getWidth() const;
+		size_t getHeight() const;
 
 		static const float Z_NEAR;
 		static const float Z_FAR;

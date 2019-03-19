@@ -122,6 +122,14 @@ void Renderer::scrollDown() {
 	orbit.zoomOut();
 }
 
+size_t Renderer::getWidth() const {
+	return width;
+}
+
+size_t Renderer::getHeight() const {
+	return height;
+}
+
 void Renderer::setMode(const Mode mode) {
 	switch(mode) {
 	case DEFAULT:
