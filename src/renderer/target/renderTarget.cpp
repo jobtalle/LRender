@@ -13,7 +13,9 @@ RenderTarget::RenderTarget(
 	glGenFramebuffers(1, &framebuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
-	for(size_t i = 0; i < textures.size(); ++i)
+	if(textures.empty())
+		glDrawBuffer(GL_NONE);
+	else for(size_t i = 0; i < textures.size(); ++i)
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, textures[i], 0);
 
 	if(depth)
@@ -46,7 +48,7 @@ void RenderTarget::createDepth() {
 	glTexImage2D(
 		GL_TEXTURE_2D,
 		0,
-		GL_DEPTH_COMPONENT24,
+		GL_DEPTH_COMPONENT16,
 		width,
 		height,
 		0,
