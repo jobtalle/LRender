@@ -9,6 +9,7 @@
 #include <vector>
 
 namespace LRender {
+	class Renderer;
 	class RenderPass {
 	public:
 		virtual ~RenderPass() = default;
@@ -17,6 +18,7 @@ namespace LRender {
 			const Orbit &orbit,
 			const Matrix &projection,
 			const std::vector<LRender::TerrainModel> &terrains,
-			const std::vector<LRender::AgentModel> &agents) = 0;
+			const std::vector<LRender::AgentModel> &agents,
+			const Renderer *renderer) = 0;
 	};
 }

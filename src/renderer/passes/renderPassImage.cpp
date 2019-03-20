@@ -37,7 +37,8 @@ void RenderPassImage::render(
 	const Orbit &orbit,
 	const Matrix &projection,
 	const std::vector<TerrainModel> &terrains,
-	const std::vector<AgentModel> &agents) {
+	const std::vector<AgentModel> &agents,
+	const Renderer *renderer) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	shaders.getImage().use();

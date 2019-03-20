@@ -33,7 +33,8 @@ void RenderPassArea::render(
 	const Orbit& orbit,
 	const Matrix& projection,
 	const std::vector<TerrainModel>& terrains,
-	const std::vector<AgentModel>& agents) {
+	const std::vector<AgentModel>& agents,
+	const Renderer *renderer) {
 	uniforms.setProjection(lookAt * this->projection);
 	uniforms.update();
 

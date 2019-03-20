@@ -95,6 +95,10 @@ const Matrix &Orbit::getMatrix() const {
 	return view;
 }
 
+const Vector& Orbit::getFocus() const {
+	return focus;
+}
+
 void Orbit::updateEye() {
 	eye = Vector(
 		cos(angle) * cos(pitch),

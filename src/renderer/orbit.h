@@ -21,6 +21,7 @@ namespace LRender {
 		void zoomIn();
 		void zoomOut();
 		const Matrix &getMatrix() const;
+		const Vector &getFocus() const;
 
 	private:
 		static const Vector UP;

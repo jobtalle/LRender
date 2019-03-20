@@ -8,8 +8,8 @@ using namespace LRender;
 const std::string Shader::VERSION = "#version 440 core\n";
 const std::vector<std::string> Shader::FILE_UNIFORM_BLOCKS = {
 	"LRender/glsl/uniformsView.glsl",
-	"LRender/glsl/uniformsDepth.glsl",
-	"LRender/glsl/uniformsLight.glsl"
+	"LRender/glsl/uniformsLight.glsl",
+	"LRender/glsl/uniformsShadows.glsl"
 };
 
 bool Shader::loadedPrefix = false;

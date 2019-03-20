@@ -17,6 +17,7 @@ namespace LRender {
 		void bind() const;
 		size_t getWidth() const;
 		size_t getHeight() const;
+		GLuint getDepth() const;
 
 	private:
 		const size_t width;

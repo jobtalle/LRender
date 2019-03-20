@@ -58,7 +58,7 @@ void Renderer::update() {
 	tasks.clear();
 }
 
-void Renderer::bindDefault() {
+void Renderer::bindDefault() const {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glViewport(0, 0, width, height);
 }
@@ -68,7 +68,7 @@ void Renderer::render() const {
 }
 
 void Renderer::render(RenderPass &pass) const {
-	pass.render(shaders, orbit, projection, terrains, agents);
+	pass.render(shaders, orbit, projection, terrains, agents, this);
 }
 
 void Renderer::center() {
