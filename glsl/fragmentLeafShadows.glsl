@@ -29,11 +29,18 @@ float sampleShadow(vec2 at, float z, float bias) {
 }
 
 void main() {
-	const vec3 normal = normalize(interpolatedNormal);
+	vec3 normal = normalize(interpolatedNormal);
 	const vec3 shadowCoords = (shadowsProjectionUV * vec4(interpolatedPosition, 1)).xyz;
 
 	const float bias = max(0.05 * (1.0 - dot(normal, lightDirection)), 0.005);  
 	const float light = sampleShadow(shadowCoords.xy, shadowCoords.z, bias);
 
-	color = vec4(light * lightColor * interpolatedColor * (max(0, -dot(normal, lightDirection)) * lightDiffuse + lightAmbient), 1);
+	if(gl_FrontFacing) {
+		float l = max(0, -dot(normal, lightDirection)) * lightDiffuse + lightAmbient;
+		color = vec4(light * lightColor * interpolatedColor * l, 1);
+	}
+	else {
+		float l = max(0, dot(normal, lightDirection)) * lightDiffuse + lightAmbient;
+		color = vec4(light * lightColor * interpolatedColor * l, 1);
+	}
 }

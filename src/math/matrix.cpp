@@ -2,7 +2,7 @@
 
 #include <algorithm>
 #include <iterator>
-#include <math.h>
+#include <cmath>
 
 using namespace LRender;
 

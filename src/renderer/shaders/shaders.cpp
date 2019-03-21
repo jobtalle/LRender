@@ -42,3 +42,7 @@ const ShaderInteger &Shaders::getInteger() const {
 const ShaderGeometryShadows& Shaders::getGeometryShadows() const {
 	return geometryShadows;
 }
+
+const ShaderLeavesShadows& Shaders::getLeavesShadows() const {
+	return leavesShadows;
+}

@@ -12,11 +12,11 @@ namespace LRender {
 
 	private:
 		static const GLuint INDEX = 1;
-		static const Matrix BIAS;
+		static const Matrix MAP_TO_UV;
 
 		struct payload {
 			Matrix projection;
-			Matrix sample;
+			Matrix projectionUV;
 		} payload;
 	};
 }

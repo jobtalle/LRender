@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <cstddef>
+#include "math/vector.h"
 
 namespace LRender {
 	class RenderTarget {
@@ -20,13 +21,15 @@ namespace LRender {
 		GLuint getDepth() const;
 
 	private:
+		static const float BORDER_COLOR[4];
+
 		const size_t width;
 		const size_t height;
 		const bool depth;
 		GLuint depthTexture;
 		GLuint framebuffer;
 
-		void createDepth();
+		void createDepth(const bool border);
 		void freeDepth();
 	};
 }

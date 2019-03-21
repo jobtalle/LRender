@@ -5,6 +5,7 @@
 #include "renderer/shaders/shaderExposure.h"
 #include "renderer/shaders/shaderInteger.h"
 #include "renderer/shaders/shaderGeometryShadows.h"
+#include "shaderLeavesShadows.h"
 
 namespace LRender {
 	class Shaders final {
@@ -17,6 +18,7 @@ namespace LRender {
 		const ShaderImage &getImage() const;
 		const ShaderInteger &getInteger() const;
 		const ShaderGeometryShadows &getGeometryShadows() const;
+		const ShaderLeavesShadows &getLeavesShadows() const;
 
 	private:
 		const Shader branches;
@@ -26,5 +28,6 @@ namespace LRender {
 		const ShaderImage image;
 		const ShaderInteger integer;
 		const ShaderGeometryShadows geometryShadows;
+		const ShaderLeavesShadows leavesShadows;
 	};
 }

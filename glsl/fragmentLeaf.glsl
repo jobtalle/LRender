@@ -2,9 +2,7 @@ in vec3 interpolatedNormal;
 in vec3 interpolatedColor;
 out vec4 color;
 
-void main()
-{
-	vec3 light = normalize(vec3(1, 1, 1));
+void main() {
 	vec3 normal = normalize(interpolatedNormal);
 
 	if(gl_FrontFacing) {

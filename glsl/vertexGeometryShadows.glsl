@@ -4,12 +4,12 @@ layout(location = 2) in vec3 color;
 
 out vec3 interpolatedNormal;
 out vec3 interpolatedColor;
-out vec3 vertexPosition;
+out vec3 interpolatedPosition;
 
 void main() {
-	vertexPosition = position;
 	interpolatedNormal = normal;
 	interpolatedColor = color;
+	interpolatedPosition = position;
 
 	gl_Position = projection * vec4(position, 1);
 }
