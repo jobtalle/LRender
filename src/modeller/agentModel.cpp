@@ -3,10 +3,7 @@
 #include "modeller/shapes/leaf.h"
 #include "modeller/shapes/seed.h"
 #include "math/vector.h"
-#include "math/quaternion.h"
 #include "math/constants.h"
-
-#include <cstdint>
 
 using namespace LRender;
 

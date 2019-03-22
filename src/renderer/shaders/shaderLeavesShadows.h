@@ -11,6 +11,7 @@ namespace LRender {
 	private:
 		static const std::string SHADER_VERTEX;
 		static const std::string SHADER_FRAGMENT;
+		static const std::string SHADER_SHADOWS;
 		static const char *SHADOW_MAP_NAME;
 		static const GLuint CHANNEL;
 

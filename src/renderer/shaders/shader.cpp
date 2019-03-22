@@ -15,14 +15,22 @@ const std::vector<std::string> Shader::FILE_UNIFORM_BLOCKS = {
 bool Shader::loadedPrefix = false;
 std::string Shader::prefix;
 
-Shader::Shader(const std::string &vertex, const std::string &fragment) {
+Shader::Shader(
+	const std::string &vertex,
+	const std::string &fragment,
+	const std::vector<std::string> &dependencies) {
 	if(!loadedPrefix)
 		loadPrefix();
 
+	std::string prefixDependencies = prefix;
+
+	for(const auto &dependency : dependencies)
+		prefixDependencies += readFile(dependency);
+
 	program = glCreateProgram();
 
-	const GLuint shaderVertex = createShader(GL_VERTEX_SHADER, (prefix + readFile(vertex)).c_str());
-	const GLuint shaderFragment = createShader(GL_FRAGMENT_SHADER, (prefix + readFile(fragment)).c_str());
+	const GLuint shaderVertex = createShader(GL_VERTEX_SHADER, (prefixDependencies + readFile(vertex)).c_str());
+	const GLuint shaderFragment = createShader(GL_FRAGMENT_SHADER, (prefixDependencies + readFile(fragment)).c_str());
 
 	glAttachShader(program, shaderVertex);
 	glAttachShader(program, shaderFragment);
@@ -30,6 +38,11 @@ Shader::Shader(const std::string &vertex, const std::string &fragment) {
 
 	glDeleteShader(shaderVertex);
 	glDeleteShader(shaderFragment);
+}
+
+Shader::Shader(const std::string &vertex, const std::string &fragment) :
+	Shader(vertex, fragment, {}) {
+
 }
 
 Shader::~Shader() {

@@ -10,7 +10,7 @@ const size_t RenderPassViewDefault::SHADOW_SIZE = 4096;
 
 RenderPassViewDefault::RenderPassViewDefault() :
 	shadowTarget(SHADOW_SIZE, SHADOW_SIZE) {
-	lightDirection = Vector(1, -0.5f , 1).normalize();
+	lightDirection = Vector(1, -1 , 1).normalize();
 	shadowPass.setLightDirection(lightDirection);
 
 	uniformsLight.setDirection(lightDirection);

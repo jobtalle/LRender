@@ -45,11 +45,12 @@ void RenderPassShadows::render(
 	for(auto &agent : agents)
 		agent.getBranches().draw();
 
+	glCullFace(GL_BACK);
+
 	for(auto &terrain : terrains)
 		terrain.getModel().draw();
 
 	glDisable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
 
 	for(auto &agent : agents)
 		agent.getLeaves().draw();

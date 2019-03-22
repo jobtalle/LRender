@@ -8,6 +8,7 @@
 namespace LRender {
 	class Shader {
 	public:
+		Shader(const std::string &vertex, const std::string &fragment, const std::vector<std::string> &dependencies);
 		Shader(const std::string &vertex, const std::string &fragment);
 		~Shader();
 		void use() const;

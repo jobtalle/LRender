@@ -4,11 +4,12 @@ using namespace LRender;
 
 const std::string ShaderLeavesShadows::SHADER_VERTEX = "LRender/glsl/vertexGeometryShadows.glsl";
 const std::string ShaderLeavesShadows::SHADER_FRAGMENT = "LRender/glsl/fragmentLeafShadows.glsl";
+const std::string ShaderLeavesShadows::SHADER_SHADOWS = "LRender/glsl/shadows.glsl";
 const char *ShaderLeavesShadows::SHADOW_MAP_NAME = "shadowMap";
 const GLuint ShaderLeavesShadows::CHANNEL = 0;
 
 ShaderLeavesShadows::ShaderLeavesShadows() :
-	Shader(SHADER_VERTEX, SHADER_FRAGMENT) {
+	Shader(SHADER_VERTEX, SHADER_FRAGMENT, { SHADER_SHADOWS }) {
 	shadowMapLocation = glGetUniformLocation(program, SHADOW_MAP_NAME);
 }
 
