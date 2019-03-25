@@ -6,15 +6,19 @@
 
 using namespace LRender;
 
-Renderer::Task::Exposure::Exposure(std::shared_ptr<Scene> scene) :
-	scene(std::move(scene)) {
+Renderer::Task::Exposure::Exposure(std::shared_ptr<Scene> scene, LParse::Randomizer randomizer) :
+	scene(std::move(scene)),
+	randomizer(std::move(randomizer)) {
 	
 }
 
 void Renderer::Task::Exposure::perform(Renderer& renderer) {
 	auto report = std::make_shared<Report>();
 
-	renderer.loadScene(scene.get(), report.get());
+	renderer.loadScene(
+		scene.get(),
+		randomizer,
+		report.get());
 
 	if(!report->getAgents().empty()) {
 		auto areaPass = RenderPassArea(report->getLimits());

@@ -10,10 +10,10 @@
 #include "modeller/terrainModel.h"
 #include "modeller/agentModel.h"
 #include "report/report.h"
+#include "lparse.h"
 
 #include <memory>
 #include <mutex>
-#include <random>
 
 namespace LRender {
 	class Renderer final {
@@ -52,7 +52,6 @@ namespace LRender {
 	private:
 		static const float PROJECTION_ANGLE;
 		
-		std::mt19937 randomizer;
 		GLFunctions gl;
 		Shaders shaders;
 		Orbit orbit;
@@ -69,7 +68,7 @@ namespace LRender {
 
 		void setMode(const Mode mode);
 		void setPass(const std::shared_ptr<RenderPass> &pass);
-		void loadScene(const Scene *scene, Report *report = nullptr);
+		void loadScene(const Scene *scene, LParse::Randomizer &randomizer, Report *report = nullptr);
 		void updateProjection();
 	};
 }

@@ -11,7 +11,7 @@ const float AgentModel::TURTLE_STEP = 0.05f;
 const float AgentModel::TURTLE_ANGLE = 0.2;
 const size_t AgentModel::TUBE_PRECISION = 7;
 
-AgentModel::AgentModel(const Agent &agent, std::mt19937 &randomizer) :
+AgentModel::AgentModel(const Agent &agent, LParse::Randomizer &randomizer) :
 	minimum(agent.getPosition()),
 	maximum(agent.getPosition()),
 	area(0) {
@@ -38,14 +38,14 @@ float AgentModel::getArea() const {
 	return area;
 }
 
-void AgentModel::build(const Agent &agent, std::mt19937 &randomizer) {
+void AgentModel::build(const Agent &agent, LParse::Randomizer &randomizer) {
 	RadiusSampler radiusSampler(0.1f);
 	Geometry geometryBranches;
 	Geometry geometryLeaves;
 	std::list<Branch> branches;
 	std::list<Leaf> leaves;
 	std::list<Seed> seeds;
-	Node node(agent.getPosition(), std::uniform_real_distribution<float>(0, Constants::PI * 2)(randomizer));
+	Node node(agent.getPosition(), randomizer.makeFloat(0, Constants::PI * 2));
 	
 	auto at = agent.getSymbols().begin();
 	

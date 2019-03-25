@@ -4,14 +4,12 @@
 #include "modeller/branch.h"
 #include "modeller/leaf.h"
 #include "modeller/seed.h"
-#include "modeller/radiusSampler.h"
 #include "scene/agent.h"
 #include "model/model.h"
-#include "math/quaternion.h"
+#include "lparse.h"
 
 #include <vector>
 #include <memory>
-#include <random>
 #include <list>
 
 namespace LRender {
@@ -19,7 +17,7 @@ namespace LRender {
 	public:
 		AgentModel(
 			const Agent &agent,
-			std::mt19937 &randomizer);
+			LParse::Randomizer &randomizer);
 		const Model &getBranches() const;
 		const Model &getLeaves() const;
 		const Vector &getMinimum() const;
@@ -48,7 +46,7 @@ namespace LRender {
 		float area;
 
 		void build(
-			const Agent &agent, std::mt19937 &randomizer);
+			const Agent &agent, LParse::Randomizer &randomizer);
 		Branch *traceBranch(
 			Branch *const parent,
 			const bool leaf,

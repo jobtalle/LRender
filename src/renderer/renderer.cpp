@@ -147,7 +147,7 @@ void Renderer::setPass(const std::shared_ptr<RenderPass> &pass) {
 	updatePass = pass;
 }
 
-void Renderer::loadScene(const Scene *scene, Report *report) {
+void Renderer::loadScene(const Scene *scene, LParse::Randomizer &randomizer, Report *report) {
 	terrains.clear();
 	agents.clear();
 
