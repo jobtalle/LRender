@@ -5,7 +5,7 @@ using namespace LRender;
 Terrain::Terrain(
 	const float width,
 	const float height,
-	const std::shared_ptr<void> terrainSource,
+	const std::shared_ptr<const void> terrainSource,
 	const std::function<float(const float x, const float y)> get) :
 	width(width),
 	height(height),
