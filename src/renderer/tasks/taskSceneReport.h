@@ -1,7 +1,6 @@
 #pragma once
 
 #include "renderer/tasks/task.h"
-#include "scene/scene.h"
 #include "report/report.h"
 #include "lparse.h"
 
@@ -11,7 +10,7 @@
 namespace LRender {
 	class Renderer::Task::SceneReport final : public Task {
 	public:
-		SceneReport(std::shared_ptr<Scene> scene, LParse::Randomizer randomizer);
+		SceneReport(std::shared_ptr<LRender::Scene> scene, LParse::Randomizer randomizer);
 		void perform(Renderer &renderer) override final;
 		const std::shared_ptr<Report> getReport();
 
@@ -19,7 +18,7 @@ namespace LRender {
 		static const size_t PROJECTION_SCALE;
 		static const size_t PROJECTION_COUNT;
 
-		std::shared_ptr<Scene> scene;
+		std::shared_ptr<LRender::Scene> scene;
 		std::promise<std::shared_ptr<Report>> report;
 		std::future<std::shared_ptr<Report>> reportValue;
 		LParse::Randomizer randomizer;

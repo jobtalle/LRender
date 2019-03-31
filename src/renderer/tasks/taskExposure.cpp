@@ -6,9 +6,9 @@
 
 using namespace LRender;
 
-Renderer::Task::Exposure::Exposure(std::shared_ptr<Scene> scene, LParse::Randomizer randomizer) :
+Renderer::Task::Exposure::Exposure(std::shared_ptr<LRender::Scene> scene, LParse::Randomizer randomizer) :
 	scene(std::move(scene)),
-	randomizer(std::move(randomizer)) {
+	randomizer(randomizer) {
 	
 }
 

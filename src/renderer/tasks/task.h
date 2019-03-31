@@ -7,6 +7,7 @@ namespace LRender {
 	public:
 		class Mode;
 		class SceneReport;
+		class Scene;
 		class Exposure;
 
 		virtual ~Task() = default;

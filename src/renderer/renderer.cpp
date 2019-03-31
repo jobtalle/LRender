@@ -166,11 +166,10 @@ void Renderer::loadScene(const Scene *scene, LParse::Randomizer &randomizer, Rep
 		}
 	}
 
-	// Calculate center
 	sceneCenter.x = scene->getTerrain().getWidth() * 0.5f;
 	sceneCenter.z = scene->getTerrain().getHeight() * 0.5f;
 
-	if(report->hasLimits())
+	if(report && report->hasLimits())
 		sceneCenter.y = report->getLimits().getMinimum().y +
 		(report->getLimits().getMaximum().y - report->getLimits().getMinimum().y) * 0.5f;
 	else
