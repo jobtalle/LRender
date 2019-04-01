@@ -1,7 +1,8 @@
 #pragma once
 
-#include "reportAgent.h"
+#include "report/reportAgent.h"
 #include "report/reportLimits.h"
+#include "report/reportSeed.h"
 
 #include <vector>
 #include <memory>

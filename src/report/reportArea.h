@@ -3,7 +3,7 @@
 namespace LRender {
 	class ReportArea final {
 	public:
-		ReportArea(const float area);
+		ReportArea(float area);
 		float getArea() const;
 
 	private:
