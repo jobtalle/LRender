@@ -19,10 +19,10 @@ float Shape::Leaf::model(
 	bool even = false;
 	bool first = true;
 
-	vertices.push_back(Vertex(
+	vertices.emplace_back(
 		a->position,
 		((a + 1)->position - a->position).cross((b + 1)->position - b->position).normalize(),
-		color));
+		color);
 
 	while(++a, ++b, a < aEnd && b < bEnd) {
 		auto na = (a->position - (a - 1)->position).cross(b->position - a->position);
@@ -34,8 +34,8 @@ float Shape::Leaf::model(
 		if(b + 1 != bEnd)
 			nb +=((b + 1)->position - b->position).cross(b->position - a->position);
 		
-		vertices.push_back(Vertex(a->position, na.normalize(), color));
-		vertices.push_back(Vertex(b->position, nb.normalize(), color));
+		vertices.emplace_back(a->position, na.normalize(), color);
+		vertices.emplace_back(b->position, nb.normalize(), color);
 
 		if(first) {
 			area += addTriangle(vertices, indices, vertices.size() - 2, vertices.size() - 1, vertices.size() - 3);
@@ -68,10 +68,10 @@ float Shape::Leaf::model(
 			if(a + 1 != aEnd)
 				n += ((a + 1)->position - a->position).cross(b->position - a->position);
 
-			vertices.push_back(Vertex(
+			vertices.emplace_back(
 				a->position,
 				n.normalize(),
-				color));
+				color);
 
 			area += addTriangle(vertices, indices, anchor, previous, vertices.size() - 1);
 
@@ -91,10 +91,10 @@ float Shape::Leaf::model(
 			if(b + 1 != bEnd)
 				n += ((b + 1)->position - b->position).cross(b->position - a->position);
 
-			vertices.push_back(Vertex(
+			vertices.emplace_back(
 				b->position,
 				n.normalize(),
-				color));
+				color);
 
 			area += addTriangle(vertices, indices, anchor, previous, vertices.size() - 1);
 

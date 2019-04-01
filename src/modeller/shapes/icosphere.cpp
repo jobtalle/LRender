@@ -18,7 +18,7 @@ void Shape::Icosphere::model(
 	const size_t firstIndex = vertices.size();
 
 	for(auto &point : sphere.points)
-		vertices.push_back(Vertex(position + orientation * point * radius, point, color));
+		vertices.emplace_back(position + orientation * point * radius, point, color);
 
 	for(auto index : sphere.indices)
 		indices.push_back(firstIndex + index);
@@ -74,20 +74,20 @@ void Shape::Icosphere::makeIcosahedron(
 
 	w *= h;
 
-	points.push_back(Vector(-h, w, 0));
-	points.push_back(Vector(h, w, 0));
-	points.push_back(Vector(-h, -w, 0));
-	points.push_back(Vector(h, -w, 0));
+	points.emplace_back(-h, w, 0);
+	points.emplace_back(h, w, 0);
+	points.emplace_back(-h, -w, 0);
+	points.emplace_back(h, -w, 0);
 
-	points.push_back(Vector(0, -h, w));
-	points.push_back(Vector(0, h, w));
-	points.push_back(Vector(0, -h, -w));
-	points.push_back(Vector(0, h, -w));
+	points.emplace_back(0, -h, w);
+	points.emplace_back(0, h, w);
+	points.emplace_back(0, -h, -w);
+	points.emplace_back(0, h, -w);
 
-	points.push_back(Vector(w, 0, -h));
-	points.push_back(Vector(w, 0, h));
-	points.push_back(Vector(-w, 0, -h));
-	points.push_back(Vector(-w, 0, h));
+	points.emplace_back(w, 0, -h);
+	points.emplace_back(w, 0, h);
+	points.emplace_back(-w, 0, -h);
+	points.emplace_back(-w, 0, h);
 
 	indices.insert(indices.end(), { 0, 11, 5 });
 	indices.insert(indices.end(), { 0, 5, 1 });

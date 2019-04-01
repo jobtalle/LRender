@@ -20,10 +20,10 @@ void Shape::Branch::model(
 		branch.transform(transformedRing, node);
 
 		for(auto &ringPoint : transformedRing)
-			vertices.push_back(Vertex(
+			vertices.emplace_back(
 				node->position + ringPoint * radiusSampler.sample(node->topDist),
 				ringPoint,
-				color));
+				color);
 
 		const size_t size = vertices.size();
 
@@ -44,7 +44,7 @@ std::vector<Vector> Shape::Branch::makeRing(const size_t precision) {
 	for(size_t i = 0; i < precision; ++i) {
 		const float radians = Constants::PI * 2 * float(i) / precision;
 
-		ring.push_back(Vector(std::cos(radians), 0, std::sin(radians)));
+		ring.emplace_back(std::cos(radians), 0, std::sin(radians));
 	}
 
 	return ring;

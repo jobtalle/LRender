@@ -5,10 +5,10 @@
 using namespace LRender;
 
 ReportAgent::ReportAgent(
-	std::vector<Vector> seedPositions,
+	std::vector<ReportSeed> seeds,
 	const ReportLimits limits,
 	const ReportArea area) :
-	seedPositions(std::move(seedPositions)),
+	seeds(std::move(seeds)),
 	limits(limits),
 	area(area) {
 
@@ -18,8 +18,8 @@ void ReportAgent::setExposure(ReportExposure &exposure) {
 	this->exposure = exposure;
 }
 
-const std::vector<Vector> &ReportAgent::getSeedPositions() const {
-	return seedPositions;
+const std::vector<ReportSeed> &ReportAgent::getSeeds() const {
+	return seeds;
 }
 
 const ReportLimits &ReportAgent::getLimits() const {

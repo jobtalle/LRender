@@ -151,16 +151,20 @@ void Renderer::loadScene(const Scene *scene, LParse::Randomizer &randomizer, Rep
 	terrains.clear();
 	agents.clear();
 
-	terrains.push_back(TerrainModel(scene->getTerrain()));
+	terrains.emplace_back(scene->getTerrain());
 
 	for(auto &agent : scene->getAgents()) {
-		agents.push_back(AgentModel(agent, randomizer));
+		agents.emplace_back(agent, randomizer);
 
 		if(report) {
 			const auto model = --agents.end();
+			std::vector<ReportSeed> seedReports;
+
+			for(const auto &seedPosition : model->getSeedPositions())
+				seedReports.emplace_back(seedPosition);
 
 			report->add(ReportAgent(
-				model->getSeedPositions(),
+				seedReports,
 				ReportLimits(model->getMinimum(), model->getMaximum()),
 				ReportArea(model->getArea())
 			));

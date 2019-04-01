@@ -127,7 +127,7 @@ Branch *AgentModel::traceBranch(
 		switch(*at++) {
 		case SYM_LEAF:
 			if(!leaf) {
-				leaves.push_back(Leaf());
+				leaves.emplace_back();
 
 				branch.add(lastChild = traceBranch(&branch, true, (--leaves.end())->branches, leaves, seeds, node, at, last));
 
@@ -141,7 +141,7 @@ Branch *AgentModel::traceBranch(
 			goto end;
 		case SYM_SEED:
 			if(!leaf) {
-				seeds.push_back(Seed(node.position));
+				seeds.emplace_back(node.position);
 
 				branch.add(&*--seeds.end());
 			}

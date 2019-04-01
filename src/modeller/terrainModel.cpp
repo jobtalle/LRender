@@ -29,7 +29,7 @@ void TerrainModel::build(const Terrain &terrain) {
 	geometry.indices.reserve((xCells - 1) * (yCells - 1) * 6);
 
 	for(size_t y = 0; y <= yCells; ++y) for(size_t x = 0; x <= xCells; ++x)
-		points.push_back(Vector(x * dx, terrain.getY(x * dx, y * dy), y * dy));
+		points.emplace_back(x * dx, terrain.getY(x * dx, y * dy), y * dy);
 
 	for(size_t y = 0; y <= yCells; ++y) for(size_t x = 0; x <= xCells; ++x) {
 		const uint32_t index = x + y * (xCells + 1);
@@ -48,10 +48,10 @@ void TerrainModel::build(const Terrain &terrain) {
 		if(x != xCells && y != 0)
 			normal += (point - points[index + 1]).cross(point - points[index - xCells - 1]);
 
-		geometry.vertices.push_back(Vertex(
+		geometry.vertices.emplace_back(
 			points[index],
 			normal.normalize(),
-			color));
+			color);
 
 		if(x != xCells && y != yCells) {
 			if((x & 1) && (y & 1)) {

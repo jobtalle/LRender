@@ -44,11 +44,11 @@ void Branch::add(const Node &node) {
 }
 
 void Branch::add(Branch *branch) {
-	branches.push_back(Child<Branch>(nodes.size() - 1, branch));
+	branches.emplace_back(nodes.size() - 1, branch);
 }
 
 void Branch::add(Seed *seed) {
-	seeds.push_back(Child<Seed>(nodes.size() - 1, seed));
+	seeds.emplace_back(nodes.size() - 1, seed);
 }
 
 void Branch::calculateTopDist(const size_t offset) {
