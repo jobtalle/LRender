@@ -26,6 +26,10 @@ const Model &AgentModel::getLeaves() const {
 	return *modelLeaves;
 }
 
+const std::vector<Vector> &AgentModel::getSeedPositions() const {
+	return seedPositions;
+}
+
 const Vector &AgentModel::getMinimum() const {
 	return minimum;
 }
@@ -92,13 +96,16 @@ void AgentModel::build(const Agent &agent, LParse::Randomizer &randomizer) {
 		area += leaf.getArea();
 	}
 
-	for(const auto &seed : seeds)
+	for(const auto &seed : seeds) {
+		seedPositions.push_back(seed.getPosition());
+
 		Shape::Seed::model(
 			geometryBranches.vertices,
 			geometryBranches.indices,
 			Vector(0.6f, 0, 0),
 			radiusSampler,
 			seed);
+	}
 
 	modelBranches = std::make_unique<Model>(geometryBranches);
 	modelLeaves = std::make_unique<Model>(geometryLeaves);

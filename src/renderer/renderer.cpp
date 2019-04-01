@@ -160,6 +160,7 @@ void Renderer::loadScene(const Scene *scene, LParse::Randomizer &randomizer, Rep
 			const auto model = --agents.end();
 
 			report->add(ReportAgent(
+				model->getSeedPositions(),
 				ReportLimits(model->getMinimum(), model->getMaximum()),
 				ReportArea(model->getArea())
 			));
