@@ -9,6 +9,7 @@ namespace LRender {
 		void add(const ReportLimits &limits);
 		const Vector &getMinimum() const;
 		const Vector &getMaximum() const;
+		float getRadius() const;
 
 	private:
 		Vector minimum;

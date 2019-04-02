@@ -1,6 +1,8 @@
 #include "reportLimits.h"
+#include "math/constants.h"
 
 #include <algorithm>
+#include <cmath>
 
 using namespace LRender;
 
@@ -26,4 +28,8 @@ const Vector &ReportLimits::getMinimum() const {
 
 const Vector &ReportLimits::getMaximum() const {
 	return maximum;
+}
+
+float ReportLimits::getRadius() const {
+	return std::sqrt((maximum.x - minimum.x) * (maximum.y - minimum.y) / Constants::PI);
 }
