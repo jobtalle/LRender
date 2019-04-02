@@ -20,20 +20,20 @@ void Shape::Branch::model(
 		branch.transform(transformedRing, node);
 
 		for(auto &ringPoint : transformedRing)
-			vertices.emplace_back(
+			vertices.emplace_back(Vertex(
 				node->position + ringPoint * radiusSampler.sample(node->topDist),
 				ringPoint,
-				color);
+				color));
 
 		const size_t size = vertices.size();
 
 		if(node > branch.getNodes().begin()) for(size_t i = 0; i < precision; ++i) {
-			indices.push_back(size - 1 - i);
-			indices.push_back(size - 1 - precision - i);
-			indices.push_back(size - 1 - precision - ((i + 1) % precision));
-			indices.push_back(size - 1 - precision - ((i + 1) % precision));
-			indices.push_back(size - 1 - ((i + 1) % precision));
-			indices.push_back(size - 1 - i);
+			indices.push_back(static_cast<uint32_t>(size - 1 - i));
+			indices.push_back(static_cast<uint32_t>(size - 1 - precision - i));
+			indices.push_back(static_cast<uint32_t>(size - 1 - precision - ((i + 1) % precision)));
+			indices.push_back(static_cast<uint32_t>(size - 1 - precision - ((i + 1) % precision)));
+			indices.push_back(static_cast<uint32_t>(size - 1 - ((i + 1) % precision)));
+			indices.push_back(static_cast<uint32_t>(size - 1 - i));
 		}
 	}
 }
@@ -44,7 +44,7 @@ std::vector<Vector> Shape::Branch::makeRing(const size_t precision) {
 	for(size_t i = 0; i < precision; ++i) {
 		const float radians = Constants::PI * 2 * float(i) / precision;
 
-		ring.emplace_back(std::cos(radians), 0, std::sin(radians));
+		ring.emplace_back(Vector(std::cos(radians), 0, std::sin(radians)));
 	}
 
 	return ring;
