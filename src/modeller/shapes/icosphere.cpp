@@ -26,7 +26,7 @@ void Shape::Icosphere::model(
 
 const Shape::Icosphere::BufferedSphere &Shape::Icosphere::getSphere(const size_t subdivisions) {
 	while(subdivisions >= bufferedSpheres.size()) {
-		if(bufferedSpheres.size() == 0) {
+		if(bufferedSpheres.empty()) {
 			BufferedSphere newSphere;
 
 			makeIcosahedron(newSphere.points, newSphere.indices);
@@ -74,20 +74,20 @@ void Shape::Icosphere::makeIcosahedron(
 
 	w *= h;
 
-	points.emplace_back(-h, w, 0);
-	points.emplace_back(h, w, 0);
-	points.emplace_back(-h, -w, 0);
-	points.emplace_back(h, -w, 0);
+	points.emplace_back(Vector(-h, w, 0));
+	points.emplace_back(Vector(h, w, 0));
+	points.emplace_back(Vector(-h, -w, 0));
+	points.emplace_back(Vector(h, -w, 0));
 
-	points.emplace_back(0, -h, w);
-	points.emplace_back(0, h, w);
-	points.emplace_back(0, -h, -w);
-	points.emplace_back(0, h, -w);
+	points.emplace_back(Vector(0, -h, w));
+	points.emplace_back(Vector(0, h, w));
+	points.emplace_back(Vector(0, -h, -w));
+	points.emplace_back(Vector(0, h, -w));
 
-	points.emplace_back(w, 0, -h);
-	points.emplace_back(w, 0, h);
-	points.emplace_back(-w, 0, -h);
-	points.emplace_back(-w, 0, h);
+	points.emplace_back(Vector(w, 0, -h));
+	points.emplace_back(Vector(w, 0, h));
+	points.emplace_back(Vector(-w, 0, -h));
+	points.emplace_back(Vector(-w, 0, h));
 
 	indices.insert(indices.end(), { 0, 11, 5 });
 	indices.insert(indices.end(), { 0, 5, 1 });
