@@ -6,7 +6,7 @@
 using namespace LRender;
 
 const Vector RenderPassViewDefault::CLEAR_COLOR = Vector(0.3f, 0.4f, 0.6f);
-const size_t RenderPassViewDefault::SHADOW_SIZE = 4096;
+const size_t RenderPassViewDefault::SHADOW_SIZE = 2048;
 
 RenderPassViewDefault::RenderPassViewDefault() :
 	shadowTarget(SHADOW_SIZE, SHADOW_SIZE) {

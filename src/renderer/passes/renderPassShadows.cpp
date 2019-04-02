@@ -3,7 +3,7 @@
 using namespace LRender;
 
 const Vector RenderPassShadows::UP = Vector(0, 1, 0);
-const float RenderPassShadows::RADIUS = 8;
+const float RenderPassShadows::RADIUS = 4;
 
 RenderPassShadows::RenderPassShadows() :
 	lightProjection(Matrix::makeOrtho(
