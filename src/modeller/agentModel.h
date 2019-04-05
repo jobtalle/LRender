@@ -25,10 +25,6 @@ namespace LRender {
 		const Vector &getMaximum() const;
 		float getArea() const;
 
-	private:
-		static const float TURTLE_STEP;
-		static const float TURTLE_ANGLE;
-		static const size_t TUBE_PRECISION;
 		static const char SYM_STEP_MIN = 'A';
 		static const char SYM_STEP_MAX = 'Z';
 		static const char SYM_SEED = '*';
@@ -39,6 +35,11 @@ namespace LRender {
 		static const char SYM_PITCH_DECREMENT = '-';
 		static const char SYM_ROLL_INCREMENT = '/';
 		static const char SYM_ROLL_DECREMENT = '\\';
+
+	private:
+		static const float TURTLE_STEP;
+		static const float TURTLE_ANGLE;
+		static const size_t TUBE_PRECISION;
 
 		std::unique_ptr<Model> modelBranches;
 		std::unique_ptr<Model> modelLeaves;
