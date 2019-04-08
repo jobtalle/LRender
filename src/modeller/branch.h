@@ -12,7 +12,7 @@ namespace LRender {
 		template <class ChildType>
 		class Child {
 		public:
-			Child(const size_t index, ChildType *const child);
+			Child(size_t index, ChildType *child);
 
 			const size_t index;
 			ChildType *const child;
@@ -20,13 +20,13 @@ namespace LRender {
 
 		Branch(const Node &node);
 		const std::vector<Node> &getNodes() const;
-		const void transform(
+		void transform(
 			std::vector<Vector> &vectors,
 			const std::vector<Node>::const_iterator &node) const;
 		void add(const Node &node);
 		void add(Branch *branch);
 		void add(Seed *seed);
-		void calculateTopDist(const size_t offset = 0);
+		void calculateTopDist(size_t offset = 0);
 		void setRoot(const std::vector<Node> &root);
 		size_t size() const;
 		const std::vector<Child<Branch>> &getBranches() const;
@@ -39,11 +39,11 @@ namespace LRender {
 		std::vector<Child<Branch>> branches;
 		std::vector<Child<Seed>> seeds;
 
-		void transform(
+		static void transform(
 			std::vector<Vector> &vectors,
-			const Quaternion q) const;
-		void transform(
+			const Quaternion &q);
+		static void transform(
 			std::vector<Vector> &vectors,
-			const Quaternion qa, const Quaternion qb) const;
+			const Quaternion &qa, const Quaternion &qb);
 	};
 }

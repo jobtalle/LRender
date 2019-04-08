@@ -1,7 +1,5 @@
 #include "branch.h"
 
-#include <array>
-
 using namespace LRender;
 
 const float Branch::CONNECT_THRESHOLD_DOT = 0.55f;
@@ -15,16 +13,16 @@ const std::vector<Node> &Branch::getNodes() const {
 	return nodes;
 }
 
-const void Branch::transform(
+void Branch::transform(
 	std::vector<Vector> &vectors,
 	const std::vector<Node>::const_iterator &node) const {
-	if(node == nodes.begin() && root.size() > 0) {
+	if(node == nodes.begin() && !root.empty()) {
 		if(root.size() == 1)
 			transform(vectors, root[0].getHeading());
 		else {
 			if(node != nodes.end() - 1) {
 				Vector dRoot = (root[1].position - root[0].position).normalize();
-				Vector dPath = ((node + 1)->position - node->position).normalize();
+				const Vector dPath = ((node + 1)->position - node->position).normalize();
 				
 				if(dRoot.dot(dPath) > CONNECT_THRESHOLD_DOT)
 					transform(vectors, root[0].getHeading(), root[1].getHeading());
@@ -77,15 +75,15 @@ const std::vector<Branch::Child<Branch>> &Branch::getBranches() const {
 
 void Branch::transform(
 	std::vector<Vector> &vectors,
-	const Quaternion q) const {
+	const Quaternion &q) {
 	for(auto &vector : vectors)
 		vector = q * vector;
 }
 void Branch::transform(
 	std::vector<Vector> &vectors,
-	const Quaternion qa, const Quaternion qb) const {
+	const Quaternion &qa, const Quaternion &qb) {
 	for(auto &vector : vectors) {
-		auto length = vector.length();
+		const auto length = vector.length();
 
 		vector = qa * vector + qb * vector;
 		vector = (length * vector) / vector.length();

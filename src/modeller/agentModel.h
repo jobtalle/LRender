@@ -25,17 +25,6 @@ namespace LRender {
 		const Vector &getMaximum() const;
 		float getArea() const;
 
-		static const char SYM_STEP_MIN = 'A';
-		static const char SYM_STEP_MAX = 'Z';
-		static const char SYM_SEED = '*';
-		static const char SYM_LEAF = '<';
-		static const char SYM_BRANCH_OPEN = '[';
-		static const char SYM_BRANCH_CLOSE = ']';
-		static const char SYM_PITCH_INCREMENT = '+';
-		static const char SYM_PITCH_DECREMENT = '-';
-		static const char SYM_ROLL_INCREMENT = '/';
-		static const char SYM_ROLL_DECREMENT = '\\';
-
 	private:
 		static const float TURTLE_STEP;
 		static const float TURTLE_ANGLE;

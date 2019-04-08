@@ -125,21 +125,29 @@ Branch *AgentModel::traceBranch(
 
 	while(at != last) {
 		switch(*at++) {
-		case SYM_LEAF:
+		case LParse::Legend::LEAF:
 			if(!leaf) {
 				leaves.emplace_back();
 
-				branch.add(lastChild = traceBranch(&branch, true, (--leaves.end())->branches, leaves, seeds, node, at, last));
+				const auto traced = traceBranch(&branch, true, (--leaves.end())->branches, leaves, seeds, node, at, last);
+
+				if(traced)
+					branch.add(lastChild = traced);
 
 				break;
 			}
-		case SYM_BRANCH_OPEN:
-			branch.add(lastChild = traceBranch(&branch, leaf, branches, leaves, seeds, node, at, last));
+		case LParse::Legend::BRANCH_OPEN:
+		{
+			const auto traced = traceBranch(&branch, leaf, branches, leaves, seeds, node, at, last);
+
+			if(traced)
+				branch.add(lastChild = traced);
+		}
 
 			break;
-		case SYM_BRANCH_CLOSE:
+		case LParse::Legend::BRANCH_CLOSE:
 			goto end;
-		case SYM_SEED:
+		case LParse::Legend::SEED:
 			if(!leaf) {
 				seeds.emplace_back(node.position);
 
@@ -147,24 +155,24 @@ Branch *AgentModel::traceBranch(
 			}
 
 			break;
-		case SYM_PITCH_INCREMENT:
+		case LParse::Legend::PITCH_INCREMENT:
 			node.pitch(TURTLE_ANGLE);
 			
 			break;
-		case SYM_PITCH_DECREMENT:
+		case LParse::Legend::PITCH_DECREMENT:
 			node.pitch(-TURTLE_ANGLE);
 
 			break;
-		case SYM_ROLL_INCREMENT:
+		case LParse::Legend::ROLL_INCREMENT:
 			node.roll(TURTLE_ANGLE);
 
 			break;
-		case SYM_ROLL_DECREMENT:
+		case LParse::Legend::ROLL_DECREMENT:
 			node.roll(-TURTLE_ANGLE);
 
 			break;
 		default:
-			if(*(at - 1) >= SYM_STEP_MIN && *(at - 1) <= SYM_STEP_MAX) {
+			if(*(at - 1) >= LParse::Legend::STEP_MIN && *(at - 1) <= LParse::Legend::STEP_MAX) {
 				branch.add(node.extrude(TURTLE_STEP));
 
 				if(node.position.x < minimum.x)
