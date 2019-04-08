@@ -166,7 +166,8 @@ void Renderer::loadScene(const Scene *scene, LParse::Randomizer &randomizer, Rep
 			report->add(ReportAgent(
 				seedReports,
 				ReportLimits(model->getMinimum(), model->getMaximum()),
-				ReportArea(model->getArea())
+				ReportArea(model->getArea()),
+				ReportSize(agent.getSymbols().size())
 			));
 		}
 	}

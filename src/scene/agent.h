@@ -7,7 +7,7 @@
 namespace LRender {
 	class Agent final {
 	public:
-		Agent(const LRender::Vector &position, const std::string &symbols);
+		Agent(const Vector &position, std::string symbols);
 		const Vector &getPosition() const;
 		const std::string &getSymbols() const;
 
