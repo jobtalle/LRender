@@ -5,3 +5,4 @@
 #include "../src/renderer/tasks/taskScene.h"
 #include "../src/renderer/tasks/taskSceneReport.h"
 #include "../src/renderer/tasks/taskExposure.h"
+#include "../src/math/constants.h"
