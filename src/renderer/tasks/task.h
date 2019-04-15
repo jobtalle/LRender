@@ -9,6 +9,7 @@ namespace LRender {
 		class SceneReport;
 		class Scene;
 		class Exposure;
+		class Select;
 
 		virtual ~Task() = default;
 		virtual void perform(Renderer &renderer) = 0;

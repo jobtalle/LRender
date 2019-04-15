@@ -69,7 +69,5 @@ void Renderer::Task::SceneReport::perform(Renderer &renderer) {
 }
 
 const std::shared_ptr<Report> Renderer::Task::SceneReport::getReport() {
-	reportValue.wait();
-
 	return reportValue.get();
 }

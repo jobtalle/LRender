@@ -3,9 +3,10 @@
 #include "math/constants.h"
 #include "renderer/passes/renderPassViewDefault.h"
 #include "renderer/passes/renderPassViewWireframe.h"
+#include "renderer/passes/renderPassMasks.h"
 #include "renderer/tasks/task.h"
 #include "passes/renderPassArea.h"
-#include "passes/renderPassInteger.h"
+#include "tasks/taskSelect.h"
 
 using namespace LRender;
 
@@ -35,7 +36,6 @@ MessageCallback(GLenum source,
 Renderer::Renderer(const size_t width, const size_t height) :
 	mouseX(0),
 	mouseY(0),
-	maskPass(std::make_unique<RenderPassMasks>(width, height)),
 	updatePass(std::make_shared<RenderPassViewDefault>()) {
 	glEnable(GL_DEPTH_TEST);
 
@@ -70,7 +70,6 @@ void Renderer::bindDefault() const {
 
 void Renderer::render() const {
 	render(*updatePass);
-	updateMasks();
 }
 
 void Renderer::render(RenderPass &pass) const {
@@ -81,11 +80,18 @@ void Renderer::center() {
 	orbit.setFocus(sceneCenter);
 }
 
+void Renderer::focus() {
+	if(selected == -1)
+		return;
+
+	const auto focus = agents[selected].getMinimum() + (agents[selected].getMaximum() - agents[selected].getMinimum()) * 0.5f;
+
+	orbit.setFocus(focus);
+}
+
 void Renderer::setSize(const size_t width, const size_t height) {
 	this->width = width;
 	this->height = height;
-
-	maskPass = std::make_unique<RenderPassMasks>(width, height);
 
 	aspect = float(width) / height;
 
@@ -99,13 +105,10 @@ void Renderer::mouseMove(const size_t x, const size_t y) {
 	mouseY = y;
 }
 
-#include <iostream>
 void Renderer::mousePress(const MouseButton button) {
-	const auto value = maskPass->sample(
+	enqueue(std::make_shared<Task::Select>(
 		static_cast<float>(mouseX) / width,
-		static_cast<float>(mouseY) / height);
-
-	std::cout << "Agent " << value << std::endl;
+		static_cast<float>(mouseY) / height));
 
 	switch(button) {
 	case DRAG:
@@ -140,16 +143,20 @@ void Renderer::scrollDown() {
 	orbit.zoomOut();
 }
 
+void Renderer::setSelected(int selected) {
+	this->selected = selected;
+}
+
+int Renderer::getSelected() const {
+	return selected;
+}
+
 size_t Renderer::getWidth() const {
 	return width;
 }
 
 size_t Renderer::getHeight() const {
 	return height;
-}
-
-void Renderer::updateMasks() const {
-	maskPass->render(shaders, orbit, projection, terrains, agents, this);
 }
 
 void Renderer::setMode(const Mode mode) {
@@ -170,6 +177,8 @@ void Renderer::setPass(const std::shared_ptr<RenderPass> &pass) {
 }
 
 void Renderer::loadScene(const Scene *scene, LParse::Randomizer &randomizer, Report *report) {
+	setSelected(-1);
+
 	terrains.clear();
 	agents.clear();
 
