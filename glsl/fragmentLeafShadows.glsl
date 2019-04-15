@@ -10,13 +10,7 @@ void main() {
 
 	const float bias = max(0.05 * (1.0 - dot(normal, lightDirection)), 0.005);  
 	const float light = sampleShadow(shadowCoords.xy, shadowCoords.z, bias);
+	float l = abs(dot(normal, lightDirection)) * lightDiffuse + lightAmbient;
 
-	if(gl_FrontFacing) {
-		float l = max(0, -dot(normal, lightDirection)) * lightDiffuse + lightAmbient;
-		color = vec4(light * lightColor * interpolatedColor * l, 1);
-	}
-	else {
-		float l = max(0, dot(normal, lightDirection)) * lightDiffuse + lightAmbient;
-		color = vec4(light * lightColor * interpolatedColor * l, 1);
-	}
+	color = vec4(light * lightColor * interpolatedColor * l, 1);
 }
