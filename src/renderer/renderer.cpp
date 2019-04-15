@@ -103,12 +103,11 @@ void Renderer::mouseMove(const size_t x, const size_t y) {
 
 	mouseX = x;
 	mouseY = y;
+	mouseMoved = true;
 }
 
 void Renderer::mousePress(const MouseButton button) {
-	enqueue(std::make_shared<Task::Select>(
-		static_cast<float>(mouseX) / width,
-		static_cast<float>(mouseY) / height));
+	mouseMoved = false;
 
 	switch(button) {
 	case DRAG:
@@ -123,6 +122,11 @@ void Renderer::mousePress(const MouseButton button) {
 }
 
 void Renderer::mouseRelease(const MouseButton button) {
+	if(!mouseMoved)
+		enqueue(std::make_shared<Task::Select>(
+			static_cast<float>(mouseX) / width,
+			static_cast<float>(mouseY) / height));
+
 	switch(button) {
 	case DRAG:
 		orbit.mouseReleaseDrag();

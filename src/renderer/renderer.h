@@ -12,7 +12,7 @@
 #include "modeller/agentModel.h"
 #include "report/report.h"
 #include "lparse.h"
-
+ 
 #include <memory>
 #include <mutex>
 
@@ -56,6 +56,7 @@ namespace LRender {
 	private:
 		static const float PROJECTION_ANGLE;
 
+		bool mouseMoved = false;
 		int selected = -1;
 		GLFunctions gl;
 		Shaders shaders;
