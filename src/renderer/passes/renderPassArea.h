@@ -10,7 +10,7 @@ namespace LRender {
 		RenderPassArea(const ReportLimits &limits);
 		float getViewportWidth() const;
 		float getViewportHeight() const;
-		void setAngle(const float angle);
+		void setAngle(float angle);
 		void render(
 			const Shaders &shaders,
 			const Orbit &orbit,

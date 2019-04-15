@@ -14,8 +14,8 @@ const size_t Renderer::Task::SceneReport::PROJECTION_COUNT = 3;
 
 Renderer::Task::SceneReport::SceneReport(std::shared_ptr<LRender::Scene> scene, LParse::Randomizer randomizer) :
 	scene(std::move(scene)),
-	randomizer(randomizer),
-	reportValue(report.get_future()) {
+	reportValue(report.get_future()),
+	randomizer(randomizer) {
 
 }
 
@@ -42,7 +42,7 @@ void Renderer::Task::SceneReport::perform(Renderer &renderer) {
 
 			renderer.render(areaPass);
 
-			target->prepareHistogram();
+			target->download();
 		}
 
 		std::vector<unsigned int> histogram(scene->getAgents().size());

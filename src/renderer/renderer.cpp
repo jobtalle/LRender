@@ -4,6 +4,8 @@
 #include "renderer/passes/renderPassViewDefault.h"
 #include "renderer/passes/renderPassViewWireframe.h"
 #include "renderer/tasks/task.h"
+#include "passes/renderPassArea.h"
+#include "passes/renderPassInteger.h"
 
 using namespace LRender;
 
@@ -31,6 +33,9 @@ MessageCallback(GLenum source,
 //
 
 Renderer::Renderer(const size_t width, const size_t height) :
+	mouseX(0),
+	mouseY(0),
+	maskPass(std::make_unique<RenderPassMasks>(width, height)),
 	updatePass(std::make_shared<RenderPassViewDefault>()) {
 	glEnable(GL_DEPTH_TEST);
 
@@ -65,6 +70,7 @@ void Renderer::bindDefault() const {
 
 void Renderer::render() const {
 	render(*updatePass);
+	updateMasks();
 }
 
 void Renderer::render(RenderPass &pass) const {
@@ -79,6 +85,8 @@ void Renderer::setSize(const size_t width, const size_t height) {
 	this->width = width;
 	this->height = height;
 
+	maskPass = std::make_unique<RenderPassMasks>(width, height);
+
 	aspect = float(width) / height;
 
 	updateProjection();
@@ -86,9 +94,19 @@ void Renderer::setSize(const size_t width, const size_t height) {
 
 void Renderer::mouseMove(const size_t x, const size_t y) {
 	orbit.mouseMove(x, y);
+
+	mouseX = x;
+	mouseY = y;
 }
 
+#include <iostream>
 void Renderer::mousePress(const MouseButton button) {
+	const auto value = maskPass->sample(
+		static_cast<float>(mouseX) / width,
+		static_cast<float>(mouseY) / height);
+
+	std::cout << "Agent " << value << std::endl;
+
 	switch(button) {
 	case DRAG:
 		orbit.mouseGrabDrag();
@@ -128,6 +146,10 @@ size_t Renderer::getWidth() const {
 
 size_t Renderer::getHeight() const {
 	return height;
+}
+
+void Renderer::updateMasks() const {
+	maskPass->render(shaders, orbit, projection, terrains, agents, this);
 }
 
 void Renderer::setMode(const Mode mode) {
@@ -177,7 +199,7 @@ void Renderer::loadScene(const Scene *scene, LParse::Randomizer &randomizer, Rep
 
 	if(report && report->hasLimits())
 		sceneCenter.y = report->getLimits().getMinimum().y +
-		(report->getLimits().getMaximum().y - report->getLimits().getMinimum().y) * 0.5f;
+			(report->getLimits().getMaximum().y - report->getLimits().getMinimum().y) * 0.5f;
 	else
 		sceneCenter.y = 0;
 }

@@ -1,5 +1,7 @@
 #include "renderTargetUint.h"
 
+#include <cmath>
+
 using namespace LRender;
 
 const unsigned int RenderTargetUint::VALUE_DEFAULT = 0xFFFF;
@@ -20,7 +22,7 @@ GLuint RenderTargetUint::getTexture() const {
 	return texture;
 }
 
-void RenderTargetUint::prepareHistogram() const {
+void RenderTargetUint::download() const {
 	glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo);
 	glReadPixels(0, 0, getWidth(), getHeight(), GL_RED_INTEGER, GL_UNSIGNED_SHORT, nullptr);
 }
@@ -37,6 +39,21 @@ void RenderTargetUint::makeHistogram(std::vector<unsigned>& histogram) const {
 		++*(histogram.begin() + pixels[pixel]);
 
 	glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
+}
+
+short RenderTargetUint::sample(const float x, const float y) const {
+	bind();
+
+	glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo);
+
+	const auto pixels = static_cast<GLushort*>(glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY));
+	const short value = pixels[
+		static_cast<size_t>(std::round(x * getWidth())) +
+		static_cast<size_t>(std::round((1 - y) * getHeight()) * getWidth())];
+
+	glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
+
+	return value;
 }
 
 void RenderTargetUint::clear() const {

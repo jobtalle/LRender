@@ -7,11 +7,12 @@
 namespace LRender {
 	class RenderTargetUint final : public RenderTarget {
 	public:
-		RenderTargetUint(const size_t width, const size_t height);
+		RenderTargetUint(size_t width, size_t height);
 		~RenderTargetUint();
 		GLuint getTexture() const;
-		void prepareHistogram() const;
+		void download() const;
 		void makeHistogram(std::vector<unsigned int> &histogram) const;
+		short sample(float x, float y) const;
 		void clear() const;
 
 	private:
@@ -20,6 +21,6 @@ namespace LRender {
 		GLuint texture;
 		GLuint pbo;
 
-		GLuint makeTexture(const size_t width, const size_t height);
+		GLuint makeTexture(size_t width, size_t height);
 	};
 }

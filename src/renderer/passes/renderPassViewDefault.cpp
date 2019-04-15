@@ -28,7 +28,7 @@ void RenderPassViewDefault::render(
 	const std::vector<AgentModel> &agents,
 	const Renderer *renderer) {
 	shadowTarget.bind();
-
+	
 	shadowPass.render(shaders, orbit, projection, terrains, agents, renderer);
 
 	renderer->bindDefault();
