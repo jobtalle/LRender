@@ -1,7 +1,5 @@
 #include "vector.h"
 
-#include <math.h>
-
 using namespace LRender;
 
 Vector::Vector() :

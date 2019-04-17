@@ -1,9 +1,7 @@
 #include "leaf.h"
 
-#include <math.h>
-
 using namespace LRender;
-#include <iostream>
+
 float Shape::Leaf::model(
 	std::vector<Vertex> &vertices,
 	std::vector<uint32_t> &indices,
@@ -125,10 +123,14 @@ float Shape::Leaf::calculateArea(
 	const Vector &a,
 	const Vector &b,
 	const Vector &c) {
-	const float la = (b - a).length();
-	const float lb = (b - c).length();
-	const float lc = (a - c).length();
-	const float p = (la + lb + lc) * 0.5f;
+	const auto la = (b - a).length();
+	const auto lb = (b - c).length();
+	const auto lc = (a - c).length();
+	const auto p = (la + lb + lc) * 0.5f;
+	const auto x = p * (p - la) * (p - lb) * (p - lc);
 
-	return sqrt(p * (p - la) * (p - lb) * (p - lc));
+	if(x < 0)
+		return 0;
+
+	return sqrt(x);
 }
