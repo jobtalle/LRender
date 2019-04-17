@@ -46,8 +46,15 @@ void RenderPassViewDefault::render(
 	for(auto &terrain : terrains)
 		terrain.getModel().draw();
 
-	for(auto &agent : agents)
-		agent.getBranches().draw();
+	for(auto agent = 0; agent < agents.size(); ++agent) {
+		if(agent == renderer->getSelected()) {
+			shaders.getGeometrySelected().use();
+			agents[agent].getBranches().draw();
+			shaders.getGeometryShadows().use();
+		}
+		else
+			agents[agent].getBranches().draw();
+	}
 
 	glDisable(GL_CULL_FACE);
 

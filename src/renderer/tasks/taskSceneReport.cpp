@@ -9,7 +9,7 @@
 
 using namespace LRender;
 
-const size_t Renderer::Task::SceneReport::PROJECTION_SCALE = 32;
+const size_t Renderer::Task::SceneReport::PROJECTION_SCALE = 64;
 const size_t Renderer::Task::SceneReport::PROJECTION_COUNT = 3;
 
 Renderer::Task::SceneReport::SceneReport(std::shared_ptr<LRender::Scene> scene, LParse::Randomizer randomizer) :
