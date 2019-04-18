@@ -5,6 +5,7 @@ using namespace LRender;
 const Vector Node::UP(0, 1, 0);
 const Vector Node::AXIS_PITCH(0, 0, 1);
 const Vector Node::AXIS_ROLL(0, 1, 0);
+const Vector Node::AXIS_YAW(1, 0, 0);
 
 Node::Node(const Vector &position, const float angle) :
 	position(position),
@@ -28,6 +29,12 @@ Node &Node::roll(const float radians) {
 
 Node &Node::pitch(const float radians) {
 	heading.rotate(AXIS_PITCH, radians);
+
+	return *this;
+}
+
+Node &Node::yaw(const float radians) {
+	heading.rotate(AXIS_YAW, radians);
 
 	return *this;
 }

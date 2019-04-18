@@ -173,6 +173,14 @@ Branch *AgentModel::traceBranch(
 			node.roll(-TURTLE_ANGLE);
 
 			break;
+		case LParse::Legend::YAW_INCREMENT:
+			node.yaw(TURTLE_ANGLE);
+
+			break;
+		case LParse::Legend::YAW_DECREMENT:
+			node.yaw(-TURTLE_ANGLE);
+
+			break;
 		default:
 			if(*(at - 1) >= LParse::Legend::STEP_MIN && *(at - 1) <= LParse::Legend::STEP_MAX) {
 				branch.add(node.extrude(TURTLE_STEP));
