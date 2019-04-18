@@ -21,9 +21,9 @@ namespace LRender {
 		const Model &getBranches() const;
 		const Model &getLeaves() const;
 		const std::vector<Vector> &getSeedPositions() const;
+		const std::vector<float> &getLeafAreas() const;
 		const Vector &getMinimum() const;
 		const Vector &getMaximum() const;
-		float getArea() const;
 
 	private:
 		static const float TURTLE_STEP;
@@ -33,14 +33,14 @@ namespace LRender {
 		std::unique_ptr<Model> modelBranches;
 		std::unique_ptr<Model> modelLeaves;
 		std::vector<Vector> seedPositions;
+		std::vector<float> leafAreas;
 		Vector minimum;
 		Vector maximum;
-		float area;
 
 		void build(
 			const Agent &agent, LParse::Randomizer &randomizer);
 		Branch *traceBranch(
-			Branch *const parent,
+			Branch *parent,
 			bool leaf,
 			std::list<Branch> &branches,
 			std::list<Leaf> &leaves,

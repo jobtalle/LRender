@@ -6,12 +6,12 @@ using namespace LRender;
 
 ReportAgent::ReportAgent(
 	std::vector<ReportSeed> seeds,
+	std::vector<ReportLeaf> leaves,
 	ReportLimits limits,
-	const ReportArea area,
 	const ReportSize size) :
 	seeds(std::move(seeds)),
+	leaves(std::move(leaves)),
 	limits(std::move(limits)),
-	area(area),
 	size(size) {
 
 }
@@ -24,12 +24,12 @@ const std::vector<ReportSeed> &ReportAgent::getSeeds() const {
 	return seeds;
 }
 
-const ReportLimits &ReportAgent::getLimits() const {
-	return limits;
+const std::vector<ReportLeaf> &ReportAgent::getLeaves() const {
+	return leaves;
 }
 
-const ReportArea &ReportAgent::getArea() const {
-	return area;
+const ReportLimits &ReportAgent::getLimits() const {
+	return limits;
 }
 
 const ReportSize& ReportAgent::getSize() const {

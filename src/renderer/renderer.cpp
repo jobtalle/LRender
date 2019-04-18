@@ -194,14 +194,18 @@ void Renderer::loadScene(const Scene *scene, LParse::Randomizer &randomizer, Rep
 		if(report) {
 			const auto model = --agents.end();
 			std::vector<ReportSeed> seedReports;
+			std::vector<ReportLeaf> leafReports;
 
 			for(const auto &seedPosition : model->getSeedPositions())
 				seedReports.emplace_back(seedPosition);
 
+			for(const auto &leafArea : model->getLeafAreas())
+				leafReports.emplace_back(leafArea);
+
 			report->add(ReportAgent(
 				seedReports,
+				leafReports,
 				ReportLimits(model->getMinimum(), model->getMaximum()),
-				ReportArea(model->getArea()),
 				ReportSize(agent.getSymbols().size())
 			));
 		}

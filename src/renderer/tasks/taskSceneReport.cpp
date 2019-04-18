@@ -52,11 +52,6 @@ void Renderer::Task::SceneReport::perform(Renderer &renderer) {
 			target->makeHistogram(histogram);
 
 		for(size_t i = 0; i < scene->getAgents().size(); ++i) {
-			auto const area = report->getAgents()[i].getArea().getArea();
-
-			if(area == 0)
-				continue;
-
 			auto exposure = ReportExposure(scaleFactor * histogram[i]);
 
 			report->getAgents()[i].setExposure(exposure);

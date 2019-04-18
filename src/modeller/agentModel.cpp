@@ -15,8 +15,7 @@ const size_t AgentModel::TUBE_PRECISION = 5;
 
 AgentModel::AgentModel(const Agent &agent, LParse::Randomizer &randomizer) :
 	minimum(agent.getPosition()),
-	maximum(agent.getPosition()),
-	area(0) {
+	maximum(agent.getPosition()) {
 	build(agent, randomizer);
 }
 
@@ -32,16 +31,16 @@ const std::vector<Vector> &AgentModel::getSeedPositions() const {
 	return seedPositions;
 }
 
+const std::vector<float> &AgentModel::getLeafAreas() const {
+	return leafAreas;
+}
+
 const Vector &AgentModel::getMinimum() const {
 	return minimum;
 }
 
 const Vector &AgentModel::getMaximum() const {
 	return maximum;
-}
-
-float AgentModel::getArea() const {
-	return area;
 }
 
 void AgentModel::build(const Agent &agent, LParse::Randomizer &randomizer) {
@@ -95,7 +94,7 @@ void AgentModel::build(const Agent &agent, LParse::Randomizer &randomizer) {
 					child.child->getNodes().end()));
 		}
 
-		area += leaf.getArea() * (1 + pow(leaf.getArea() * 0.5f, 2.0f));
+		leafAreas.emplace_back(leaf.getArea());
 	}
 
 	for(const auto &seed : seeds) {
