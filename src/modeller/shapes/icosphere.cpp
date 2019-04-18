@@ -1,7 +1,5 @@
 #include "icosphere.h"
 
-#include <math.h>
-
 using namespace LRender;
 
 std::vector<Shape::Icosphere::BufferedSphere> Shape::Icosphere::bufferedSpheres;

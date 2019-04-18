@@ -57,7 +57,7 @@ void Renderer::Task::SceneReport::perform(Renderer &renderer) {
 			if(area == 0)
 				continue;
 
-			auto exposure = ReportExposure(scaleFactor * histogram[i] / area);
+			auto exposure = ReportExposure(scaleFactor * histogram[i]);
 
 			report->getAgents()[i].setExposure(exposure);
 		}

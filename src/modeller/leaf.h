@@ -10,7 +10,7 @@ namespace LRender {
 
 	public:
 		Leaf();
-		void addArea(const float area);
+		void addArea(float area);
 		const std::list<Branch> &getBranches() const;
 		float getArea() const;
 

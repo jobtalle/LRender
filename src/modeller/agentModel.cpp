@@ -5,11 +5,13 @@
 #include "math/vector.h"
 #include "math/constants.h"
 
+#include <cmath>
+
 using namespace LRender;
 
 const float AgentModel::TURTLE_STEP = 0.05f;
 const float AgentModel::TURTLE_ANGLE = 0.2;
-const size_t AgentModel::TUBE_PRECISION = 7;
+const size_t AgentModel::TUBE_PRECISION = 5;
 
 AgentModel::AgentModel(const Agent &agent, LParse::Randomizer &randomizer) :
 	minimum(agent.getPosition()),
@@ -93,7 +95,7 @@ void AgentModel::build(const Agent &agent, LParse::Randomizer &randomizer) {
 					child.child->getNodes().end()));
 		}
 
-		area += leaf.getArea();
+		area += leaf.getArea() * (1 + pow(leaf.getArea() * 0.5f, 2.0f));
 	}
 
 	for(const auto &seed : seeds) {

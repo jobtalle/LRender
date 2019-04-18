@@ -10,12 +10,15 @@ float Shape::Leaf::model(
 	const std::vector<Node>::const_iterator &aEnd,
 	std::vector<Node>::const_iterator b,
 	const std::vector<Node>::const_iterator &bEnd) {
+	while(a + 1 != aEnd && b + 1 != bEnd && a->position == b->position)
+		++a, ++b;
+
 	if(a + 1 == aEnd || b + 1 == bEnd)
 		return 0;
 
 	float area = 0;
-	bool even = false;
-	bool first = true;
+	auto even = false;
+	auto first = true;
 
 	vertices.emplace_back(
 		a->position,
@@ -74,7 +77,6 @@ float Shape::Leaf::model(
 			area += addTriangle(vertices, indices, anchor, previous, vertices.size() - 1);
 
 			previous = vertices.size() - 1;
-
 		}
 	}
 	else if(b != bEnd) {
