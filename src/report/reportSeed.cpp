@@ -10,3 +10,4 @@ ReportSeed::ReportSeed(const Vector &location) :
 const Vector& ReportSeed::getLocation() const {
 	return location;
 }
+

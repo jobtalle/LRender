@@ -1,11 +1,11 @@
 #include "terrainModel.h"
 
 #include <vector>
-#include <math.h>
 
 using namespace LRender;
 
 const float TerrainModel::RESOLUTION = 0.25f;
+const float TerrainModel::OFFSET = 1000;
 
 TerrainModel::TerrainModel(const Terrain &terrain) {
 	build(terrain);
@@ -17,6 +17,7 @@ const Model &TerrainModel::getModel() const {
 
 void TerrainModel::build(const Terrain &terrain) {
 	Geometry geometry;
+	const Vector up(0, 1, 0);
 	const Vector color(0.75f, 0.75f, 0.45f);
 	const uint32_t xCells = ceil(terrain.getWidth() / RESOLUTION);
 	const uint32_t yCells = ceil(terrain.getHeight() / RESOLUTION);
@@ -24,9 +25,9 @@ void TerrainModel::build(const Terrain &terrain) {
 	const float dx = terrain.getWidth() / xCells;
 	std::vector<Vector> points;
 
-	points.reserve(xCells * yCells);
-	geometry.vertices.reserve(xCells * yCells);
-	geometry.indices.reserve((xCells - 1) * (yCells - 1) * 6);
+	points.reserve(xCells * yCells + 4);
+	geometry.vertices.reserve(xCells * yCells + 4);
+	geometry.indices.reserve((xCells - 1) * (yCells - 1) * 6 + 6);
 
 	for(size_t y = 0; y <= yCells; ++y) for(size_t x = 0; x <= xCells; ++x)
 		points.emplace_back(x * dx, terrain.getY(x * dx, y * dy), y * dy);
@@ -68,6 +69,18 @@ void TerrainModel::build(const Terrain &terrain) {
 			}
 		}
 	}
+
+	geometry.vertices.emplace_back(Vector(-OFFSET, terrain.getY(0, 0), -OFFSET), up, color);
+	geometry.vertices.emplace_back(Vector(OFFSET, terrain.getY(terrain.getWidth(), 0), -OFFSET), up, color);
+	geometry.vertices.emplace_back(Vector(OFFSET, terrain.getY(terrain.getWidth(), terrain.getHeight()), OFFSET), up, color);
+	geometry.vertices.emplace_back(Vector(-OFFSET, terrain.getY(0, terrain.getHeight()), OFFSET), up, color);
+
+	geometry.indices.push_back(geometry.vertices.size() - 4);
+	geometry.indices.push_back(geometry.vertices.size() - 1);
+	geometry.indices.push_back(geometry.vertices.size() - 2);
+	geometry.indices.push_back(geometry.vertices.size() - 2);
+	geometry.indices.push_back(geometry.vertices.size() - 3);
+	geometry.indices.push_back(geometry.vertices.size() - 4);
 
 	model = std::make_unique<Model>(geometry);
 }

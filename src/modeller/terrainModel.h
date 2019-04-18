@@ -13,6 +13,7 @@ namespace LRender {
 
 	private:
 		static const float RESOLUTION;
+		static const float OFFSET;
 
 		std::unique_ptr<Model> model;
 
