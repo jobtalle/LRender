@@ -10,7 +10,10 @@
 namespace LRender {
 	class Renderer::Task::SceneReport final : public Task {
 	public:
-		SceneReport(std::shared_ptr<LRender::Scene> scene, LParse::Randomizer randomizer);
+		SceneReport(
+			std::shared_ptr<LRender::Scene> scene,
+			LParse::Randomizer randomizer,
+			size_t threads);
 		void perform(Renderer &renderer) override final;
 		const std::shared_ptr<Report> getReport();
 
@@ -22,5 +25,6 @@ namespace LRender {
 		std::promise<std::shared_ptr<Report>> report;
 		std::future<std::shared_ptr<Report>> reportValue;
 		LParse::Randomizer randomizer;
+		const size_t threads;
 	};
 }

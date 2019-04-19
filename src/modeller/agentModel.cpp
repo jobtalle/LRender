@@ -5,15 +5,15 @@
 #include "math/vector.h"
 #include "math/constants.h"
 
-#include <cmath>
-
 using namespace LRender;
 
 const float AgentModel::TURTLE_STEP = 0.05f;
 const float AgentModel::TURTLE_ANGLE = 0.2;
 const size_t AgentModel::TUBE_PRECISION = 5;
 
-AgentModel::AgentModel(const Agent &agent, LParse::Randomizer &randomizer) :
+AgentModel::AgentModel(
+	const Agent &agent,
+	LParse::Randomizer &randomizer) :
 	minimum(agent.getPosition()),
 	maximum(agent.getPosition()) {
 	build(agent, randomizer);
@@ -43,15 +43,24 @@ const Vector &AgentModel::getMaximum() const {
 	return maximum;
 }
 
+void AgentModel::makeModels() {
+	modelBranches = std::make_shared<Model>(*geometryBranches);
+	modelLeaves = std::make_shared<Model>(*geometryLeaves);
+
+	geometryBranches = nullptr;
+	geometryLeaves = nullptr;
+}
+
 void AgentModel::build(const Agent &agent, LParse::Randomizer &randomizer) {
-	RadiusSampler radiusSampler(0.1f);
-	Geometry geometryBranches;
-	Geometry geometryLeaves;
+	const RadiusSampler radiusSampler(0.1f);
 	std::list<Branch> branches;
 	std::list<Leaf> leaves;
 	std::list<Seed> seeds;
 	Node node(agent.getPosition(), randomizer.makeFloat(0, Constants::PI * 2));
-	
+
+	geometryBranches = std::make_shared<Geometry>();
+	geometryLeaves = std::make_shared<Geometry>();
+
 	auto at = agent.getSymbols().begin();
 	
 	traceBranch(
@@ -66,8 +75,8 @@ void AgentModel::build(const Agent &agent, LParse::Randomizer &randomizer) {
 	
 	for(const auto &branch : branches)
 		Shape::Branch::model(
-			geometryBranches.vertices,
-			geometryBranches.indices,
+			geometryBranches->vertices,
+			geometryBranches->indices,
 			Vector(0.53f, 0.39f, 0.78f),
 			radiusSampler,
 			TUBE_PRECISION,
@@ -76,8 +85,8 @@ void AgentModel::build(const Agent &agent, LParse::Randomizer &randomizer) {
 	for(auto &leaf : leaves) {
 		for(const auto &branch : leaf.getBranches()) {
 			Shape::Branch::model(
-				geometryBranches.vertices,
-				geometryBranches.indices,
+				geometryBranches->vertices,
+				geometryBranches->indices,
 				Vector(0.3f, 0.8f, 0.6f),
 				radiusSampler,
 				TUBE_PRECISION,
@@ -85,8 +94,8 @@ void AgentModel::build(const Agent &agent, LParse::Randomizer &randomizer) {
 
 			for(const auto &child : branch.getBranches())
 				leaf.addArea(Shape::Leaf::model(
-					geometryLeaves.vertices,
-					geometryLeaves.indices,
+					geometryLeaves->vertices,
+					geometryLeaves->indices,
 					Vector(0.3f, 0.8f, 0.6f),
 					branch.getNodes().begin() + child.index,
 					branch.getNodes().end(),
@@ -101,15 +110,12 @@ void AgentModel::build(const Agent &agent, LParse::Randomizer &randomizer) {
 		seedPositions.push_back(seed.getPosition());
 
 		Shape::Seed::model(
-			geometryBranches.vertices,
-			geometryBranches.indices,
+			geometryBranches->vertices,
+			geometryBranches->indices,
 			Vector(0.6f, 0, 0),
 			radiusSampler,
 			seed);
 	}
-
-	modelBranches = std::make_unique<Model>(geometryBranches);
-	modelLeaves = std::make_unique<Model>(geometryLeaves);
 }
 
 Branch *AgentModel::traceBranch(

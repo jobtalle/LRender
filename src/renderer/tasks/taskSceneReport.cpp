@@ -12,17 +12,21 @@ using namespace LRender;
 const size_t Renderer::Task::SceneReport::PROJECTION_SCALE = 64;
 const size_t Renderer::Task::SceneReport::PROJECTION_COUNT = 3;
 
-Renderer::Task::SceneReport::SceneReport(std::shared_ptr<LRender::Scene> scene, LParse::Randomizer randomizer) :
+Renderer::Task::SceneReport::SceneReport(
+	std::shared_ptr<LRender::Scene> scene,
+	const LParse::Randomizer randomizer,
+	const size_t threads) :
 	scene(std::move(scene)),
 	reportValue(report.get_future()),
-	randomizer(randomizer) {
+	randomizer(randomizer),
+	threads(threads) {
 
 }
 
 void Renderer::Task::SceneReport::perform(Renderer &renderer) {
 	auto report = std::make_shared<Report>();
 
-	renderer.loadScene(scene.get(), randomizer, report.get());
+	renderer.loadScene(scene.get(), threads, randomizer, report.get());
 
 	if(!report->getAgents().empty()) {
 		const float scaleFactor = 1.0f / (PROJECTION_SCALE * PROJECTION_SCALE * PROJECTION_COUNT);

@@ -18,20 +18,24 @@ namespace LRender {
 		AgentModel(
 			const Agent &agent,
 			LParse::Randomizer &randomizer);
+		AgentModel(const AgentModel &other) = default;
 		const Model &getBranches() const;
 		const Model &getLeaves() const;
 		const std::vector<Vector> &getSeedPositions() const;
 		const std::vector<float> &getLeafAreas() const;
 		const Vector &getMinimum() const;
 		const Vector &getMaximum() const;
+		void makeModels();
 
 	private:
 		static const float TURTLE_STEP;
 		static const float TURTLE_ANGLE;
 		static const size_t TUBE_PRECISION;
 
-		std::unique_ptr<Model> modelBranches;
-		std::unique_ptr<Model> modelLeaves;
+		std::shared_ptr<Geometry> geometryBranches;
+		std::shared_ptr<Geometry> geometryLeaves;
+		std::shared_ptr<Model> modelBranches;
+		std::shared_ptr<Model> modelLeaves;
 		std::vector<Vector> seedPositions;
 		std::vector<float> leafAreas;
 		Vector minimum;

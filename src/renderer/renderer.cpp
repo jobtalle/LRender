@@ -8,6 +8,8 @@
 #include "passes/renderPassArea.h"
 #include "tasks/taskSelect.h"
 
+#include <thread>
+
 using namespace LRender;
 
 const float Renderer::PROJECTION_ANGLE = Constants::PI * 0.25f;
@@ -180,7 +182,31 @@ void Renderer::setPass(const std::shared_ptr<RenderPass> &pass) {
 	updatePass = pass;
 }
 
-void Renderer::loadScene(const Scene *scene, LParse::Randomizer &randomizer, Report *report) {
+void Renderer::modelBatches(const std::vector<SceneBatch>::iterator begin, const std::vector<SceneBatch>::iterator end) {
+	for(auto batch = begin; batch < end; ++batch) {
+		for(auto agent = batch->begin; agent < batch->end; ++agent) {
+			batch->models.emplace_back(*agent, batch->randomizer);
+
+			const auto model = --batch->models.end();
+			std::vector<ReportSeed> seedReports;
+			std::vector<ReportLeaf> leafReports;
+
+			for(const auto &seedPosition : model->getSeedPositions())
+				seedReports.emplace_back(seedPosition);
+
+			for(const auto &leafArea : model->getLeafAreas())
+				leafReports.emplace_back(leafArea);
+
+			batch->reports.emplace_back(
+				seedReports,
+				leafReports,
+				ReportLimits(model->getMinimum(), model->getMaximum()),
+				ReportSize(agent->getSymbols().size()));
+		}
+	}
+}
+
+void Renderer::loadScene(const Scene *scene, const size_t threadCount, LParse::Randomizer &randomizer, Report *report) {
 	setSelected(-1);
 
 	terrains.clear();
@@ -188,6 +214,51 @@ void Renderer::loadScene(const Scene *scene, LParse::Randomizer &randomizer, Rep
 
 	terrains.emplace_back(scene->getTerrain());
 
+	const auto batchSize = 100;
+	std::vector<SceneBatch> batches;
+
+	for(size_t agent = 0; agent < scene->getAgents().size(); agent += batchSize) {
+		auto end = scene->getAgents().begin() + agent + batchSize;
+
+		if(end > scene->getAgents().end())
+			end = scene->getAgents().end();
+
+		batches.emplace_back(
+			scene->getAgents().begin() + agent,
+			end,
+			randomizer.makeRandomizer());
+	}
+
+	const size_t batchesPerThread = std::ceil(static_cast<float>(batches.size()) / threadCount);
+	std::vector<SceneBatchRange> ranges;
+	std::vector<std::thread> threads;
+
+	for(size_t sceneBatch = 0; sceneBatch < batches.size(); sceneBatch += batchesPerThread) {
+		auto end = batches.begin() + sceneBatch + batchesPerThread;
+
+		if(end > batches.end())
+			end = batches.end();
+
+		ranges.emplace_back(SceneBatchRange(batches.begin() + sceneBatch, end));
+		threads.emplace_back(modelBatches, batches.begin() + sceneBatch, end);
+	}
+
+	for(size_t threadIndex = 0; threadIndex < threads.size(); ++threadIndex) {
+		threads[threadIndex].join();
+
+		for(auto batch = ranges[threadIndex].begin; batch < ranges[threadIndex].end; ++batch) {
+			for(auto &agentModel : batch->models) {
+				agentModel.makeModels();
+
+				agents.push_back(agentModel);
+			}
+
+			if(report) for(const auto &agentReport : batch->reports)
+				report->add(agentReport);
+		}
+	}
+
+	/*
 	for(auto &agent : scene->getAgents()) {
 		agents.emplace_back(agent, randomizer);
 
@@ -210,7 +281,7 @@ void Renderer::loadScene(const Scene *scene, LParse::Randomizer &randomizer, Rep
 			));
 		}
 	}
-
+	*/
 	sceneCenter.x = scene->getTerrain().getWidth() * 0.5f;
 	sceneCenter.z = scene->getTerrain().getHeight() * 0.5f;
 
@@ -227,4 +298,22 @@ void Renderer::updateProjection() {
 		aspect,
 		Z_NEAR,
 		Z_FAR);
+}
+
+Renderer::SceneBatch::SceneBatch(
+	const std::vector<Agent>::const_iterator begin,
+	const std::vector<Agent>::const_iterator end,
+	const LParse::Randomizer randomizer) :
+	begin(begin),
+	end(end),
+	randomizer(randomizer) {
+	
+}
+
+Renderer::SceneBatchRange::SceneBatchRange(
+	const std::vector<SceneBatch>::iterator begin,
+	const std::vector<SceneBatch>::iterator end) :
+	begin(begin),
+	end(end) {
+	
 }

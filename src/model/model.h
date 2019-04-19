@@ -4,14 +4,13 @@
 #include "glad/glad.h"
 
 #include <vector>
-#include <stdint.h>
 
 namespace LRender {
 	class Model final {
 	public:
 		Model(const Geometry &geometry);
 		~Model();
-		void draw(const bool wireframe = false) const;
+		void draw(bool wireframe = false) const;
 
 	private:
 		enum Buffer {

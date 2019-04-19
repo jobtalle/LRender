@@ -54,6 +54,26 @@ namespace LRender {
 		static const float Z_FAR;
 
 	private:
+		struct SceneBatch {
+			SceneBatch(
+				std::vector<Agent>::const_iterator begin,
+				std::vector<Agent>::const_iterator end,
+				LParse::Randomizer randomizer);
+
+			const std::vector<Agent>::const_iterator begin;
+			const std::vector<Agent>::const_iterator end;
+			LParse::Randomizer randomizer;
+			std::vector<AgentModel> models;
+			std::vector<ReportAgent> reports;
+		};
+
+		struct SceneBatchRange {
+			SceneBatchRange(std::vector<SceneBatch>::iterator begin, std::vector<SceneBatch>::iterator end);
+
+			const std::vector<SceneBatch>::iterator begin;
+			const std::vector<SceneBatch>::iterator end;
+		};
+
 		static const float PROJECTION_ANGLE;
 
 		bool mouseMoved = false;
@@ -74,9 +94,14 @@ namespace LRender {
 		std::vector<TerrainModel> terrains;
 		std::vector<std::shared_ptr<Task>> tasks;
 
+		static void modelBatches(std::vector<SceneBatch>::iterator begin, std::vector<SceneBatch>::iterator end);
 		void setMode(Mode mode);
 		void setPass(const std::shared_ptr<RenderPass> &pass);
-		void loadScene(const Scene *scene, LParse::Randomizer &randomizer, Report *report = nullptr);
+		void loadScene(
+			const Scene *scene,
+			size_t threadCount,
+			LParse::Randomizer &randomizer,
+			Report *report = nullptr);
 		void updateProjection();
 	};
 }
