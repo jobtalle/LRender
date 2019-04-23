@@ -10,7 +10,7 @@ float Shape::Leaf::model(
 	const std::vector<Node>::const_iterator &aEnd,
 	std::vector<Node>::const_iterator b,
 	const std::vector<Node>::const_iterator &bEnd) {
-	while(a + 1 != aEnd && b + 1 != bEnd && a->position == b->position)
+	while(a + 1 != aEnd && b + 1 != bEnd && (a + 1)->position == (b + 1)->position)
 		++a, ++b;
 
 	if(a + 1 == aEnd || b + 1 == bEnd)

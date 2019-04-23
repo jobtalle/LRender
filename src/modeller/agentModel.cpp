@@ -56,7 +56,7 @@ void AgentModel::build(const Agent &agent, LParse::Randomizer &randomizer) {
 	std::list<Branch> branches;
 	std::list<Leaf> leaves;
 	std::list<Seed> seeds;
-	Node node(agent.getPosition(), randomizer.makeFloat(0, Constants::PI * 2));
+	const Node node(agent.getPosition(), randomizer.makeFloat(0, Constants::PI * 2));
 
 	geometryBranches = std::make_shared<Geometry>();
 	geometryLeaves = std::make_shared<Geometry>();

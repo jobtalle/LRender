@@ -198,6 +198,7 @@ void Renderer::modelBatches(const std::vector<AgentBatch>::iterator begin, const
 				leafReports.emplace_back(leafArea);
 
 			batch->reports.emplace_back(
+				agent->getPosition(),
 				seedReports,
 				leafReports,
 				ReportLimits(model->getMinimum(), model->getMaximum()),
