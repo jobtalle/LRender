@@ -182,7 +182,7 @@ void Renderer::setPass(const std::shared_ptr<RenderPass> &pass) {
 	updatePass = pass;
 }
 
-void Renderer::modelBatches(const std::vector<SceneBatch>::iterator begin, const std::vector<SceneBatch>::iterator end) {
+void Renderer::modelBatches(const std::vector<AgentBatch>::iterator begin, const std::vector<AgentBatch>::iterator end) {
 	for(auto batch = begin; batch < end; ++batch) {
 		for(auto agent = batch->begin; agent < batch->end; ++agent) {
 			batch->models.emplace_back(*agent, batch->randomizer);
@@ -207,6 +207,17 @@ void Renderer::modelBatches(const std::vector<SceneBatch>::iterator begin, const
 }
 
 void Renderer::loadScene(const Scene *scene, const size_t threadCount, LParse::Randomizer &randomizer, Report *report) {
+	struct AgentBatchRange {
+		AgentBatchRange(
+			const std::vector<AgentBatch>::iterator begin,
+			const std::vector<AgentBatch>::iterator end) :
+			begin(begin),
+			end(end) { }
+
+		const std::vector<AgentBatch>::iterator begin;
+		const std::vector<AgentBatch>::iterator end;
+	};
+
 	setSelected(-1);
 
 	terrains.clear();
@@ -214,11 +225,10 @@ void Renderer::loadScene(const Scene *scene, const size_t threadCount, LParse::R
 
 	terrains.emplace_back(scene->getTerrain());
 
-	const auto batchSize = 100;
-	std::vector<SceneBatch> batches;
+	std::vector<AgentBatch> batches;
 
-	for(size_t agent = 0; agent < scene->getAgents().size(); agent += batchSize) {
-		auto end = scene->getAgents().begin() + agent + batchSize;
+	for(size_t agent = 0; agent < scene->getAgents().size(); agent += BATCH_SIZE) {
+		auto end = scene->getAgents().begin() + agent + BATCH_SIZE;
 
 		if(end > scene->getAgents().end())
 			end = scene->getAgents().end();
@@ -230,17 +240,17 @@ void Renderer::loadScene(const Scene *scene, const size_t threadCount, LParse::R
 	}
 
 	const size_t batchesPerThread = std::ceil(static_cast<float>(batches.size()) / threadCount);
-	std::vector<SceneBatchRange> ranges;
+	std::vector<AgentBatchRange> ranges;
 	std::vector<std::thread> threads;
 
-	for(size_t sceneBatch = 0; sceneBatch < batches.size(); sceneBatch += batchesPerThread) {
-		auto end = batches.begin() + sceneBatch + batchesPerThread;
+	for(size_t batch = 0; batch < batches.size(); batch += batchesPerThread) {
+		auto end = batches.begin() + batch + batchesPerThread;
 
 		if(end > batches.end())
 			end = batches.end();
 
-		ranges.emplace_back(SceneBatchRange(batches.begin() + sceneBatch, end));
-		threads.emplace_back(modelBatches, batches.begin() + sceneBatch, end);
+		ranges.emplace_back(AgentBatchRange(batches.begin() + batch, end));
+		threads.emplace_back(modelBatches, batches.begin() + batch, end);
 	}
 
 	for(size_t threadIndex = 0; threadIndex < threads.size(); ++threadIndex) {
@@ -258,30 +268,6 @@ void Renderer::loadScene(const Scene *scene, const size_t threadCount, LParse::R
 		}
 	}
 
-	/*
-	for(auto &agent : scene->getAgents()) {
-		agents.emplace_back(agent, randomizer);
-
-		if(report) {
-			const auto model = --agents.end();
-			std::vector<ReportSeed> seedReports;
-			std::vector<ReportLeaf> leafReports;
-
-			for(const auto &seedPosition : model->getSeedPositions())
-				seedReports.emplace_back(seedPosition);
-
-			for(const auto &leafArea : model->getLeafAreas())
-				leafReports.emplace_back(leafArea);
-
-			report->add(ReportAgent(
-				seedReports,
-				leafReports,
-				ReportLimits(model->getMinimum(), model->getMaximum()),
-				ReportSize(agent.getSymbols().size())
-			));
-		}
-	}
-	*/
 	sceneCenter.x = scene->getTerrain().getWidth() * 0.5f;
 	sceneCenter.z = scene->getTerrain().getHeight() * 0.5f;
 
@@ -300,20 +286,12 @@ void Renderer::updateProjection() {
 		Z_FAR);
 }
 
-Renderer::SceneBatch::SceneBatch(
+Renderer::AgentBatch::AgentBatch(
 	const std::vector<Agent>::const_iterator begin,
 	const std::vector<Agent>::const_iterator end,
 	const LParse::Randomizer randomizer) :
 	begin(begin),
 	end(end),
 	randomizer(randomizer) {
-	
-}
-
-Renderer::SceneBatchRange::SceneBatchRange(
-	const std::vector<SceneBatch>::iterator begin,
-	const std::vector<SceneBatch>::iterator end) :
-	begin(begin),
-	end(end) {
 	
 }
