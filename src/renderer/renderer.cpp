@@ -210,7 +210,9 @@ void Renderer::modelBatches(const std::vector<AgentBatch>::iterator begin, const
 				seedReports,
 				leafReports,
 				ReportLimits(model->getMinimum(), model->getMaximum()),
-				ReportSize(agent->getSymbols().size()));
+				ReportSize(agent->getSymbols().size()),
+				ReportRules(agent->getRuleCount()),
+				ReportGrowthProfile(agent->getGrowthProfile()));
 		}
 	}
 }

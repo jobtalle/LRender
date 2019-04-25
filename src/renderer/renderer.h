@@ -51,6 +51,7 @@ namespace LRender {
 		size_t getHeight() const;
 		void setLastReport(const std::shared_ptr<Report> &report);
 		const std::shared_ptr<Report> &getLastReport() const;
+		const std::shared_ptr<Terrain> &getTerrain() const;
 
 		static const float Z_NEAR;
 		static const float Z_FAR;

@@ -8,6 +8,8 @@
 #include "math/vector.h"
 
 #include <vector>
+#include "reportRules.h"
+#include "reportGrowthProfile.h"
 
 namespace LRender {
 	class ReportAgent final {
@@ -17,7 +19,9 @@ namespace LRender {
 			std::vector<ReportSeed> seeds,
 			std::vector<ReportLeaf> leaves,
 			ReportLimits limits,
-			ReportSize size);
+			ReportSize size,
+			ReportRules rules,
+			ReportGrowthProfile growthProfile);
 		void setExposure(ReportExposure &exposure);
 		const Vector &getPosition() const;
 		const std::vector<ReportSeed> &getSeeds() const;
@@ -25,6 +29,8 @@ namespace LRender {
 		const ReportLimits &getLimits() const;
 		const ReportSize &getSize() const;
 		const ReportExposure &getExposure() const;
+		const ReportRules &getRules() const;
+		const ReportGrowthProfile &getGrowthProfile() const;
 
 	private:
 		const Vector position;
@@ -32,6 +38,8 @@ namespace LRender {
 		const std::vector<ReportLeaf> leaves;
 		const ReportLimits limits;
 		const ReportSize size;
+		const ReportRules rules;
+		const ReportGrowthProfile growthProfile;
 		ReportExposure exposure;
 	};
 }
