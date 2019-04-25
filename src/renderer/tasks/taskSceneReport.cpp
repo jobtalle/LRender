@@ -10,7 +10,7 @@
 using namespace LRender;
 
 const size_t Renderer::Task::SceneReport::PROJECTION_SCALE = 64;
-const size_t Renderer::Task::SceneReport::PROJECTION_COUNT = 3;
+const size_t Renderer::Task::SceneReport::PROJECTION_COUNT = 2;
 
 Renderer::Task::SceneReport::SceneReport(
 	std::shared_ptr<LRender::Scene> scene,
@@ -29,7 +29,7 @@ void Renderer::Task::SceneReport::perform(Renderer &renderer) {
 	renderer.loadScene(scene.get(), threads, randomizer, report.get());
 
 	if(!report->getAgents().empty()) {
-		const float scaleFactor = 1.0f / (PROJECTION_SCALE * PROJECTION_SCALE * PROJECTION_COUNT);
+		const auto scaleFactor = 1.0f / (PROJECTION_SCALE * PROJECTION_SCALE * PROJECTION_COUNT);
 		std::vector<std::unique_ptr<RenderTargetUint>> targets;
 		auto areaPass = RenderPassArea(report->getLimits());
 
@@ -64,9 +64,10 @@ void Renderer::Task::SceneReport::perform(Renderer &renderer) {
 		renderer.setMode(Renderer::Mode::DEFAULT);
 	}
 
+	renderer.setLastReport(report);
 	this->report.set_value(report);
 }
 
-const std::shared_ptr<Report> Renderer::Task::SceneReport::getReport() {
+std::shared_ptr<Report> Renderer::Task::SceneReport::getReport() {
 	return reportValue.get();
 }

@@ -165,6 +165,14 @@ size_t Renderer::getHeight() const {
 	return height;
 }
 
+void Renderer::setLastReport(const std::shared_ptr<Report> &report) {
+	lastReport = report;
+}
+
+const std::shared_ptr<Report> &Renderer::getLastReport() const {
+	return lastReport;
+}
+
 void Renderer::setMode(const Mode mode) {
 	switch(mode) {
 	case DEFAULT:

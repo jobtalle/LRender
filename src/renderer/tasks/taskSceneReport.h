@@ -15,7 +15,7 @@ namespace LRender {
 			LParse::Randomizer randomizer,
 			size_t threads);
 		void perform(Renderer &renderer) override final;
-		const std::shared_ptr<Report> getReport();
+		std::shared_ptr<Report> getReport();
 
 	private:
 		static const size_t PROJECTION_SCALE;

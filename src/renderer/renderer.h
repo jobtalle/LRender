@@ -49,6 +49,8 @@ namespace LRender {
 		int getSelected() const;
 		size_t getWidth() const;
 		size_t getHeight() const;
+		void setLastReport(const std::shared_ptr<Report> &report);
+		const std::shared_ptr<Report> &getLastReport() const;
 
 		static const float Z_NEAR;
 		static const float Z_FAR;
@@ -87,6 +89,7 @@ namespace LRender {
 		std::vector<AgentModel> agents;
 		std::vector<TerrainModel> terrains;
 		std::vector<std::shared_ptr<Task>> tasks;
+		std::shared_ptr<Report> lastReport;
 
 		static void modelBatches(std::vector<AgentBatch>::iterator begin, std::vector<AgentBatch>::iterator end);
 		void setMode(Mode mode);
