@@ -323,7 +323,7 @@ format, and is used both for PNG and raw image data in LodePNG.
 typedef struct LodePNGColorMode {
   /*header (IHDR)*/
   LodePNGColorType colortype; /*color type, see PNG standard or documentation further in this header file*/
-  unsigned bitdepth;  /*bits per sample, see PNG standard or documentation further in this header file*/
+  unsigned bitdepth;  /*bits per sampleRadius, see PNG standard or documentation further in this header file*/
 
   /*
   palette (PLTE and tRNS)
@@ -1820,7 +1820,7 @@ symbol.
     brute force search for PNG filter types is added.
 *) 17 aug 2011 (!): changed some C zlib related function names.
 *) 16 aug 2011: made the code less wide (max 120 characters per line).
-*) 17 apr 2011: code cleanup. Bugfixes. Convert low to 16-bit per sample colors.
+*) 17 apr 2011: code cleanup. Bugfixes. Convert low to 16-bit per sampleRadius colors.
 *) 21 feb 2011: fixed compiling for C90. Fixed compiling with sections disabled.
 *) 11 dec 2010: encoding is made faster, based on suggestion by Peter Eastman
     to optimize long sequences of zeros.

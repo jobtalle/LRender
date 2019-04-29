@@ -7,17 +7,17 @@ namespace LRender {
 	class Terrain final {
 	public:
 		Terrain(
-			const float width,
-			const float height,
-			const std::shared_ptr<const void> terrainSource,
-			const std::function<float(const float x, const float y)> get);
+			float width,
+			float height,
+			std::shared_ptr<const void> terrainSource,
+			std::function<float(float x, float y)> get);
 		float getWidth() const;
 		float getHeight() const;
-		float getY(const float x, const float y) const;
+		float getY(float x, float y) const;
 
 	private:
 		const std::shared_ptr<const void> terrainSource;
-		const std::function<float(const float x, const float y)> get;
+		const std::function<float(float x, float y)> get;
 		const float width;
 		const float height;
 	};

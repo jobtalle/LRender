@@ -19,10 +19,10 @@ void TerrainModel::build(const Terrain &terrain) {
 	const Vector up(0, 1, 0);
 	const uint32_t xCells = ceil(terrain.getWidth() / RESOLUTION);
 	const uint32_t yCells = ceil(terrain.getHeight() / RESOLUTION);
-	const float dy = terrain.getHeight() / yCells;
-	const float dx = terrain.getWidth() / xCells;
+	const auto dy = terrain.getHeight() / yCells;
+	const auto dx = terrain.getWidth() / xCells;
 	std::vector<Vector> points;
-
+	
 	points.reserve(xCells * yCells + 4);
 	geometry.vertices.reserve(xCells * yCells);
 	geometry.indices.reserve((xCells - 1) * (yCells - 1) * 6);
@@ -32,7 +32,7 @@ void TerrainModel::build(const Terrain &terrain) {
 
 	for(size_t y = 0; y <= yCells; ++y) for(size_t x = 0; x <= xCells; ++x) {
 		const uint32_t index = x + y * (xCells + 1);
-		const Vector &point = points[index];
+		const auto &point = points[index];
 		Vector normal;
 
 		if(x != 0 && y != 0)
@@ -50,7 +50,7 @@ void TerrainModel::build(const Terrain &terrain) {
 		geometry.vertices.emplace_back(
 			points[index],
 			normal.normalize(),
-			0, 0);
+			points[index].y, 0.0f);
 
 		if(x != xCells && y != yCells) {
 			if((x & 1) && (y & 1)) {

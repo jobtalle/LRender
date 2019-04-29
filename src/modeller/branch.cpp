@@ -21,8 +21,8 @@ void Branch::transform(
 			transform(vectors, root[0].getHeading());
 		else {
 			if(node != nodes.end() - 1) {
-				Vector dRoot = (root[1].position - root[0].position).normalize();
-				const Vector dPath = ((node + 1)->position - node->position).normalize();
+				auto dRoot = (root[1].position - root[0].position).normalize();
+				const auto dPath = ((node + 1)->position - node->position).normalize();
 				
 				if(dRoot.dot(dPath) > CONNECT_THRESHOLD_DOT)
 					transform(vectors, root[0].getHeading(), root[1].getHeading());
@@ -51,7 +51,7 @@ void Branch::add(Seed *seed) {
 
 void Branch::calculateTopDist(const size_t offset) {
 	for(size_t i = 0; i < nodes.size(); ++i) {
-		const size_t dist = nodes.size() - i - 1 + offset;
+		const auto dist = nodes.size() - i - 1 + offset;
 
 		if(dist > nodes[i].topDist)
 			nodes[i].topDist = dist;

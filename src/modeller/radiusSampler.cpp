@@ -9,6 +9,10 @@ RadiusSampler::RadiusSampler(const float max) :
 
 }
 
-float RadiusSampler::sample(const size_t topDist) const {
-	return (1 - (1 / (float(topDist) / DIST_FALLOFF + 1))) * max;
+float RadiusSampler::sampleFactor(const size_t topDist) const {
+	return (1 - (1 / (float(topDist) / DIST_FALLOFF + 1)));
+}
+
+float RadiusSampler::sampleRadius(const size_t topDist) const {
+	return sampleFactor(topDist) * max;
 }

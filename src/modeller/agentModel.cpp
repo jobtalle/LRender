@@ -62,6 +62,7 @@ void AgentModel::build(const Agent &agent, LParse::Randomizer &randomizer) {
 	geometryLeaves = std::make_shared<Geometry>();
 
 	auto at = agent.getSymbols().begin();
+	auto fertility = 1.0f - agent.getPosition().y;
 	
 	traceBranch(
 		nullptr,
@@ -77,8 +78,8 @@ void AgentModel::build(const Agent &agent, LParse::Randomizer &randomizer) {
 		Shape::Branch::model(
 			geometryBranches->vertices,
 			geometryBranches->indices,
-			Vector(0.53f, 0.39f, 0.78f),
 			radiusSampler,
+			fertility,
 			TUBE_PRECISION,
 			branch);
 
@@ -87,8 +88,8 @@ void AgentModel::build(const Agent &agent, LParse::Randomizer &randomizer) {
 			Shape::Branch::model(
 				geometryBranches->vertices,
 				geometryBranches->indices,
-				Vector(0.3f, 0.8f, 0.6f),
 				radiusSampler,
+				fertility,
 				TUBE_PRECISION,
 				branch);
 
@@ -96,6 +97,7 @@ void AgentModel::build(const Agent &agent, LParse::Randomizer &randomizer) {
 				leaf.addArea(Shape::Leaf::model(
 					geometryLeaves->vertices,
 					geometryLeaves->indices,
+					fertility,
 					branch.getNodes().begin() + child.index,
 					branch.getNodes().end(),
 					child.child->getNodes().begin(),

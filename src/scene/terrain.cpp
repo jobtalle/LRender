@@ -1,16 +1,17 @@
 #include "terrain.h"
+#include <utility>
 
 using namespace LRender;
 
 Terrain::Terrain(
 	const float width,
 	const float height,
-	const std::shared_ptr<const void> terrainSource,
-	const std::function<float(const float x, const float y)> get) :
+	std::shared_ptr<const void> terrainSource,
+	std::function<float(float x, float y)> get) :
+	terrainSource(std::move(terrainSource)),
+	get(std::move(get)),
 	width(width),
-	height(height),
-	terrainSource(terrainSource),
-	get(get) {
+	height(height) {
 
 }
 

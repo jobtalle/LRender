@@ -13,6 +13,7 @@ namespace LRender {
 			static float model(
 				std::vector<Vertex> &vertices,
 				std::vector<uint32_t> &indices,
+				float fertility,
 				std::vector<Node>::const_iterator a,
 				const std::vector<Node>::const_iterator &aEnd,
 				std::vector<Node>::const_iterator b,

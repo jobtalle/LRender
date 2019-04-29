@@ -5,6 +5,7 @@ using namespace LRender;
 float Shape::Leaf::model(
 	std::vector<Vertex> &vertices,
 	std::vector<uint32_t> &indices,
+	const float fertility,
 	std::vector<Node>::const_iterator a,
 	const std::vector<Node>::const_iterator &aEnd,
 	std::vector<Node>::const_iterator b,
@@ -18,13 +19,13 @@ float Shape::Leaf::model(
 	float area = 0;
 	auto even = false;
 	auto first = true;
-	auto u = 0.5f;
+	auto u = fertility;
 	auto v = 0.5f;
 
 	vertices.emplace_back(
 		a->position,
 		((a + 1)->position - a->position).cross((b + 1)->position - b->position).normalize(),
-		0.5f, 0.5f);
+		u, v);
 
 	while(++a, ++b, a < aEnd && b < bEnd) {
 		auto na = (a->position - (a - 1)->position).cross(b->position - a->position);

@@ -19,6 +19,6 @@ void Shape::Seed::model(
 		indices,
 		seed.getPosition(),
 		Quaternion(),
-		std::max(radiusSampler.sample(seed.getTopDist()) * RADIUS_FACTOR, RADIUS_MIN),
+		std::max(radiusSampler.sampleRadius(seed.getTopDist()) * RADIUS_FACTOR, RADIUS_MIN),
 		SUBDIVISIONS);
 }
