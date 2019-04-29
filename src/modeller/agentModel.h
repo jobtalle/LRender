@@ -17,6 +17,7 @@ namespace LRender {
 	public:
 		AgentModel(
 			const Agent &agent,
+			bool highQuality,
 			LParse::Randomizer &randomizer);
 		AgentModel(const AgentModel &other) = default;
 		const Model &getBranches() const;
@@ -30,7 +31,8 @@ namespace LRender {
 	private:
 		static const float TURTLE_STEP;
 		static const float TURTLE_ANGLE;
-		static const size_t TUBE_PRECISION;
+		static const size_t TUBE_PRECISION_LOW;
+		static const size_t TUBE_PRECISION_HIGH;
 
 		std::shared_ptr<Geometry> geometryBranches;
 		std::shared_ptr<Geometry> geometryLeaves;
@@ -42,7 +44,9 @@ namespace LRender {
 		Vector maximum;
 
 		void build(
-			const Agent &agent, LParse::Randomizer &randomizer);
+			const Agent &agent,
+			bool highQuality,
+			LParse::Randomizer &randomizer);
 		Branch *traceBranch(
 			Branch *parent,
 			bool leaf,

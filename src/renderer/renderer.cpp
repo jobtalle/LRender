@@ -194,10 +194,13 @@ void Renderer::setPass(const std::shared_ptr<RenderPass> &pass) {
 	updatePass = pass;
 }
 
-void Renderer::modelBatches(const std::vector<AgentBatch>::iterator begin, const std::vector<AgentBatch>::iterator end) {
+void Renderer::modelBatches(
+	const std::vector<AgentBatch>::iterator begin,
+	const std::vector<AgentBatch>::iterator end,
+	const bool highQuality) {
 	for(auto batch = begin; batch < end; ++batch) {
 		for(auto agent = batch->begin; agent < batch->end; ++agent) {
-			batch->models.emplace_back(*agent, batch->randomizer);
+			batch->models.emplace_back(*agent, highQuality, batch->randomizer);
 
 			const auto model = --batch->models.end();
 			std::vector<ReportSeed> seedReports;
@@ -221,7 +224,12 @@ void Renderer::modelBatches(const std::vector<AgentBatch>::iterator begin, const
 	}
 }
 
-void Renderer::loadScene(const Scene *scene, const size_t threadCount, LParse::Randomizer &randomizer, Report *report) {
+void Renderer::loadScene(
+	const Scene *scene,
+	const size_t threadCount,
+	const bool highQuality,
+	LParse::Randomizer &randomizer,
+	Report *report) {
 	struct AgentBatchRange {
 		AgentBatchRange(
 			const std::vector<AgentBatch>::iterator begin,
@@ -265,7 +273,7 @@ void Renderer::loadScene(const Scene *scene, const size_t threadCount, LParse::R
 			end = batches.end();
 
 		ranges.emplace_back(AgentBatchRange(batches.begin() + batch, end));
-		threads.emplace_back(modelBatches, batches.begin() + batch, end);
+		threads.emplace_back(modelBatches, batches.begin() + batch, end, highQuality);
 	}
 
 	for(size_t threadIndex = 0; threadIndex < threads.size(); ++threadIndex) {

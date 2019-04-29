@@ -22,6 +22,7 @@ void Renderer::Task::Exposure::perform(Renderer& renderer) {
 	renderer.loadScene(
 		scene.get(),
 		threads,
+		false,
 		randomizer,
 		report.get());
 

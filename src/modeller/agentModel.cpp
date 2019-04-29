@@ -9,14 +9,16 @@ using namespace LRender;
 
 const float AgentModel::TURTLE_STEP = 0.05f;
 const float AgentModel::TURTLE_ANGLE = 0.2;
-const size_t AgentModel::TUBE_PRECISION = 5;
+const size_t AgentModel::TUBE_PRECISION_LOW = 3;
+const size_t AgentModel::TUBE_PRECISION_HIGH = 5;
 
 AgentModel::AgentModel(
 	const Agent &agent,
+	const bool highQuality,
 	LParse::Randomizer &randomizer) :
 	minimum(agent.getPosition()),
 	maximum(agent.getPosition()) {
-	build(agent, randomizer);
+	build(agent, highQuality, randomizer);
 }
 
 const Model &AgentModel::getBranches() const {
@@ -51,7 +53,10 @@ void AgentModel::makeModels() {
 	geometryLeaves = nullptr;
 }
 
-void AgentModel::build(const Agent &agent, LParse::Randomizer &randomizer) {
+void AgentModel::build(
+	const Agent &agent,
+	const bool highQuality,
+	LParse::Randomizer &randomizer) {
 	const RadiusSampler radiusSampler(0.1f);
 	std::list<Branch> branches;
 	std::list<Leaf> leaves;
@@ -62,7 +67,8 @@ void AgentModel::build(const Agent &agent, LParse::Randomizer &randomizer) {
 	geometryLeaves = std::make_shared<Geometry>();
 
 	auto at = agent.getSymbols().begin();
-	auto fertility = 1.0f - agent.getPosition().y;
+	const auto fertility = 1.0f - agent.getPosition().y;
+	const auto tubePrecision = highQuality ? TUBE_PRECISION_HIGH : TUBE_PRECISION_LOW;
 	
 	traceBranch(
 		nullptr,
@@ -80,7 +86,7 @@ void AgentModel::build(const Agent &agent, LParse::Randomizer &randomizer) {
 			geometryBranches->indices,
 			radiusSampler,
 			fertility,
-			TUBE_PRECISION,
+			tubePrecision,
 			branch);
 
 	for(auto &leaf : leaves) {
@@ -90,7 +96,7 @@ void AgentModel::build(const Agent &agent, LParse::Randomizer &randomizer) {
 				geometryBranches->indices,
 				radiusSampler,
 				fertility,
-				TUBE_PRECISION,
+				tubePrecision,
 				branch);
 
 			for(const auto &child : branch.getBranches())
@@ -109,6 +115,9 @@ void AgentModel::build(const Agent &agent, LParse::Randomizer &randomizer) {
 
 	for(const auto &seed : seeds) {
 		seedPositions.push_back(seed.getPosition());
+
+		if(!highQuality)
+			continue;
 
 		Shape::Seed::model(
 			geometryBranches->vertices,

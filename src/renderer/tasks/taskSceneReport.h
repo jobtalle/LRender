@@ -13,7 +13,8 @@ namespace LRender {
 		SceneReport(
 			std::shared_ptr<LRender::Scene> scene,
 			LParse::Randomizer randomizer,
-			size_t threads);
+			size_t threads,
+			bool highQuality);
 		void perform(Renderer &renderer) override final;
 		std::shared_ptr<Report> getReport();
 
@@ -26,5 +27,6 @@ namespace LRender {
 		std::future<std::shared_ptr<Report>> reportValue;
 		LParse::Randomizer randomizer;
 		const size_t threads;
+		const bool highQuality;
 	};
 }

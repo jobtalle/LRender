@@ -94,12 +94,16 @@ namespace LRender {
 		std::vector<std::shared_ptr<Task>> tasks;
 		std::shared_ptr<Report> lastReport;
 
-		static void modelBatches(std::vector<AgentBatch>::iterator begin, std::vector<AgentBatch>::iterator end);
+		static void modelBatches(
+			std::vector<AgentBatch>::iterator begin,
+			std::vector<AgentBatch>::iterator end,
+			bool highQuality);
 		void setMode(Mode mode);
 		void setPass(const std::shared_ptr<RenderPass> &pass);
 		void loadScene(
 			const Scene *scene,
 			size_t threadCount,
+			bool highQuality,
 			LParse::Randomizer &randomizer,
 			Report *report = nullptr);
 		void updateProjection();
