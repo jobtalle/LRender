@@ -8,7 +8,7 @@ namespace LRender {
 	class ShaderGeometryShadows final : public Shader {
 	public:
 		ShaderGeometryShadows();
-		void setShadowMap(const GLuint texture) const;
+		void setShadowMap(GLuint texture) const;
 
 	private:
 		static const std::string SHADER_VERTEX;

@@ -11,6 +11,7 @@
 #include "modeller/terrainModel.h"
 #include "modeller/agentModel.h"
 #include "report/report.h"
+#include "renderer/colors/colors.h"
 #include "lparse.h"
  
 #include <memory>
@@ -76,6 +77,7 @@ namespace LRender {
 		bool mouseMoved = false;
 		int selected = -1;
 		GLFunctions gl;
+		Colors colors;
 		Shaders shaders;
 		Orbit orbit;
 		Matrix projection;
