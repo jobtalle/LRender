@@ -14,7 +14,6 @@ namespace LRender {
 		const Shader &getBranches() const;
 		const Shader &getLeaves() const;
 		const Shader &getShadows() const;
-		const Shader &getGeometrySelected() const;
 		const ShaderExposure &getExposure() const;
 		const ShaderImage &getImage() const;
 		const ShaderInteger &getInteger() const;
@@ -25,7 +24,6 @@ namespace LRender {
 		const Shader branches;
 		const Shader leaves;
 		const Shader shadows;
-		const Shader geometrySelected;
 		const ShaderExposure exposure;
 		const ShaderImage image;
 		const ShaderInteger integer;

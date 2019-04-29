@@ -23,9 +23,9 @@ void Shape::Branch::model(
 			vertices.emplace_back(Vertex(
 				node->position + ringPoint * radiusSampler.sample(node->topDist),
 				ringPoint,
-				color));
+				0.5f, 0.5f));
 
-		const size_t size = vertices.size();
+		const auto size = vertices.size();
 
 		if(node > branch.getNodes().begin()) for(size_t i = 0; i < precision; ++i) {
 			indices.push_back(static_cast<uint32_t>(size - 1 - i));

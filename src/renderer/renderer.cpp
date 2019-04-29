@@ -173,6 +173,10 @@ const std::shared_ptr<Report> &Renderer::getLastReport() const {
 	return lastReport;
 }
 
+const Colors &Renderer::getColors() const {
+	return colors;
+}
+
 void Renderer::setMode(const Mode mode) {
 	switch(mode) {
 	case DEFAULT:

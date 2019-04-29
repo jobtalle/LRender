@@ -42,15 +42,18 @@ void RenderPassViewDefault::render(
 
 	shaders.getGeometryShadows().use();
 	shaders.getGeometryShadows().setShadowMap(shadowTarget.getDepth());
+	shaders.getGeometryShadows().setColors(renderer->getColors().getGround());
 	
 	for(auto &terrain : terrains)
 		terrain.getModel().draw();
 
+	shaders.getGeometryShadows().setColors(renderer->getColors().getBranches());
+
 	for(auto agent = 0; agent < agents.size(); ++agent) {
 		if(agent == renderer->getSelected()) {
-			shaders.getGeometrySelected().use();
+			shaders.getGeometryShadows().setColors(renderer->getColors().getBranchesSelected());
 			agents[agent].getBranches().draw();
-			shaders.getGeometryShadows().use();
+			shaders.getGeometryShadows().setColors(renderer->getColors().getBranches());
 		}
 		else
 			agents[agent].getBranches().draw();
@@ -60,7 +63,15 @@ void RenderPassViewDefault::render(
 
 	shaders.getLeavesShadows().use();
 	shaders.getLeavesShadows().setShadowMap(shadowTarget.getDepth());
+	shaders.getLeavesShadows().setColors(renderer->getColors().getLeaves());
 
-	for(auto &agent : agents)
-		agent.getLeaves().draw();
+	for(auto agent = 0; agent < agents.size(); ++agent) {
+		if(agent == renderer->getSelected()) {
+			shaders.getLeavesShadows().setColors(renderer->getColors().getLeavesSelected());
+			agents[agent].getLeaves().draw();
+			shaders.getLeavesShadows().setColors(renderer->getColors().getLeaves());
+		}
+		else
+			agents[agent].getLeaves().draw();
+	}
 }

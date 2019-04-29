@@ -5,7 +5,6 @@ using namespace LRender;
 float Shape::Leaf::model(
 	std::vector<Vertex> &vertices,
 	std::vector<uint32_t> &indices,
-	const Vector &color,
 	std::vector<Node>::const_iterator a,
 	const std::vector<Node>::const_iterator &aEnd,
 	std::vector<Node>::const_iterator b,
@@ -19,11 +18,13 @@ float Shape::Leaf::model(
 	float area = 0;
 	auto even = false;
 	auto first = true;
+	auto u = 0.5f;
+	auto v = 0.5f;
 
 	vertices.emplace_back(
 		a->position,
 		((a + 1)->position - a->position).cross((b + 1)->position - b->position).normalize(),
-		color);
+		0.5f, 0.5f);
 
 	while(++a, ++b, a < aEnd && b < bEnd) {
 		auto na = (a->position - (a - 1)->position).cross(b->position - a->position);
@@ -35,8 +36,8 @@ float Shape::Leaf::model(
 		if(b + 1 != bEnd)
 			nb +=((b + 1)->position - b->position).cross(b->position - a->position);
 		
-		vertices.emplace_back(a->position, na.normalize(), color);
-		vertices.emplace_back(b->position, nb.normalize(), color);
+		vertices.emplace_back(a->position, na.normalize(), u, v);
+		vertices.emplace_back(b->position, nb.normalize(), u, v);
 
 		if(first) {
 			area += addTriangle(vertices, indices, vertices.size() - 2, vertices.size() - 1, vertices.size() - 3);
@@ -72,7 +73,7 @@ float Shape::Leaf::model(
 			vertices.emplace_back(
 				a->position,
 				n.normalize(),
-				color);
+				u, v);
 
 			area += addTriangle(vertices, indices, anchor, previous, vertices.size() - 1);
 
@@ -94,7 +95,7 @@ float Shape::Leaf::model(
 			vertices.emplace_back(
 				b->position,
 				n.normalize(),
-				color);
+				u, v);
 
 			area += addTriangle(vertices, indices, anchor, previous, vertices.size() - 1);
 

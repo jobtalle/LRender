@@ -96,7 +96,6 @@ void AgentModel::build(const Agent &agent, LParse::Randomizer &randomizer) {
 				leaf.addArea(Shape::Leaf::model(
 					geometryLeaves->vertices,
 					geometryLeaves->indices,
-					Vector(0.3f, 0.8f, 0.6f),
 					branch.getNodes().begin() + child.index,
 					branch.getNodes().end(),
 					child.child->getNodes().begin(),
@@ -112,7 +111,6 @@ void AgentModel::build(const Agent &agent, LParse::Randomizer &randomizer) {
 		Shape::Seed::model(
 			geometryBranches->vertices,
 			geometryBranches->indices,
-			Vector(0.6f, 0, 0),
 			radiusSampler,
 			seed);
 	}

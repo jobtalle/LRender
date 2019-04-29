@@ -11,10 +11,7 @@ Shaders::Shaders() :
 		"LRender/glsl/fragmentLeaf.glsl"),
 	shadows(
 		"LRender/glsl/vertexShadows.glsl",
-		"LRender/glsl/fragmentShadows.glsl"),
-	geometrySelected(
-		"LRender/glsl/vertexGeometry.glsl",
-		"LRender/glsl/fragmentGeometrySelected.glsl") {
+		"LRender/glsl/fragmentShadows.glsl"){
 
 }
 
@@ -28,10 +25,6 @@ const Shader &Shaders::getLeaves() const {
 
 const Shader &Shaders::getShadows() const {
 	return shadows;
-}
-
-const Shader &Shaders::getGeometrySelected() const {
-	return geometrySelected;
 }
 
 const ShaderExposure &Shaders::getExposure() const {

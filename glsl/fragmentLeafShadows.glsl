@@ -1,6 +1,8 @@
-in vec3 interpolatedNormal;
-in vec3 interpolatedColor;
 in vec3 interpolatedPosition;
+in vec3 interpolatedNormal;
+in vec2 interpolatedUV;
+
+uniform sampler2D colors;
 
 out vec4 color;
 
@@ -12,5 +14,5 @@ void main() {
 	const float light = sampleShadow(shadowCoords.xy, shadowCoords.z, bias);
 	float l = abs(dot(normal, lightDirection)) * lightDiffuse + lightAmbient;
 
-	color = vec4(light * lightColor * interpolatedColor * l, 1);
+	color = vec4(light * lightColor * texture(colors, interpolatedUV).rgb * l, 1);
 }

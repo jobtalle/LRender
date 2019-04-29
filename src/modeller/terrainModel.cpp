@@ -17,7 +17,6 @@ const Model &TerrainModel::getModel() const {
 void TerrainModel::build(const Terrain &terrain) {
 	Geometry geometry;
 	const Vector up(0, 1, 0);
-	const Vector color(0.75f, 0.75f, 0.45f);
 	const uint32_t xCells = ceil(terrain.getWidth() / RESOLUTION);
 	const uint32_t yCells = ceil(terrain.getHeight() / RESOLUTION);
 	const float dy = terrain.getHeight() / yCells;
@@ -51,7 +50,7 @@ void TerrainModel::build(const Terrain &terrain) {
 		geometry.vertices.emplace_back(
 			points[index],
 			normal.normalize(),
-			color);
+			0, 0);
 
 		if(x != xCells && y != yCells) {
 			if((x & 1) && (y & 1)) {

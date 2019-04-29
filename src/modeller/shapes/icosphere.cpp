@@ -7,7 +7,6 @@ std::vector<Shape::Icosphere::BufferedSphere> Shape::Icosphere::bufferedSpheres;
 void Shape::Icosphere::model(
 	std::vector<Vertex> &vertices,
 	std::vector<uint32_t> &indices,
-	const Vector &color,
 	const Vector &position,
 	const Quaternion &orientation,
 	const float radius,
@@ -16,7 +15,7 @@ void Shape::Icosphere::model(
 	const size_t firstIndex = vertices.size();
 
 	for(auto &point : sphere.points)
-		vertices.emplace_back(position + orientation * point * radius, point, color);
+		vertices.emplace_back(position + orientation * point * radius, point, 1.0f, 1.0f);
 
 	for(auto index : sphere.indices)
 		indices.push_back(firstIndex + index);

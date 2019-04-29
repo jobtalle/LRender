@@ -2,9 +2,10 @@
 
 using namespace LRender;
 
-Vertex::Vertex(const Vector &position, const Vector &normal, const Vector &color) :
+Vertex::Vertex(const Vector &position, const Vector &normal, const float cu, const float cv) :
 	position(position),
 	normal(normal),
-	color(color) {
+	cu(cu),
+	cv(cv) {
 
 }

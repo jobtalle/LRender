@@ -12,13 +12,11 @@ const size_t Shape::Seed::SUBDIVISIONS = 0;
 void Shape::Seed::model(
 	std::vector<Vertex> &vertices,
 	std::vector<uint32_t> &indices,
-	const Vector &color,
 	const RadiusSampler &radiusSampler,
 	const LRender::Seed &seed) {
 	Shape::Icosphere::model(
 		vertices,
 		indices,
-		color,
 		seed.getPosition(),
 		Quaternion(),
 		std::max(radiusSampler.sample(seed.getTopDist()) * RADIUS_FACTOR, RADIUS_MIN),
