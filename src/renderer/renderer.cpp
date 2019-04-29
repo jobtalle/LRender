@@ -214,6 +214,7 @@ void Renderer::modelBatches(
 
 			batch->reports.emplace_back(
 				agent->getPosition(),
+				model->getAverage(),
 				seedReports,
 				leafReports,
 				ReportLimits(model->getMinimum(), model->getMaximum()),

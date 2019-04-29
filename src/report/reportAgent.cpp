@@ -6,6 +6,7 @@ using namespace LRender;
 
 ReportAgent::ReportAgent(
 	const Vector &position,
+	const Vector &average,
 	std::vector<ReportSeed> seeds,
 	std::vector<ReportLeaf> leaves,
 	ReportLimits limits,
@@ -13,6 +14,7 @@ ReportAgent::ReportAgent(
 	const ReportRules rules,
 	ReportGrowthProfile growthProfile) :
 	position(position),
+	average(average),
 	seeds(std::move(seeds)),
 	leaves(std::move(leaves)),
 	limits(std::move(limits)),
@@ -24,6 +26,10 @@ ReportAgent::ReportAgent(
 
 const Vector &ReportAgent::getPosition() const {
 	return position;
+}
+
+const Vector &ReportAgent::getAverage() const {
+	return average;
 }
 
 void ReportAgent::setExposure(ReportExposure &exposure) {

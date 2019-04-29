@@ -45,6 +45,10 @@ const Vector &AgentModel::getMaximum() const {
 	return maximum;
 }
 
+const Vector &AgentModel::getAverage() const {
+	return average;
+}
+
 void AgentModel::makeModels() {
 	modelBranches = std::make_shared<Model>(*geometryBranches);
 	modelLeaves = std::make_shared<Model>(*geometryLeaves);
@@ -69,7 +73,10 @@ void AgentModel::build(
 	auto at = agent.getSymbols().begin();
 	const auto fertility = 1.0f - agent.getPosition().y;
 	const auto tubePrecision = highQuality ? TUBE_PRECISION_HIGH : TUBE_PRECISION_LOW;
-	
+
+	symbolCount = 0;
+	average = Vector(0, 0, 0);
+
 	traceBranch(
 		nullptr,
 		false,
@@ -79,6 +86,8 @@ void AgentModel::build(
 		node,
 		at,
 		agent.getSymbols().end());
+
+	average /= symbolCount;
 	
 	for(const auto &branch : branches)
 		Shape::Branch::model(
@@ -213,6 +222,9 @@ Branch *AgentModel::traceBranch(
 					minimum.z = node.position.z;
 				else if(node.position.z > maximum.z)
 					maximum.z = node.position.z;
+
+				++symbolCount;
+				average += node.position;
 
 				if(lastChild) {
 					lastChild->setRoot({ *(branch.getNodes().end() - 2), *(branch.getNodes().end() - 1) });

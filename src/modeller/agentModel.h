@@ -26,6 +26,7 @@ namespace LRender {
 		const std::vector<float> &getLeafAreas() const;
 		const Vector &getMinimum() const;
 		const Vector &getMaximum() const;
+		const Vector &getAverage() const;
 		void makeModels();
 
 	private:
@@ -42,6 +43,8 @@ namespace LRender {
 		std::vector<float> leafAreas;
 		Vector minimum;
 		Vector maximum;
+		Vector average;
+		size_t symbolCount;
 
 		void build(
 			const Agent &agent,

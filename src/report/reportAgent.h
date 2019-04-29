@@ -16,6 +16,7 @@ namespace LRender {
 	public:
 		ReportAgent(
 			const Vector &position,
+			const Vector &average,
 			std::vector<ReportSeed> seeds,
 			std::vector<ReportLeaf> leaves,
 			ReportLimits limits,
@@ -24,6 +25,7 @@ namespace LRender {
 			ReportGrowthProfile growthProfile);
 		void setExposure(ReportExposure &exposure);
 		const Vector &getPosition() const;
+		const Vector &getAverage() const;
 		const std::vector<ReportSeed> &getSeeds() const;
 		const std::vector<ReportLeaf> &getLeaves() const;
 		const ReportLimits &getLimits() const;
@@ -34,6 +36,7 @@ namespace LRender {
 
 	private:
 		const Vector position;
+		const Vector average;
 		const std::vector<ReportSeed> seeds;
 		const std::vector<ReportLeaf> leaves;
 		const ReportLimits limits;
