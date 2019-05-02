@@ -150,7 +150,7 @@ Branch *AgentModel::traceBranch(
 
 	while(at != last) {
 		switch(*at++) {
-		case LParse::Legend::LEAF:
+		case LParse::Legend::LEAF_OPEN:
 			if(!leaf) {
 				leaves.emplace_back();
 
