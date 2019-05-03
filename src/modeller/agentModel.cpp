@@ -209,7 +209,8 @@ Branch *AgentModel::traceBranch(
 		case LParse::Legend::BRANCH_CLOSE:
 			goto end;
 		case LParse::Legend::LEAF_A:
-			standardLeaves.emplace_back(StandardLeaf::Type::A, node.position, node.getHeading());
+			if(!leaf)
+				standardLeaves.emplace_back(StandardLeaf::Type::A, node.position, node.getHeading());
 
 			break;
 		case LParse::Legend::SEED:
