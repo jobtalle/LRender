@@ -6,12 +6,12 @@ namespace LRender {
 	class Quaternion final {
 	public:
 		Quaternion();
-		Quaternion(const Vector &xyz, const float w);
-		Quaternion(const float x, const float y, const float z, const float w);
+		Quaternion(const Vector &xyz, float w);
+		Quaternion(float x, float y, float z, float w);
 		Quaternion(const Quaternion &other);
 		Quaternion &identity();
 		Quaternion &operator*=(const Quaternion &other);
-		Quaternion &rotate(const Vector &axis, const float angle);
+		Quaternion &rotate(const Vector &axis, float angle);
 		Quaternion &operator=(const Quaternion &other);
 		bool operator==(const Quaternion &other) const;
 

@@ -28,10 +28,6 @@ namespace LRender {
 				uint32_t a,
 				uint32_t b,
 				uint32_t c);
-			static float calculateArea(
-				const Vector &a,
-				const Vector &b,
-				const Vector &c);
 		};
 	};
 }

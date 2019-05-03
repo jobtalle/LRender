@@ -12,7 +12,7 @@ void Shape::Branch::model(
 	const float fertility,
 	const size_t precision,
 	const LRender::Branch &branch) {
-	const auto ring(makeRing(precision));
+	const auto ring = makeRing(precision);
 
 	for(auto node = branch.getNodes().begin(); node < branch.getNodes().end(); ++node) {
 		auto transformedRing = ring;
@@ -43,7 +43,7 @@ std::vector<Vector> Shape::Branch::makeRing(const size_t precision) {
 	std::vector<Vector> ring;
 
 	for(size_t i = 0; i < precision; ++i) {
-		const float radians = Constants::PI * 2 * float(i) / precision;
+		const auto radians = Constants::PI * 2 * float(i) / precision;
 
 		ring.emplace_back(Vector(std::cos(radians), 0, std::sin(radians)));
 	}

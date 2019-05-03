@@ -4,6 +4,7 @@
 #include "modeller/shapes/seed.h"
 #include "math/vector.h"
 #include "math/constants.h"
+#include "shapes/standardLeaf.h"
 
 using namespace LRender;
 
@@ -64,6 +65,7 @@ void AgentModel::build(
 	const RadiusSampler radiusSampler(0.1f);
 	std::list<Branch> branches;
 	std::list<Leaf> leaves;
+	std::list<StandardLeaf> standardLeaves;
 	std::list<Seed> seeds;
 	const Node node(agent.getPosition(), randomizer.makeFloat(0, Constants::PI * 2));
 
@@ -82,6 +84,7 @@ void AgentModel::build(
 		false,
 		branches,
 		leaves,
+		standardLeaves,
 		seeds,
 		node,
 		at,
@@ -134,6 +137,20 @@ void AgentModel::build(
 			radiusSampler,
 			seed);
 	}
+
+	for(const auto &standardLeaf : standardLeaves) {
+		switch(standardLeaf.getType()) {
+		case StandardLeaf::Type::A:
+			leafAreas.emplace_back(Shape::StandardLeaf::modelA(
+				geometryLeaves->vertices,
+				geometryLeaves->indices,
+				fertility,
+				standardLeaf.getPosition(),
+				standardLeaf.getOrientation()));
+
+			break;
+		}
+	}
 }
 
 Branch *AgentModel::traceBranch(
@@ -141,6 +158,7 @@ Branch *AgentModel::traceBranch(
 	const bool leaf,
 	std::list<Branch> &branches,
 	std::list<Leaf> &leaves,
+	std::list<StandardLeaf> &standardLeaves,
 	std::list<Seed> &seeds,
 	Node node,
 	std::string::const_iterator &at,
@@ -154,7 +172,16 @@ Branch *AgentModel::traceBranch(
 			if(!leaf) {
 				leaves.emplace_back();
 
-				const auto traced = traceBranch(&branch, true, (--leaves.end())->branches, leaves, seeds, node, at, last);
+				const auto traced = traceBranch(
+					&branch, 
+					true,
+					(--leaves.end())->branches,
+					leaves,
+					standardLeaves,
+					seeds,
+					node,
+					at,
+					last);
 
 				if(traced)
 					branch.add(lastChild = traced);
@@ -163,7 +190,16 @@ Branch *AgentModel::traceBranch(
 			}
 		case LParse::Legend::BRANCH_OPEN:
 		{
-			const auto traced = traceBranch(&branch, leaf, branches, leaves, seeds, node, at, last);
+			const auto traced = traceBranch(
+				&branch,
+				leaf,
+				branches,
+				leaves,
+				standardLeaves,
+				seeds,
+				node,
+				at,
+				last);
 
 			if(traced)
 				branch.add(lastChild = traced);
@@ -172,6 +208,10 @@ Branch *AgentModel::traceBranch(
 			break;
 		case LParse::Legend::BRANCH_CLOSE:
 			goto end;
+		case LParse::Legend::LEAF_A:
+			standardLeaves.emplace_back(StandardLeaf::Type::A, node.position, node.getHeading());
+
+			break;
 		case LParse::Legend::SEED:
 			if(!leaf) {
 				seeds.emplace_back(node.position);

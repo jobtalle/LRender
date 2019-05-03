@@ -1,4 +1,5 @@
 #include "leaf.h"
+#include "math/area.h"
 
 using namespace LRender;
 
@@ -117,24 +118,8 @@ float Shape::Leaf::addTriangle(
 	indices.push_back(b);
 	indices.push_back(c);
 
-	return calculateArea(
+	return Area::triangle(
 		vertices[a].position,
 		vertices[b].position,
 		vertices[c].position);
-}
-
-float Shape::Leaf::calculateArea(
-	const Vector &a,
-	const Vector &b,
-	const Vector &c) {
-	const auto la = (b - a).length();
-	const auto lb = (b - c).length();
-	const auto lc = (a - c).length();
-	const auto p = (la + lb + lc) * 0.5f;
-	const auto x = p * (p - la) * (p - lb) * (p - lc);
-
-	if(x < 0)
-		return 0;
-
-	return sqrt(x);
 }

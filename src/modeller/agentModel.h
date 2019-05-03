@@ -3,6 +3,7 @@
 #include "modeller/node.h"
 #include "modeller/branch.h"
 #include "modeller/leaf.h"
+#include "modeller/standardLeaf.h"
 #include "modeller/seed.h"
 #include "scene/agent.h"
 #include "model/model.h"
@@ -55,6 +56,7 @@ namespace LRender {
 			bool leaf,
 			std::list<Branch> &branches,
 			std::list<Leaf> &leaves,
+			std::list<StandardLeaf> &standardLeaves,
 			std::list<Seed> &seeds,
 			Node node,
 			std::string::const_iterator &at,
