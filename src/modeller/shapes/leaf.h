@@ -20,6 +20,8 @@ namespace LRender {
 				const std::vector<Node>::const_iterator &bEnd);
 
 		private:
+			static const float MAX_AREA;
+
 			Leaf() = default;
 			
 			static float addTriangle(
