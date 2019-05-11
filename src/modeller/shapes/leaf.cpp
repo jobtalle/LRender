@@ -3,8 +3,6 @@
 
 using namespace LRender;
 
-const float Shape::Leaf::MAX_AREA = 0.1f;
-
 float Shape::Leaf::model(
 	std::vector<Vertex> &vertices,
 	std::vector<uint32_t> &indices,
@@ -59,9 +57,6 @@ float Shape::Leaf::model(
 			}
 		}
 
-		if(area > MAX_AREA)
-			return area;
-
 		even = !even;
 	}
 
@@ -84,9 +79,6 @@ float Shape::Leaf::model(
 
 			area += addTriangle(vertices, indices, anchor, previous, vertices.size() - 1);
 
-			if(area > MAX_AREA)
-				return area;
-
 			previous = vertices.size() - 1;
 		}
 	}
@@ -108,9 +100,6 @@ float Shape::Leaf::model(
 				u, v);
 
 			area += addTriangle(vertices, indices, anchor, previous, vertices.size() - 1);
-
-			if(area > MAX_AREA)
-				return area;
 
 			previous = vertices.size() - 1;
 		}
