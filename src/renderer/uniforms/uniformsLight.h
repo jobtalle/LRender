@@ -10,8 +10,8 @@ namespace LRender {
 		void update() const override final;
 		void setDirection(const Vector &direction);
 		void setColor(const Vector &color);
-		void setAmbient(const float ambient);
-		void setDiffuse(const float diffuse);
+		void setAmbient(float ambient);
+		void setDiffuse(float diffuse);
 
 	private:
 		static const GLuint INDEX = 2;

@@ -13,6 +13,7 @@ namespace LRender {
 	private:
 		static const std::string SHADER_VERTEX;
 		static const std::string SHADER_FRAGMENT;
+		static const std::string SHADER_RANDOM;
 		static const char *ID_NAME;
 
 		GLuint idLocation;

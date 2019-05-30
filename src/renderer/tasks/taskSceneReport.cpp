@@ -31,7 +31,7 @@ void Renderer::Task::SceneReport::perform(Renderer &renderer) {
 	renderer.loadScene(scene.get(), threads, highQuality, randomizer, report.get());
 
 	if(!report->getAgents().empty()) {
-		const auto scaleFactor = 1.0f / (PROJECTION_SCALE * PROJECTION_SCALE * PROJECTION_COUNT);
+		const auto scaleFactor = 2.0f / (PROJECTION_SCALE * PROJECTION_SCALE * PROJECTION_COUNT);
 		std::vector<std::unique_ptr<RenderTargetUint>> targets;
 		auto areaPass = RenderPassArea(report->getLimits());
 
